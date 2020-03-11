@@ -14,7 +14,7 @@ SEOTitle: 学习笔记
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://blog.hubery.wang
+url: https://note.hubery.wang
 root: /
 permalink: notes/:abbrlink/
 permalink_defaults:
@@ -84,7 +84,7 @@ theme: hexo-theme-aircloud
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   - type: git
-    repository: git@github.com:HbrWang/hubery.github.io.git
+    repository: git@github.com:hbrwang/NotePages.git
     branch: master
 
 search:
