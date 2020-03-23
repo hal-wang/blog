@@ -18,6 +18,6 @@ comments: true
 
 也喜欢打游戏，是个猫奴
 
-![滴滴](didi.jpg)
+![滴滴](./index/didi.jpg)
 
 邮箱：[hbrwang@outlook.com](mailto:hbrwang@outlook.com)
