@@ -4,8 +4,7 @@ comments: true
 date: 2019-09-09 16:39:07
 categories:
 tags:
-  - Tbook10s
-  - 驱动
+  - 解决方案
 ---
 
 重装系统后台电 tbook10s 的无线网卡死活装不上，这垃圾平板我折腾了几次写个总结。
