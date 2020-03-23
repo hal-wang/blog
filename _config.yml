@@ -14,8 +14,8 @@ SEOTitle: 学习笔记
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://hbrwang.gitee.io/note/
-root: /note/
+url: https://hbrwang.gitee.io/
+root: /
 permalink: :abbrlink/
 permalink_defaults:
 abbrlink:  
