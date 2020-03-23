@@ -4,7 +4,7 @@ comments: true
 date: 2019-09-11 16:31:22
 categories:
 tags:
-  - Visual Studio
+  - IDE
 ---
 
 ### 1、调试
