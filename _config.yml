@@ -14,9 +14,9 @@ SEOTitle: 学习笔记
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://note.hubery.wang
-root: /
-permalink: notes/:abbrlink/
+url: https://hbrwang.gitee.io/note/
+root: /note/
+permalink: :abbrlink/
 permalink_defaults:
 abbrlink:  
   alg: crc32  # 算法：crc16(default) and crc32
@@ -84,7 +84,7 @@ theme: hexo-theme-aircloud
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   - type: git
-    repository: git@github.com:hbrwang/NotePages.git
+    repository: https://gitee.com/hbrwang/Note.git
     branch: master
 
 search:
