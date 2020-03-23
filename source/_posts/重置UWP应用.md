@@ -1,10 +1,11 @@
 ---
 title: 重置UWP应用
 comments: true
-date: 2020-03-23 22:15:05
-categories:
 tags:
   - UWP
+abbrlink: b8c11bdd
+date: 2020-03-23 22:15:05
+categories:
 ---
 
 ### 1、打开设置

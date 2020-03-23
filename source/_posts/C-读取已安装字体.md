@@ -1,10 +1,11 @@
 ---
-title: C#读取已安装字体
+title: 'C#读取已安装字体'
 comments: true
+tags:
+  - 'C#'
+abbrlink: 2fb47029
 date: 2019-09-15 17:54:43
 categories:
-tags:
-  - C#
 ---
 
 **先安装 NuGet 包“SharpDX.Dircet2D1”以支持读取字体**

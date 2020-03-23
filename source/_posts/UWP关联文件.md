@@ -1,10 +1,11 @@
 ---
 title: UWP关联文件
 comments: true
-date: 2019-09-16 15:46:10
-categories:
 tags:
   - UWP
+abbrlink: f2359bee
+date: 2019-09-16 15:46:10
+categories:
 ---
 
 实现关联文件后，可以用软件直接打开对应类型的文件。UWP 设置关联与 WPF 有所不同。

@@ -1,10 +1,11 @@
 ---
 title: Windows端口转发、IP转发
 comments: true
-date: 2019-09-19 16:27:51
-categories:
 tags:
   - Windows
+abbrlink: dc8977d
+date: 2019-09-19 16:27:51
+categories:
 ---
 
 Windows 端口转发只需一条 Cmd 命令：

@@ -1,11 +1,12 @@
 ---
 title: 在UWP中实现窗口多开
 comments: true
-date: 2019-09-18 12:20:07
-categories:
 tags:
   - UWP
-  - C#
+  - 'C#'
+abbrlink: 462699f1
+date: 2019-09-18 12:20:07
+categories:
 ---
 
 在 win10 16299 和以前，虽然也支持多窗口导航，但那些窗口都是在同一个`App`对象中生成，也就是每个窗口都对应一个`CoreApplicationView`。

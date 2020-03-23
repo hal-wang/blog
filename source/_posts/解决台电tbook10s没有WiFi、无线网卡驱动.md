@@ -1,10 +1,11 @@
 ---
 title: 解决台电tbook10s没有WiFi、无线网卡驱动
 comments: true
-date: 2019-09-09 16:39:07
-categories:
 tags:
   - 解决方案
+abbrlink: fb5c96fb
+date: 2019-09-09 16:39:07
+categories:
 ---
 
 重装系统后台电 tbook10s 的无线网卡死活装不上，这垃圾平板我折腾了几次写个总结。
