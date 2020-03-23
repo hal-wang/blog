@@ -5,9 +5,6 @@ abbrlink: baed8230
 date: 2019-12-05 09:47:01
 categories:
 tags:
-  - js
-  - jQuery
-  - Kendo
   - Web开发
 ---
 
