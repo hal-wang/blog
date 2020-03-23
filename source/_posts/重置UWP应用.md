@@ -13,7 +13,7 @@ tags:
 方法二：打开开始菜单，点击设置按钮。设置按钮在左下角，一般在关机按钮上面
 <center>
 
-![image.png](重置UWP应用/1.png)
+![image.png](./1.png)
 </center>
 
 
@@ -22,19 +22,19 @@ tags:
 点击“应用"
 <center>
 
-![image.png](重置UWP应用/2.png)
+![image.png](./2.png)
 </center>
 
 在列表中找到对应软件并点击一下，然后点击“高级选项”
 
 <center>
 
-![image.png](重置UWP应用/3.png)
+![image.png](./3.png)
 </center>
 这时会出现应用详情，往下滚动到下图所示
 
 <center>
 
-![image.png](重置UWP应用/4.png)
+![image.png](./4.png)
 </center>
 点击“重置”，出现弹窗再点一次“重置”
