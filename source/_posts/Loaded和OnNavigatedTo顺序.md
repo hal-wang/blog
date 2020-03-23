@@ -1,11 +1,12 @@
 ---
 title: Loaded和OnNavigatedTo顺序
 comments: true
+tags:
+  - 'C#'
+  - UWP
+abbrlink: 4bf2d4b5
 date: 2019-09-17 15:29:56
 categories:
-tags:
-  - C#
-  - UWP
 ---
 
 UWP 在跳转页面后会触发两个事件，这两个事件可能会给很多初入门的人带来困惑：

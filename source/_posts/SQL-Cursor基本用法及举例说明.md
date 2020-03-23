@@ -1,10 +1,11 @@
 ---
 title: SQL Cursor基本用法及举例说明
 comments: true
-date: 2019-09-18 16:33:39
-categories:
 tags:
   - SQL
+abbrlink: c127091f
+date: 2019-09-18 16:33:39
+categories:
 ---
 
 ### 1、简介
