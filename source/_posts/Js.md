@@ -2,7 +2,6 @@
 title: Js
 comments: true
 tags:
-  - js
   - Web开发
 abbrlink: 17c7b154
 date: 2019-12-05 16:51:48

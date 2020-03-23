@@ -2,7 +2,6 @@
 title: jQuery
 comments: true
 tags:
-  - js
   - Web开发
 abbrlink: 3bf3e06d
 date: 2019-12-05 17:08:04
