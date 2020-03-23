@@ -1,0 +1,40 @@
+---
+title: 重置UWP应用
+comments: true
+date: 2020-03-23 22:15:05
+categories:
+tags:
+  - UWP
+---
+
+### 1、打开设置
+方法一：使用Win + I快捷键，Win键的形状是四个小方块。按住Win键不放，再按I键
+
+方法二：打开开始菜单，点击设置按钮。设置按钮在左下角，一般在关机按钮上面
+<center>
+
+![image.png](重置UWP应用/1.png)
+</center>
+
+
+---
+### 2、找到软件并重置
+点击“应用"
+<center>
+
+![image.png](重置UWP应用/2.png)
+</center>
+
+在列表中找到对应软件并点击一下，然后点击“高级选项”
+
+<center>
+
+![image.png](重置UWP应用/3.png)
+</center>
+这时会出现应用详情，往下滚动到下图所示
+
+<center>
+
+![image.png](重置UWP应用/4.png)
+</center>
+点击“重置”，出现弹窗再点一次“重置”
