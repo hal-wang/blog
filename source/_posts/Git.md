@@ -85,6 +85,13 @@ git reset --hard <HEAD^> 清除指定commit中做出的更改
 
 ### GitHub
 
-1. git remote add origin https://'用户名':'密码'@github.com/'用户名'/'项目名'.git
-2. git pull origin master
-3. git push -u origin master
+git remote add github https://'用户名':'密码'@github.com/'用户名'/'项目名'.git
+
+### 码云
+git remote add gitee https://'用户名':'密码'@gitee.com/'用户名'/'项目名'.git
+
+---
+
+### 推送
+2. git pull github/gitee master
+3. git push -u github/gitee master
