@@ -14,7 +14,7 @@ SEOTitle: 学习笔记
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://hbrwang.gitee.io/
+url: https://note.hubery.wang/
 root: /
 permalink: :abbrlink/
 permalink_defaults:
@@ -78,17 +78,36 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: hexo-theme-aircloud
+theme: yilia-plus
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   - type: git
-    repository: https://gitee.com/hbrwang/Note.git
+    repository: https://e.coding.net/hbrwang/Blog/Pages.git
     branch: master
 
 search:
   path: search.json
   field: post
 
-sidebar-avatar: img/HeadImg.jpg
+# sidebar-avatar: img/HeadImg.jpg
+
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: false
+    tags: true

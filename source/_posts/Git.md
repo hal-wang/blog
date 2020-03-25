@@ -15,7 +15,7 @@ git clone 克隆代码仓
 git status 查看代码仓状态
 
 git log 列出代码仓。关于 git log 后都可以加上指定 SHA 以查看指定的 commit
-
+<!--more-->
 git log --oneline 单行显示
 
 git log --stat 显示详细修改信息
