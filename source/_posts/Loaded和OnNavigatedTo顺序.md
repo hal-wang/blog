@@ -2,11 +2,12 @@
 title: Loaded和OnNavigatedTo顺序
 comments: true
 tags:
-  - 'C#'
+  - "C#"
   - UWP
 abbrlink: 4bf2d4b5
 date: 2019-09-17 15:29:56
 categories:
+reward: true
 ---
 
 UWP 在跳转页面后会触发两个事件，这两个事件可能会给很多初入门的人带来困惑：
@@ -18,8 +19,9 @@ OnNavigatedTo()
 
 ### 一般用途
 
-- `Loaded`事件：一般在这里对页面进行初始化，如果是 MVVM 模式则可能需要对 ViewModel 进行初始化。
-- `OnNavigatedTo`事件：一般用于页面间传值，展现页面之间的动画。触发该事件时，页面未必加载完成，如果使用后台代码更新 UI，可能会出现不可预知的问题，比如赋值无效、UI 对象为空等问题
+- `Loaded`事件：一般在这里对页面进行初始化，<!--more-->如果是 MVVM 模式则可能需要对 ViewModel 进行初始化。
+
+* `OnNavigatedTo`事件：一般用于页面间传值，展现页面之间的动画。触发该事件时，页面未必加载完成，如果使用后台代码更新 UI，可能会出现不可预知的问题，比如赋值无效、UI 对象为空等问题
 
 ### 正常顺序
 

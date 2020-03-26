@@ -6,6 +6,7 @@ date: 2020-02-16 22:03:04
 categories:
 tags:
   - 速查
+reward: true
 ---
 
 | 命令                 | 作用       | 简写 | 备注                |

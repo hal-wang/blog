@@ -1,11 +1,12 @@
 ---
-title: 'C#读取已安装字体'
+title: "C#读取已安装字体"
 comments: true
 tags:
-  - 'C#'
+  - "C#"
 abbrlink: 2fb47029
 date: 2019-09-15 17:54:43
 categories:
+reward: true
 ---
 
 **先安装 NuGet 包“SharpDX.Dircet2D1”以支持读取字体**
@@ -20,13 +21,13 @@ using (var fontCollection = factory.GetSystemFontCollection(false))
 }
 ```
 
+<!--more-->
+
 其中`FontCollection.FontFamilyCount`属性是当前已安装字体数量，`FontCollection.GetFontFamily(int)`函数可以获取按首字母排序好的字体，参数为索引。
 
 `FontCollection.GetFontFamily(int)`得到的是 FontFamily 对象，该对象的`FamilyNames`属性即为对应字体在系统中的名称。
 
 <p>还要使用<code>FamilyNames.GetString(int)</code>函数来获取本地化的名称。比如<em>微软雅黑</em>字体，如果参数为0，则为英文。C#根据这个<code>int</code>参数来获取对应本地化名称。</p>
-
----
 
 ### 获取本地化名称
 
@@ -51,8 +52,6 @@ if (!fontFamily.FamilyNames.FindLocaleName(CultureInfo.CurrentCulture.Name, out 
 ```
 
 如果找到中文名称，则 index 为中文对应的索引，否则 index 为 0，即英文的索引。
-
----
 
 ### 使用
 

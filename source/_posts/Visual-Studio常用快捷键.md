@@ -7,22 +7,23 @@ tags:
 abbrlink: 44ea25fa
 date: 2019-09-11 16:31:22
 categories:
+reward: true
 ---
+
+Visual Studio 常用快捷键
 
 ### 1、调试
 
 1. F5: 启动调试
 1. Ctrl+F5: 不调试直接执行
 1. Shift+F5: 停止调试
-1. Ctrl+Shift+F5: 重新调试
+1. Ctrl+Shift+F5: 重新调试<!--more-->
 1. F9: 启用/关闭断点
 1. Ctrl+F9: 停止断点
 1. Ctrl+Shift+F9: 删除全部断点
 1. F10: 逐过程
 1. F11: 逐语句
 1. Ctrl+F10: 运行到光标处
-
----
 
 ### 2、格式化
 
@@ -41,8 +42,6 @@ categories:
 1. Ctrl+M,P: 停止大纲显示
 1. Ctrl+Shift+F10：自动添加命名空间、实例化对象
 
----
-
 ### 3、搜索和替换
 
 1. Ctrl+F: 查找
@@ -51,8 +50,6 @@ categories:
 1. Shift+F3: 查找上一个
 1. Ctrl+H: 替换
 1. Ctrl+Shift+H: 在文件中替换
-
----
 
 ### 4、代码编辑
 
@@ -81,8 +78,6 @@ categories:
 1. Ctrl+-：回退到光标上一次的位置
 1. Ctrl+R,R：修改变量、命名空间、类、函数等名称
 
----
-
 ### 5、窗口
 
 1. Ctrl+W,W: 浏览器窗口
@@ -97,8 +92,6 @@ categories:
 1. Ctrl+W,U: 文档大纲 （OutLine；第二个字母 U）
 1. Ctrl+D,B: 断点窗口 （breakpoint）
 1. Ctrl+D,I: 即时窗口 （immediately）
-
----
 
 ### 6、项目和解决方案
 
