@@ -92,7 +92,7 @@ disqus: false
 
 #5、Gitment
 gitment_owner: "hbrwang" #你的 GitHub ID
-gitment_repo: "BlogGitment" #存储评论的 repo
+gitment_repo: "issues" #存储评论的 repo
 gitment_oauth:
   client_id: "e1c8f248da951d7ff6b5" #client ID
   client_secret: "343cc670243006e34214aa7e8ccf459612ff1b2b" #client secret
