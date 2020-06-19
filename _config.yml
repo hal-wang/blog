@@ -84,7 +84,7 @@ theme: yilia
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   - type: git
-    repository: https://hbrwang:hao8797G@github.com/hbrwang/hbrwang.github.io.git
+    repository: https://e.coding.net/hbrwang/Blog/Pages.git
     branch: master
 
 search:
