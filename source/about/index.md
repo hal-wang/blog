@@ -34,7 +34,7 @@ comments: true
             {
                 Avatar = "戴眼镜、黑眼圈、格子衫、牛仔裤、双肩包",
                 Birthday = DateTime.Parse("1995-04-02"),
-                WeChat = GetWeChat(), // oral arithmetic
+                WeChat = "hbrwang", 
                 PhoneNumber = "187********", // I won't tell you. Please use email
                 Email = "hbrwang@outlook.com",
                 Hobby = new string[] { "电脑", "女朋友" },
@@ -47,21 +47,6 @@ comments: true
             };
 
             Console.WriteLine(JsonConvert.SerializeObject(hbrwang));
-        }
-
-        private static string GetWeChat()
-        {
-            int[] nums = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
-            string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-            return ""
-                + letters[nums[1] * 10 + nums[1]]
-                + letters[nums[1] * 10 + nums[1]]
-                + letters[nums[nums[5]]]
-                + nums[nums[0]] * nums[nums[2]]
-                + (nums[nums[0]] + nums[nums[3]])
-                + nums[nums[1]] * nums[nums[1]]
-                + (nums[nums[1]] + nums[nums[2]]);
         }
     }
 ```
