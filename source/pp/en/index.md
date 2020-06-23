@@ -1,7 +1,7 @@
 ---
 layout: "pp"
 title: "Privacy Policy"
-date: 2020-03-26 10:48:33
+date: 2020-06-23 20:24:20
 comments: true
 ---
 
@@ -26,7 +26,7 @@ comments: true
 > #### Changes to Our Privacy Policy
 >
 > If we decide to change our privacy policy, we will post those changes on this page, and/or update the privacy policy modification data below.
-> _This policy was last modified on 03/26/2020_
+> _This policy was last modified on 06/23/2020_
 
 <br>
 <br>

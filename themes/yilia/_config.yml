@@ -102,7 +102,7 @@ style:
   # 头像上面的背景颜色
   header: "#4d4d4d"
   # 右滑板块背景
-  slider: "linear-gradient(200deg,#a0cfe4,#e8c37e)"
+  slider: "linear-gradient(200deg,#7b5d5f,#ba8f6c)"
 
 # slider的设置
 slider:
@@ -117,7 +117,7 @@ slider:
 smart_menu:
   innerArchive: "搜索"
   friends: false
-  aboutme: "关于"
+  # aboutme: "关于"
 
 friends:
   友情链接1: http://localhost:4000/
