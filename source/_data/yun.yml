@@ -1,0 +1,117 @@
+avatar:
+  url: /img/avatar.png
+
+reward:
+  enable: false
+  comment: 我 秦始皇 打钱
+  methods:
+    - name: 支付宝
+      path: /img/alipay_rec.jpg
+      color: "#00A3EE"
+      icon: icon-alipay-line
+    - name: 微信支付
+      path: /img/weixin_rec.jpg
+      color: "#2DC100"
+      icon: icon-wechat-pay-line
+
+github_issues:
+  enable: true
+  username: hbrwang
+  repository: Issues
+  filters: is:issue
+
+comment:
+  tips:
+    - 因为 Valine 我保不准哪天就会因为种种原因抛弃它了。
+    - 所以如果是重要的评论，建议跳转 GitHub Issues 发表。
+    - 若没有本文 Issue，您可以使用 Comment 模版新建。
+
+valine:
+  enable: true
+  appId: 52vBt7HFfQNwNcsB9WIvFVs6-gzGzoHsz # your leancloud application appid
+  appKey: WSP9SA1y17Kf5x45PfTotKld # your leancloud application appkey
+  # https://github.com/DesertsP/Valine-Admin
+  # https://valine.yunyoujun.cn
+  placeholder: 大佬求指教&nbsp_(:з」∠)_ （填写邮箱可以收到回复通知～）
+  visitor: true
+  recordIP: true
+  enableQQ: true
+  requiredFields:
+    - nick
+    - mail
+
+menu:
+  custom:
+    title: 留言板
+    path: /about/#comment
+    icon: icon-clipboard-line
+
+footer:
+  since: 2018
+  beian:
+    enable: true
+    icp: 京ICP备19029465号
+  # custom_text: <a style="display:inline-block" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="blank" title="又拍云"><img height="30" src="https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/logo/upyun-logo.png" alt="upyun"/></a>
+  # ...
+
+banner:
+  enable: true
+  title: 某人的小站
+  src: /js/ui/banner.js
+  banner: true
+  cloud:
+    enable: true
+    color: "white"
+  go_down:
+    enable: true
+    icon: icon-arrow-down-s-line
+
+pages:
+  - name: 映天
+    url: https://ytdiary.hubery.wang
+    icon: icon-yt
+    color: dodgerblue
+  - name: Lavcode
+    url: https://lavcode.hubery.wang
+    icon: icon-lavcode
+    color: black
+
+head:
+  js:
+    async:
+      iconfont: //at.alicdn.com/t/font_1864116_jyumdcapwem.js
+
+social:
+  - name: QQ
+    # https://isux.tencent.com/wp-content/uploads/2016/05/20160512101222609.pdf
+    link: https://wpa.qq.com/msgrd?v=3&uin=790264027&site=qq&menu=yes
+    icon: icon-qq-line
+    color: "#12B7F5"
+  - name: GitHub
+    link: https://github.com/hbrwang
+    icon: icon-github-line
+    color: "#181717"
+  - name: E-Mail
+    link: mailto:hbrwang@outlook.com
+    icon: icon-mail-line
+    color: "#8E71C1"
+  - name: 微博
+    link: https://weibo.com/hbrwang
+    icon: icon-weibo-line
+    color: "#E6162D"
+  - name: 豆瓣
+    link: https://www.douban.com/people/hbrwang/
+    icon: icon-douban-line
+    color: "#007722"
+  - name: 网易云音乐
+    link: https://music.163.com/#/user/home?id=478251848
+    icon: icon-netease-cloud-music-line
+    color: "#C10D0C"
+  - name: 知乎
+    link: https://www.zhihu.com/people/hbrwang
+    icon: icon-zhihu-line
+    color: "#0084FF"
+  - name: 哔哩哔哩动画
+    link: https://space.bilibili.com/436353947
+    icon: icon-bilibili-line
+    color: "#FF8EB3"

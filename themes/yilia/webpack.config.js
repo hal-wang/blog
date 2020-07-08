@@ -1,16 +1,28 @@
-var webpack = require("webpack");
-var autoprefixer = require('autoprefixer');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var CleanPlugin = require('clean-webpack-plugin');
+/*
+ * @Description: 
+ * @Autor: wwh
+ * @Date: 2020-07-01 13:29:58
+ * @LastEditors: wwh
+ * @LastEditTime: 2020-07-08 12:47:04
+ */
+
+const webpack = require("webpack");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanPlugin = require('clean-webpack-plugin');
+const path = require('path')
+
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
 
 // 模板压缩
 // 详见：https://github.com/kangax/html-minifier#options-quick-reference
 
-var minifyHTML = {
+const minifyHTML = {
   collapseInlineTagWhitespace: true,
   collapseWhitespace: true,
-  minifyJS:true
+  minifyJS: true
 }
 
 module.exports = {
@@ -20,16 +32,17 @@ module.exports = {
     mobile: ["babel-polyfill", "./source-src/js/mobile.js"]
   },
   output: {
-    path: "./source",
+    path: path.resolve(__dirname, "./source"),
     publicPath: "./",
     filename: "[name].[chunkhash:6].js"
   },
   module: {
-    loaders: [{
+    rules: [{
       test: /\.js$/,
       loader: 'babel-loader?cacheDirectory',
       exclude: /node_modules/
-    }, {
+    },
+    {
       test: /\.html$/,
       loader: 'html'
     }, {
@@ -43,18 +56,18 @@ module.exports = {
       loader: "file-loader?name=fonts/[name].[hash:6].[ext]"
     }]
   },
-  alias: {
-    'vue$': 'vue/dist/vue.js'
-  },
-  resolve: {
-    alias: {
-      'vue$': 'vue/dist/vue.common.js'
-    }
-  },
+  // alias: {
+  //   'vue$': 'vue/dist/vue.js'
+  // },
+  // resolve: {
+  //   alias: {
+  //     'vue$': 'vue/dist/vue.common.js'
+  //   }
+  // },
   // devtool: '#eval-source-map',
-  postcss: function() {
-    return [autoprefixer];
-  },
+  // postcss: function() {
+  //   return [autoprefixer];
+  // },
   plugins: [
     new ExtractTextPlugin('[name].[chunkhash:6].css'),
     new webpack.DefinePlugin({
