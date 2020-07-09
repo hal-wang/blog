@@ -48,15 +48,29 @@ menu:
 
 footer:
   since: 2018
+  icon:
+    name: icon-hbrwang
+    animated: true
+    color: "#0078E7"
   beian:
     enable: true
     icp: 京ICP备19029465号
-  # custom_text: <a style="display:inline-block" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral" target="blank" title="又拍云"><img height="30" src="https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/logo/upyun-logo.png" alt="upyun"/></a>
-  # ...
+
+mourn:
+  enable: true
+  days:
+    - "9-18"
+    - "4-4"
 
 banner:
   enable: true
-  title: 某人的小站
+  title:
+    - hubery
+    - 的
+    - 代
+    - 码
+    - 之
+    - 旅
   src: /js/ui/banner.js
   banner: true
   cloud:
@@ -115,3 +129,14 @@ social:
     link: https://space.bilibili.com/436353947
     icon: icon-bilibili-line
     color: "#FF8EB3"
+
+engine_search:
+  enable: true
+  # href: "https://www.google.com/search?q=site:"
+  href: "https://www.baidu.com/s?wd=site:"
+  # href: "https://www.bing.com/search?q=site:"
+  domain: site.hubery.wang
+
+google_analytics:
+  enable: true
+  id: UA-172152606-1
