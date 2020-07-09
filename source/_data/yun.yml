@@ -131,12 +131,20 @@ social:
     color: "#FF8EB3"
 
 engine_search:
-  enable: true
+  enable: false
   # href: "https://www.google.com/search?q=site:"
   href: "https://www.baidu.com/s?wd=site:"
   # href: "https://www.bing.com/search?q=site:"
   domain: site.hubery.wang
 
+local_search:
+  enable: true
+  src: /js/search/local-search.js
+
 google_analytics:
   enable: true
   id: UA-172152606-1
+
+baidu_push: true
+
+mode: auto

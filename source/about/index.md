@@ -34,16 +34,15 @@ comments: true
             {
                 Avatar = "戴眼镜、黑眼圈、格子衫、牛仔裤、双肩包",
                 Birthday = DateTime.Parse("1995-04-02"),
-                WeChat = "hbrwang", 
+                WeChat = "hbrwang",
                 PhoneNumber = "187********", // I won't tell you. Please use email
                 Email = "hbrwang@outlook.com",
                 Hobby = new string[] { "电脑", "女朋友" },
                 Sex = "男",
-                Major = new string[] { "C#", "WPF", "Vue.js" },
-                Minor = new string[] { "UWP", "Asp.NET", "Photoshop", "微信小程序", "SQL Server" },
-                Working = "新奥特（北京）视频技术有限公司",
-                WorkExperience = new TimeSpan(365 + 31 * 2),
-
+                Major = new string[] { "C#", "WPF", "WebApi", "Vue.js" },
+                Minor = new string[] { "UWP", "Photoshop (NOT PS)", "uni-app", "SQL Server","修电脑（这个算吗？）" },
+                Working = "Secret",
+                WorkExperience = new TimeSpan(365 + 30 * 6) // 2020-07,
             };
 
             Console.WriteLine(JsonConvert.SerializeObject(hbrwang));
