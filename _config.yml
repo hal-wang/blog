@@ -3,18 +3,18 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: 学习笔记
+title: hubery的代码之旅
 subtitle: 
 description:
 keywords:
 author: h.wang
 language: zh
 timezone:
-SEOTitle: 学习笔记
+SEOTitle: hubery的代码之旅
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://blog.hubery.wang/
+url: https://site.hubery.wang/
 root: /
 permalink: :abbrlink/
 permalink_defaults:
@@ -84,7 +84,7 @@ theme: yun
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   - type: git
-    repository: https://e.coding.net/hbrwang/Blog/Pages.git
+    repository: https://e.coding.net/hbrwang/site/pages.git
     branch: master
 
 search:
