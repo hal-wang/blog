@@ -11,7 +11,7 @@ reward: true
 
 Ngrok 可以实现内网穿透，能够借助一个具有公网 IP 的服务器，使内网电脑的某些端口能够被公网访问到。
 
-### 一　　准备工作
+### 准备工作
 
 - 有公网 IP 的服务器
 - 域名（顶级域名或二级域名） <!--more-->
@@ -21,7 +21,7 @@ _域名需使用 A 记录解析到服务器_
 
 <br>
 
-### 二　　安装环境
+### 安装环境
 
 - go 环境，由于 ngrok 是使用 go 语言编译，因此需要安装 go 语言环境
 - git，也会使用 git 下载源码
@@ -40,7 +40,7 @@ sudo apt-get install gcc mercurial git bzr subversion golang
 
 <br>
 
-### 三　　下载源码
+### 下载源码
 
 使用 git 下载 ngrok 源码，在指定目录执行下面语句
 
@@ -56,7 +56,7 @@ cd ngrok
 
 <br>
 
-### 四　　生成证书
+### 成证书
 
 _将域名"ngrok.hubery.wang"改成自己的域名_
 
@@ -94,7 +94,7 @@ cp device.key ../assets/server/tls/snakeoil.key
 
 <br>
 
-### 五　　生成
+### 生成
 
 切换回 ngrok 目录
 
@@ -112,7 +112,7 @@ GOOS=(系统) GOARCH=(位) make release-(服务端/客户端)
 
 <br>
 
-### 六　　服务端运行
+### 服务端运行
 
 参数
 
@@ -136,7 +136,7 @@ linux：
 
 <br>
 
-### 七　　客户端运行
+### 客户端运行
 
 Windows:
 创建 config 文件，内容如下：
