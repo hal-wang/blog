@@ -1,16 +1,18 @@
 avatar:
-  url: /img/avatar.png
+  url: /imgs/h/h_mini.png
+
+favicon: /imgs/h/h.svg
 
 reward:
   enable: false
   comment: 我 秦始皇 打钱
   methods:
     - name: 支付宝
-      path: /img/alipay_rec.jpg
+      path: /imgs/alipay_rec.jpg
       color: "#00A3EE"
       icon: icon-alipay-line
     - name: 微信支付
-      path: /img/weixin_rec.jpg
+      path: /imgs/weixin_rec.jpg
       color: "#2DC100"
       icon: icon-wechat-pay-line
 
@@ -49,9 +51,9 @@ menu:
 footer:
   since: 2018
   icon:
-    name: icon-hbrwang
+    name: icon-h
     animated: true
-    color: "#0078E7"
+    color: "#000"
   beian:
     enable: true
     icp: 京ICP备19029465号
@@ -67,10 +69,10 @@ banner:
   title:
     - hubery
     - 的
-    - 代
-    - 码
-    - 之
-    - 旅
+    - 自
+    - 言
+    - 自
+    - 语
   src: /js/ui/banner.js
   banner: true
   cloud:
@@ -93,7 +95,7 @@ pages:
 head:
   js:
     async:
-      iconfont: //at.alicdn.com/t/font_1864116_jyumdcapwem.js
+      iconfont: //at.alicdn.com/t/font_1864116_8jd17jc6wg4.js
 
 social:
   - name: QQ
@@ -148,3 +150,9 @@ google_analytics:
 baidu_push: true
 
 mode: auto
+
+symbols_count_time:
+  item_text_post: true
+  item_text_total: true
+  awl: 2
+  wpm: 250
