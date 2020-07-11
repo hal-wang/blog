@@ -156,3 +156,6 @@ symbols_count_time:
   item_text_total: true
   awl: 2
   wpm: 250
+
+custom:
+  style: source/_data/style/*
