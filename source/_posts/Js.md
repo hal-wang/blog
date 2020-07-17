@@ -1,5 +1,5 @@
 ---
-title: Js
+title: JS
 comments: true
 tags:
   - 前端
