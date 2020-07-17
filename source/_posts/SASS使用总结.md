@@ -13,11 +13,17 @@ date: 2020-07-17 16:31:03
 
 ## 在项目中安装 sass
 
+```shell
 yarn add node-sass 或 npm i node-sass -S
+```
+
+<!--more-->
 
 ### 使用淘宝源
 
+```
 npm i node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
+```
 
 ## 使用变量
 
@@ -131,7 +137,7 @@ button {
 
 此处 button 的样式为灰底白字
 
-### Mixin 实例
+### Mixin 示例
 
 生成浏览器前缀
 
@@ -175,11 +181,11 @@ button {
 
 ### for 循环
 
-在sass中for循环有2种方式
+在 sass 中 for 循环有 2 种方式
 
 #### for through
 
-
+包含结束值
 
 ```scss
 @for $i from 1 through 100 {
@@ -189,7 +195,11 @@ button {
 }
 ```
 
+此例从 1 循环到 100
+
 #### for to
+
+不包含结束值
 
 ```scss
 @for $i from 1 to 100 {
@@ -198,6 +208,8 @@ button {
   }
 }
 ```
+
+此例从 1 循环到 99
 
 ### while 循环
 
@@ -214,9 +226,29 @@ $i: 100;
 ### each 循环
 
 ```scss
-@each $member in a, b, c, d {
-  .#{$member} {
-    background-image: url("/image/#{$member}.jpg");
+@each $color in red, green, yellow, blue {
+  .btn_#{$color} {
+    background-color: #{$color};
   }
+}
+```
+
+编译的结果为
+
+```css
+.btn_red {
+  background-color: red;
+}
+
+.btn_green {
+  background-color: green;
+}
+
+.btn_yellow {
+  background-color: yellow;
+}
+
+.btn_blue {
+  background-color: blue;
 }
 ```
