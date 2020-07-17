@@ -4,14 +4,16 @@ comments: true
 abbrlink: baed8230
 date: 2019-12-05 09:47:01
 categories:
+  - 学习
 tags:
-  - Web开发
+  - 前端
+  - JS
 reward: true
 ---
 
 _[API 文档：https://docs.telerik.com/kendo-ui/api/javascript/effects/common](https://docs.telerik.com/kendo-ui/api/javascript/effects/common)_
 
-### 1. 继承
+## 继承
 
 JS 中没有类，生成对象以“复制”方式。可用`kendo.Class.extend()`创建对象，参数为 JS 对象。其中 Class 是基类，若换成其他对象，则从该对象继承。
 
@@ -19,9 +21,9 @@ JS 中没有类，生成对象以“复制”方式。可用`kendo.Class.extend(
 
 构造函数：init
 
-### 2. 模板
+## 模板
 
-#### 2.1 格式
+### 格式
 
 - 执行 JS 代码
   > `#...#`，eg: `#if(){#...#}#`
@@ -33,7 +35,7 @@ JS 中没有类，生成对象以“复制”方式。可用`kendo.Class.extend(
 
 - 可用\\#输出#字符串
 
-#### 2.2 使用模板
+### 使用模板
 
 ```
 var template = kendo.template($("#模板id").html());
@@ -42,13 +44,13 @@ var result = template(数据);
 
 kendo.template 函数返回值为函数，执行函数并传入数据，即将数据和模板合并，返回 html 文本
 
-#### 2.3 嵌入式模板 & 外部模板
+### 嵌入式模板 & 外部模板
 
-##### 2.3.1 嵌入式模板
+#### 嵌入式模板
 
 inline: 使用 JavaScript 字符串定义
 
-##### 2.3.2 外部模板
+#### 外部模板
 
 external: 使用 HTML Script 块定义
 
@@ -60,9 +62,9 @@ external: 使用 HTML Script 块定义
 
 使用`script`标签定义，通过 id 使用模板
 
-#### 3. 动画
+## 动画
 
-##### 3.1 基本
+### 基本
 
 通过`kendo.fx()`函数 + `jQuery`选择器创建动画对象
 
@@ -72,7 +74,7 @@ kendo.fx($("#element")).fade("out").play();
 kendo.fx($("#element")).fade().direction("out").play();
 ```
 
-##### 3.2 合并动画
+### 合并动画
 
 使用动画对象的`add()`方法
 
@@ -85,7 +87,7 @@ fadeOutEffect.add(effectWrapper.zoomOut());
 fadeOutEffect.play();
 ```
 
-#### 3.3 多个元素同时开始动画
+### 多个元素同时开始动画
 
 通过 `$.when()`和`$.then()` 方法
 
@@ -99,8 +101,10 @@ $.when(
         });
 ```
 
-### 4. Kendo UI Validator
+## Kendo UI Validator
 
 用于表单验证，弥补 HTML5 的不足
 
-### 5. MVVM
+## 不想写了。。。
+
+因为学了 vue + element ui，发现比这个好用

@@ -4,8 +4,9 @@ comments: true
 abbrlink: 24caea6b
 date: 2020-02-16 22:03:04
 categories:
-tags:
   - 速查
+tags:
+  - HEXO
 reward: true
 ---
 
