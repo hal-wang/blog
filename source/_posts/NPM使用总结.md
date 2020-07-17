@@ -1,22 +1,20 @@
 ---
 title: NPM使用总结
 comments: true
-date: 2020-07-17 16:32:00
 categories:
-  - 速查
   - 学习
 tags:
   - NPM
   - JS
   - 前端
+abbrlink: 754bb81e
+date: 2020-07-17 16:32:00
 ---
 
 ## 指定使用淘宝源
 
 ```
 --registry=https://registry.npm.taobao.org
-// 安装sass
-npm i node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sass/
 ```
 
 <!--more-->
