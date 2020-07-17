@@ -159,3 +159,9 @@ symbols_count_time:
 
 custom:
   style: source/_data/style/*
+
+creative_commons:
+  license: by
+  post: true
+  language: deed.zh
+  clipboard: false
