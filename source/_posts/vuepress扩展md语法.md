@@ -2,11 +2,11 @@
 title: vuepress扩展md语法
 comments: true
 tags:
-  - 速查
-  - vue
+  - VUE
 reward: true
 abbrlink: a1244650
 categories:
+  - 速查
 ---
 
 不知道用 Hexo 写 vuepress 会不会被打。。。

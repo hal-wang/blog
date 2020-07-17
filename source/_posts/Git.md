@@ -2,10 +2,11 @@
 title: Git
 comments: true
 tags:
-  - 速查
+  - GIT
 abbrlink: 69c3279c
 date: 2019-12-05 17:24:23
 categories:
+  - 速查
 reward: true
 ---
 

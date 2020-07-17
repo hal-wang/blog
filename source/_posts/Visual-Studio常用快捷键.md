@@ -2,11 +2,11 @@
 title: Visual Studio常用快捷键
 comments: true
 tags:
-  - 速查
   - IDE
 abbrlink: 44ea25fa
 date: 2019-09-11 16:31:22
 categories:
+  - 速查
 reward: true
 ---
 

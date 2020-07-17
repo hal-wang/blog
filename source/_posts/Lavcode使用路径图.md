@@ -3,22 +3,26 @@ title: Lavcode使用路径图
 comments: true
 tags:
   - Lavcode
-  - 解决方案
+  - UWP
+  - "C#"
 reward: true
 abbrlink: aa87f3dc
 date: 2020-05-03 13:52:40
 categories:
+  - 教程
 ---
 
-在Lavcode中，目前支持3种图标：
+在 Lavcode 中，目前支持 3 种图标：
+
 1. 图片：不建议使用，由于图片占用空间比较大，会严重影响同步速度和加载速度
 2. 路径图：推荐使用。选择范围广，图标极其丰富<!--more-->
 3. 字体图标：可满足一般需求，选择范围有限
 
 此文章介绍如何使用路径图
 
-### 找图标
-推荐网站 [iconfont.cn](https://www.iconfont.cn/collections) 
+## 找图标
+
+推荐网站 [iconfont.cn](https://www.iconfont.cn/collections)
 
 ![iconfont](./1.png)
 
@@ -26,7 +30,8 @@ categories:
 
 ![搜索“文件夹”](./2.png)
 
-### 复制内容
+## 复制内容
+
 找到想要的图标后，鼠标移上去，点“下载”
 
 ![下载”](./3.png)
@@ -35,7 +40,8 @@ categories:
 
 ![复制](./4.png)
 
-### 软件内使用
+## 软件内使用
+
 在设置路径图的弹窗中，直接粘贴到文本框中即可
 
 ![复制](./5.png)
