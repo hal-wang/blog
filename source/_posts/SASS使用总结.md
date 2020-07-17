@@ -31,6 +31,8 @@ button: {
 }
 ```
 
+### 插值
+
 在字符串中使用时，用#{}包起来，如 `#{$width}`
 
 ## 嵌套
@@ -173,6 +175,22 @@ button {
 
 ### for 循环
 
+在sass中for循环有2种方式
+
+#### for through
+
+
+
+```scss
+@for $i from 1 through 100 {
+  .class-#{$i} {
+    width: #{$i + 100}px;
+  }
+}
+```
+
+#### for to
+
 ```scss
 @for $i from 1 to 100 {
   .class-#{$i} {
@@ -193,9 +211,9 @@ $i: 100;
 }
 ```
 
-### each
+### each 循环
 
-``` scss
+```scss
 @each $member in a, b, c, d {
   .#{$member} {
     background-image: url("/image/#{$member}.jpg");
