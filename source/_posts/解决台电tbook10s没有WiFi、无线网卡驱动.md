@@ -2,10 +2,11 @@
 title: 解决台电tbook10s没有WiFi、无线网卡驱动
 comments: true
 tags:
-  - 解决方案
+  - 驱动
 abbrlink: fb5c96fb
 date: 2019-09-09 16:39:07
 categories:
+  - 教程
 reward: true
 ---
 

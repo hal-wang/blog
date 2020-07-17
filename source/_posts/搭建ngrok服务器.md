@@ -2,10 +2,11 @@
 title: 搭建ngrok服务器
 comments: true
 tags:
-  - 解决方案
+  - Ngrok
 abbrlink: 38f11925
 date: 2020-04-11 19:55:06
 categories:
+  - 教程
 reward: true
 ---
 
