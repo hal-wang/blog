@@ -19,14 +19,8 @@ reward:
 github_issues:
   enable: true
   username: hbrwang
-  repository: Issues
+  repository: hbrwang.github.io
   filters: is:issue
-
-comment:
-  tips:
-    - 因为 Valine 我保不准哪天就会因为种种原因抛弃它了。
-    - 所以如果是重要的评论，建议跳转 GitHub Issues 发表。
-    - 若没有本文 Issue，您可以使用 Comment 模版新建。
 
 valine:
   enable: true
