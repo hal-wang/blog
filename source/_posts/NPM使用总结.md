@@ -43,6 +43,21 @@ npm install -g yarn
 - yarn remove [package] 移除依赖包
 - yarn run 执行 package.json 中 scripts 脚本
 
+### yarn 配置国内镜像
+
+添加 `.yarnrc` 文件
+
+```
+registry "https://registry.npm.taobao.org"
+
+sass_binary_site "https://npm.taobao.org/mirrors/node-sass/"
+phantomjs_cdnurl "http://cnpmjs.org/downloads"
+electron_mirror "https://npm.taobao.org/mirrors/electron/"
+sqlite3_binary_host_mirror "https://foxgis.oss-cn-shanghai.aliyuncs.com/"
+profiler_binary_host_mirror "https://npm.taobao.org/mirrors/node-inspector/"
+chromedriver_cdnurl "https://cdn.npm.taobao.org/dist/chromedriver"
+```
+
 ## 快速 push
 
 git add .
