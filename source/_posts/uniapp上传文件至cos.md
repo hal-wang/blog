@@ -57,7 +57,7 @@ uniapp 上传文件至腾讯云对象存储 cos，折腾了两天，终于搞定
 
 那就重新写计算签名的 API 吧。
 
-一开始，想找现存的，查看.net 平台下 cos 的 sdk `qcloud-sdk-dotnet`，但并没有现成的计算`PostObject`的接口。
+一开始，想找现成的，查看.net 平台下 cos 的 sdk `qcloud-sdk-dotnet`，但并没有现成的计算`PostObject`的接口。
 
 于是就开始翻源码，一顿操作下来，发现在`qcloud-sdk-dotnet`中并没有计算`Policy`，用法是头部传认证参数`Authorization`，摘部分源码：
 
@@ -159,6 +159,44 @@ public PostObject GetPostObject(string key)
         Signature = signature,
         Policy = Convert.ToBase64String(Encoding.UTF8.GetBytes(policyStr))
     };
+}
+```
+
+函数 `GetHamcSha1ToHexString`
+
+```CSharp
+private string GetHamcSha1ToHexString(byte[] key, byte[] content)
+{
+    HMACSHA1 hmacSha1 = new HMACSHA1(key);
+    byte[] result = hmacSha1.ComputeHash(content);
+    hmacSha1.Clear();
+    return result.ToX2();
+}
+```
+
+函数 `GetSha1ToHexString`
+
+```CSharp
+private string GetSha1ToHexString(byte[] content)
+{
+    SHA1 sha1 = new SHA1CryptoServiceProvider();
+    byte[] result = sha1.ComputeHash(content);
+    sha1.Clear();
+    return result.ToX2();
+}
+```
+
+扩展函数`ToX2`是`Hubery.Tools`中`DataExtend`类的扩展函数
+
+```CSharp
+public static string ToX2(this byte[] data)
+{
+    StringBuilder sb = new StringBuilder();
+    for (var i = 0; i < data.Length; i++)
+    {
+        sb.Append(data[i].ToString("x2"));
+    }
+    return sb.ToString();
 }
 ```
 
