@@ -4,7 +4,11 @@ comments: true
 abbrlink: caf85fee
 date: 2020-09-03 09:06:23
 categories:
+  - 教程
 tags:
+  - VUE
+  - uniapp
+  - 前端
 ---
 
 个人感觉使用 vs code 开发 uniapp 比官方的 HBuilderX 更好用。
