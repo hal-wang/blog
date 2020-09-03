@@ -63,13 +63,75 @@ npm run build:%PLATFORM%
 
 ## eslint 语法检查
 
-1. vs code 安装插件 ESLint
-2. 下载安装 `eslint-config-standard` 后执行 `npx eslint --init`
-3. 配置全局变量，在.eslintrc.js 文件的`gloabls`处加上
+### vs code 插件
+
+vs code 安装插件 ESLint
+
+### 安装依赖
+
+1. `eslint`
+2. `babel-eslint`
+3. `eslint-plugin-vue`
+
+### 使用 prettier
+
+安装 `eslint-plugin-prettier`
+
+```
+npm i eslint-plugin-prettier --save
+```
+
+在 `.eslintrc.js` 文件内的`extends`处添加
+
+```JS
+extends: [
+  'standard',
+  "plugin:prettier/recommended",
+],
+```
+
+### 配置全局变量
+
+在`.eslintrc.js` 文件的`gloabls`处加上
 
 ```JS
 globals: {
    uni: true,
    plus: true
 },
+```
+
+### 配置文件
+
+最终配置文件`.eslintrc.js`如
+
+```js
+module.exports = {
+  root: true,
+  parserOptions: {
+    parser: "babel-eslint",
+  },
+  env: {
+    browser: true,
+    es6: true,
+  },
+  extends: [
+    // https://github.com/standard/standard/blob/master/docs/RULES-en.md
+    "standard",
+    // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
+    // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
+    "plugin:vue/essential",
+    "plugin:prettier/recommended",
+  ],
+  // required to lint *.vue files
+  plugins: ["vue"],
+  // add your custom rules here
+  rules: {
+    "prettier/prettier": "error",
+    // allow async-await
+    "generator-star-spacing": "off",
+    // allow debugger during development
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+  },
+};
 ```
