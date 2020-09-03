@@ -60,3 +60,16 @@ npm run build:%PLATFORM%
 ```
 
 `$PLATFORM$`可见 [官网](https://uniapp.dcloud.io/quickstart?id=%e8%bf%90%e8%a1%8c%e3%80%81%e5%8f%91%e5%b8%83uni-app)
+
+## eslint 语法检查
+
+1. vs code 安装插件 ESLint
+2. 下载安装 `eslint-config-standard` 后执行 `npx eslint --init`
+3. 配置全局变量，在.eslintrc.js 文件的`gloabls`处加上
+
+```JS
+globals: {
+   uni: true,
+   plus: true
+},
+```
