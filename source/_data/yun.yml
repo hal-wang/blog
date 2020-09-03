@@ -84,12 +84,16 @@ pages:
   - name: Lavcode
     url: https://lavcode.hubery.wang
     icon: icon-lavcode
-    color: black
+    color: brown
+  - name: Sqless
+    url: https://sqless.hubery.wang
+    icon: icon-sqless
+    color: green
 
 head:
   js:
     async:
-      iconfont: //at.alicdn.com/t/font_1864116_8jd17jc6wg4.js
+      iconfont: //at.alicdn.com/t/font_1864116_5s02bnh7rrb.js
 
 social:
   - name: QQ
@@ -151,8 +155,8 @@ symbols_count_time:
   awl: 2
   wpm: 250
 
-custom:
-  style: source/_data/style/*
+# custom:
+#   style: source/_data/style/*
 
 creative_commons:
   license: by
