@@ -46,10 +46,13 @@ post_asset_folder: true
 relative_link: false
 future: true
 highlight:
-  enable: true
-  line_number: true
-  auto_detect: false
-  tab_replace:
+  enable: false
+
+prism_plugin:
+  mode: preprocess # realtime/preprocess
+  theme: default
+  line_number: true # default false
+  # custom_css: "path/to/your/custom.css" # optional
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
