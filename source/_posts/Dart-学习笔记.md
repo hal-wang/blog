@@ -149,6 +149,15 @@ Child.name(String name) : super.name(name) {
 
 `const` 变量也是`final`变量。
 
+`const` 关键字不仅仅可以用来定义常量，还可以用来创建 常量值，该常量值可以赋予给任何变量。
+
+```dart
+const a = []; // 常量，可修改数组内容，但不能重新给a赋值
+var a = const [] // 常量值，不可修改数组内容，但可重新给a赋值
+```
+
+使用时，dart 中的`final`像 JS 中的`const`，dart 中的`const`像 C#中的`const`
+
 ## Getters & setters
 
 与 JS 类似
@@ -257,20 +266,59 @@ List<Color> colors = Color.values;
 
 ### Mixin
 
-类似于 C#中的接口，但与接口不同的是，写法与普通类相同，功能也与普通类相同
+类似于 C#中的接口，但与接口不同的是，写法与普通类相同，功能也与普通类相同，比接口更丰富。
+
+#### 定义 mixin 类
+
+定义一个类继承自 Object 并且不为该类定义构造函数，这个类就是 Mixin 类，除非你想让该类与普通的类一样可以被正常地使用，否则可以使用关键字 `mixin` 替代 `class` 让其成为一个单纯的 Mixin 类：
 
 ```dart
-class MixinClass {
+mixin MixinClass {
   var num = 1;
   void addNum() {
     this.num ++
   }
 }
 
+// 或
+
+class MixinClass {
+  // ...
+}
+```
+
+#### 使用
+
+使用`with`关键字让类使用 mixin。
+
+```dart
+
 class OtherClass extends DemoClass with MixinClass {
   // ···
 }
 ```
+
+如果使用多个 mixin，用逗号分隔。
+
+#### 指定类
+
+可以使用关键字 on 来指定哪些类可以使用该 Mixin 类
+
+```dart
+class Musician {
+  // ...
+}
+mixin MusicalPerformer on Musician {
+  // ...
+}
+class SingerDancer extends Musician with MusicalPerformer {
+  // ...
+}
+```
+
+此处`MusicalPerformer`只允许继承`Musician`的类使用
+
+可使用多个 mixin 类，用逗号分隔。
 
 ## 泛型
 
@@ -314,6 +362,8 @@ const s = '4 + 5 = ${ 4 + 5 }'
 
 ### 多行字符串
 
+三个单引号`'''`或三个双引号`"""`可创建多行字符串
+
 ```dart
 const s = '''
   这是第一行，
@@ -330,10 +380,192 @@ const s = '''
 var s = r'In a raw string, not even \n gets special treatment.';
 ```
 
-三个单引号`'''`或三个双引号`"""`可创建多行字符串
+## Lists
+
+### 自动推断
+
+dart 可自动推断 list 类型
+
+```dart
+var list = [1, 2, 3];
+
+// 等同于
+
+List<int> list = [1, 2, 3];
+```
+
+### 扩展操作符
+
+- `...`
+- `...?`
+
+```dart
+var list = [1, 2, 3];
+var list2 = [0, ...list];
+assert(list2.length == 4);
+```
+
+`...?`和`...`的区别是当数组变量为`null`时不会产生异常，此时类似于数组为空数组`[]`
+
+### 集合控制流
+
+根据条件创建数组
+
+#### Collection If
+
+```dart
+var nav = [
+  'Home',
+  'Furniture',
+  'Plants',
+  if (promoActive) 'Outlet'
+];
+```
+
+#### Collection For
+
+```dart
+var listOfInts = [1, 2, 3];
+var listOfStrings = [
+  '#0',
+  for (var i in listOfInts) '#$i'
+];
+// listOfStrings = ['#0','#1','#2','#3']
+assert(listOfStrings[1] == '#1');
+```
+
+## 级联运算符
+
+级联运算符 `..` ，可以在同一个对象上连续调用语句
+
+```dart
+querySelector('#confirm') // 获取对象 (Get an object).
+  ..text = 'Confirm' // 使用对象的成员 (Use its members).
+  ..classes.add('important')
+  ..onClick.listen((e) => window.alert('Confirmed!'));
+```
+
+相当于
+
+```dart
+var button = querySelector('#confirm');
+button.text = 'Confirm';
+button.classes.add('important');
+button.onClick.listen((e) => window.alert('Confirmed!'));
+```
+
+### 嵌套
+
+```dart
+final addressBook = (AddressBookBuilder()
+      ..name = 'jenny'
+      ..email = 'jenny@example.com'
+      ..phone = (PhoneNumberBuilder()
+            ..number = '415-555-0100'
+            ..label = 'home')
+          .build())
+    .build();
+```
+
+## 异常
+
+Dart 提供了 `Exception` 和 `Error` 两种类型的异常以及它们一系列的子类。
+
+### 抛出
+
+可抛出`Exception` 和 `Error`（推荐），也可抛出其他任何对象。
+
+### 捕获
+
+使用 `on` 来指定异常类型，使用 `catch` 来捕获异常对象
+
+```dart
+try {
+  breedMoreLlamas();
+} on OutOfLlamasException {
+  // 指定异常
+  buyMoreLlamas();
+} on Exception catch (e) {
+  // 其它类型的异常
+  print('Unknown exception: $e');
+} catch (e, s) {
+  // // 不指定类型，处理其它全部
+  print('Something really unknown: $e');
+}
+```
+
+`catch` 有两个参数，第一个是异常对象，第二个是栈信息 `StackTrace` 对象。
+
+`rethrow`可再次抛出异常
+
+## 库
+
+### 导入
+
+与 JS 相同，使用`import`关键字。
+
+- dart 内置库：`dart:xxxxxx`
+- 其他库：`package:xxxxxx`
+
+```dart
+import 'dart:html';
+import 'package:test/test.dart';
+```
+
+### 指定前缀
+
+如果两个库冲突，可指定前缀
+
+```dart
+import 'package:lib1/lib1.dart';
+import 'package:lib2/lib2.dart' as lib2;
+
+// 使用 lib1 的 Element 类。
+Element element1 = Element();
+
+// 使用 lib2 的 Element 类。
+lib2.Element element2 = lib2.Element();
+```
+
+### 导入部分
+
+```
+// 只导入 lib1 中的 foo。(Import only foo).
+import 'package:lib1/lib1.dart' show foo;
+
+// 导入 lib2 中除了 foo 外的所有。
+import 'package:lib2/lib2.dart' hide foo;
+```
+
+### 延迟加载
+
+使用时才会加载，引用时用`deferred as`关键字，加载时用`loadLibrary`函数
+
+```dart
+import 'package:greetings/hello.dart' deferred as hello;
+
+// 使用时
+Future greet() async {
+  await hello.loadLibrary(); // 先手动加载，再使用
+  hello.printGreeting();
+}
+```
+
+## 异步
+
+Dart 中的异步分两种
+
+### Future
+
+与 C#中的 Task 类似，用法相同。
+
+### Stream
+
+与 C#中的 IAsyncEnumerable 类似，用法`await for-in`与 C#中的`await foreach-in`一样。
 
 ## 其他
 
 - Dart 也有静态方法/变量，关键字与 C#相同
 - Dart 没有成员访问限定符，以下划线`_`开头的名命则为私有 变量/方法
 - Dart 未初始化的变量全部是`null`，包括`int`、`double`等
+- Dart 支持`for-in`，与 C# 中的`foreach-in`相同
