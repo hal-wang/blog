@@ -25,27 +25,31 @@ comments: true
 
 #### 进入正题
 
-```
-    internal class Program
-    {
-        internal static void Main(string[] args)
-        {
-            var hbrwang = new
-            {
-                Avatar = "戴眼镜、黑眼圈、格子衫、牛仔裤、双肩包",
-                Birthday = DateTime.Parse("1995-04-02"),
-                WeChat = "hbrwang",
-                PhoneNumber = "187********", // I won't tell you. Please use email
-                Email = "hbrwang@outlook.com",
-                Hobby = new string[] { "电脑", "女朋友" },
-                Sex = "男",
-                Major = new string[] { "C#", "WPF", "WebApi", "Vue.js" },
-                Minor = new string[] { "UWP", "Photoshop (NOT PS)", "uni-app", "SQL Server","修电脑（这个算吗？）" },
-                Working = "Secret",
-                WorkExperience = new TimeSpan(365 + 30 * 6) // 2020-07,
-            };
+```JS
+const hbrwang = {
+  avatar: "戴眼镜、黑眼圈、格子衫、牛仔裤、双肩包",
+  birthday: new Date("1995-04-02"),
+  weChat: "hbrwang",
+  phoneNumber: "187********", // I won't tell you. Please use email
+  email: "hbrwang@outlook.com",
+  hobby: ["电脑", "女朋友"],
+  sex: "男",
+  major: {
+    csharp: ["WPF", "Asp.NET Core", "UWP", "Xamarin"],
+    js: {
+      vue: ["网页", "uniapp"],
+      nodejs: ["Api"],
+    },
+  },
+  minor: [
+    "Dart(Plutter)",
+    "SQL Server",
+    "Photoshop (NOT PS ^o^/)",
+    "修电脑（这个算吗？）",
+  ],
+  working: "Secret",
+  workExperience: (new Date().getTime() - new Date("2019/01/17").getTime()) / (24 * 3600 * 1000),
+};
 
-            Console.WriteLine(JsonConvert.SerializeObject(hbrwang));
-        }
-    }
+console.log("hbrwang", hbrwang);
 ```
