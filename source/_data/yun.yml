@@ -60,13 +60,7 @@ mourn:
 
 banner:
   enable: true
-  title:
-    - hubery
-    - 的
-    - 自
-    - 言
-    - 自
-    - 语
+  title: 爱生活，爱编程
   src: /js/ui/banner.js
   banner: true
   cloud:
@@ -135,7 +129,7 @@ engine_search:
   # href: "https://www.google.com/search?q=site:"
   href: "https://www.baidu.com/s?wd=site:"
   # href: "https://www.bing.com/search?q=site:"
-  domain: site.hubery.wang
+  domain: blog.hubery.wang
 
 local_search:
   enable: true
@@ -163,3 +157,9 @@ creative_commons:
   post: true
   language: deed.zh
   clipboard: false
+
+say:
+  enable: true
+  api: /data/sentences.json
+  hitokoto:
+    enable: false
