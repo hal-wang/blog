@@ -91,7 +91,7 @@ pages:
 head:
   js:
     async:
-      iconfont: //at.alicdn.com/t/font_1864116_aeepwmvaue9.js
+      iconfont: //at.alicdn.com/t/font_1864116_p8e1du47amm.js
 
 social:
   - name: E-Mail
@@ -104,7 +104,7 @@ social:
     color: "#12B7F5"
   - name: 微信
     link: https://blog.hubery.wang/imgs/wxqr.png
-    icon: icon-wechat-line
+    icon: icon-wechat
     color: green
   - name: GitHub
     link: https://github.com/hbrwang
@@ -117,7 +117,7 @@ social:
   - name: 豆瓣
     link: https://www.douban.com/people/hbrwang/
     icon: icon-douban-line
-    color: "#007722"
+    color: orange
   - name: 网易云音乐
     link: https://music.163.com/#/user/home?id=478251848
     icon: icon-netease-cloud-music-line
