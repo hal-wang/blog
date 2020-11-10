@@ -9,7 +9,6 @@ description:
 keywords:
 author: h.wang
 language: zh
-timezone:
 SEOTitle: hubery的自言自语
 
 # URL
@@ -32,7 +31,7 @@ code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
   - static/**
-  - baidu_verify_uYzgaxWjqu.html
+  - baidu_verify_code-zmNG2oAsrL.html
   - google582a355bb66686cf.html
   - jO9Ivs2cia.txt
 
