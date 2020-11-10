@@ -71,38 +71,45 @@ banner:
     icon: icon-arrow-down-s-line
 
 pages:
-  - name: 映天
-    url: https://ytdiary.hubery.wang
-    icon: icon-yt
-    color: dodgerblue
+  - name: 初心日记
+    url: https://choshim.hubery.wang
+    icon: icon-choshim
+    color: "#19CAAD"
   - name: Lavcode
     url: https://lavcode.hubery.wang
     icon: icon-lavcode
-    color: brown
+    color: dodgerblue
   - name: Sqless
     url: https://sqless.hubery.wang
     icon: icon-sqless
     color: green
+  - name: cloudbase-access
+    url: https://github.com/hbrwang/cloudbase-access
+    icon: icon-function
+    color: "#ECAD9E"
 
 head:
   js:
     async:
-      iconfont: //at.alicdn.com/t/font_1864116_5s02bnh7rrb.js
+      iconfont: //at.alicdn.com/t/font_1864116_p8e1du47amm.js
 
 social:
-  - name: QQ
-    # https://isux.tencent.com/wp-content/uploads/2016/05/20160512101222609.pdf
-    link: https://wpa.qq.com/msgrd?v=3&uin=790264027&site=qq&menu=yes
-    icon: icon-qq-line
-    color: "#12B7F5"
-  - name: GitHub
-    link: https://github.com/hbrwang
-    icon: icon-github-line
-    color: "#181717"
   - name: E-Mail
     link: mailto:hbrwang@outlook.com
     icon: icon-mail-line
     color: "#8E71C1"
+  - name: QQ
+    link: https://wpa.qq.com/msgrd?v=3&uin=790264027&site=qq&menu=yes
+    icon: icon-qq-line
+    color: "#12B7F5"
+  - name: 微信
+    link: https://blog.hubery.wang/imgs/wxqr.png
+    icon: icon-wechat
+    color: green
+  - name: GitHub
+    link: https://github.com/hbrwang
+    icon: icon-github-line
+    color: "#2ea44f"
   - name: 微博
     link: https://weibo.com/hbrwang
     icon: icon-weibo-line
@@ -110,7 +117,7 @@ social:
   - name: 豆瓣
     link: https://www.douban.com/people/hbrwang/
     icon: icon-douban-line
-    color: "#007722"
+    color: orange
   - name: 网易云音乐
     link: https://music.163.com/#/user/home?id=478251848
     icon: icon-netease-cloud-music-line

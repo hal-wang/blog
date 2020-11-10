@@ -34,6 +34,7 @@ skip_render:
   - static/**
   - baidu_verify_uYzgaxWjqu.html
   - google582a355bb66686cf.html
+  - jO9Ivs2cia.txt
 
 # Writing
 new_post_name: :title.md # File name of new posts
