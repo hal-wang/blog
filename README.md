@@ -1,27 +1,9 @@
-### 没有介绍
+## 个人博客
+
+没什么好看的
 
 ---
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
+## 线上地址
 
-### 自己看的 。。。
-
-categories:
-
-- 速查
-- 教程
-- 学习
-- 记录
+<https://blog.hubery.wang>
