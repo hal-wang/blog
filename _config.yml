@@ -91,11 +91,6 @@ theme: yun
 #   - type: git
 #     repository: 
 #     branch: master
-deploy:
-  type: tcb
-  secretId: AKIDelnb9RPNxHeqnWqDCvOUO2R2NSN6AUKw
-  secretKey: wgEaCcokRt52njV4tVt3zg7KHyPBj2iv
-  envId: blog-1gn9vvn6fda46bdc
 
 search:
   path: search.xml
