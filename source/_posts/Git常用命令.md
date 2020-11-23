@@ -2,7 +2,7 @@
 title: Git 常用命令
 comments: true
 tags:
-  - GIT
+  - Git
 abbrlink: 69c3279c
 date: 2019-12-05 17:24:23
 categories:
@@ -78,17 +78,15 @@ reward: true
 - [abc]与 a、b 或 c 匹配
 - \*\*与嵌套目录匹配。比如 a/\*\*/z 匹配：a/z、a/b/z、a/b/c/z 等
 
-## GitHub
-
-git remote add github https://'用户名':'密码'@github.com/'用户名'/'项目名'.git
-
-## 码云
-
-git remote add gitee https://'用户名':'密码'@gitee.com/'用户名'/'项目名'.git
-
----
-
 ## 推送
 
-2. git pull github/gitee master
-3. git push -u github/gitee master
+1. git pull github/gitee master
+1. git push -u github/gitee master
+
+## 更新 Fork 源
+
+1. git remote add upstream https://github.com/被fork的仓库.git
+1. get checkout dev // 切换本地当前分支
+1. git fetch upstream
+1. git merge upstream/dev // 合并 fork 源 dev 分支至当前分支
+1. git push origin dev // 推送至远程仓库
