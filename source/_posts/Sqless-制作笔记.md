@@ -8,7 +8,7 @@ categories:
 tags:
   - Sqless
   - C#
-  - SQL
+  - sql
   - WebApi
 ---
 
