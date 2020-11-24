@@ -2,7 +2,7 @@
 title: SQL Cursor基本用法及举例说明
 comments: true
 tags:
-  - SQL
+  - sql
 abbrlink: c127091f
 date: 2019-09-18 16:33:39
 categories:
