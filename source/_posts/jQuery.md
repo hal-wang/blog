@@ -7,7 +7,7 @@ tags:
 abbrlink: 3bf3e06d
 date: 2019-12-05 17:08:04
 categories:
-  - 学习
+  - 记录
 reward: true
 ---
 

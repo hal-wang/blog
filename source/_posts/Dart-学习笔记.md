@@ -4,7 +4,7 @@ comments: true
 abbrlink: e91e088f
 date: 2020-10-12 11:57:12
 categories:
-  - 学习
+  - 记录
 tags:
   - Dart
   - Flutter
