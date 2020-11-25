@@ -4,7 +4,7 @@ comments: true
 abbrlink: baed8230
 date: 2019-12-05 09:47:01
 categories:
-  - 学习
+  - 记录
 tags:
   - 前端
   - JS

@@ -2,7 +2,7 @@
 title: SASS使用总结
 comments: true
 categories:
-  - 学习
+  - 记录
 tags:
   - SASS
   - CSS

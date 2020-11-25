@@ -7,7 +7,7 @@ tags:
 abbrlink: 17c7b154
 date: 2019-12-05 16:51:48
 categories:
-  - 学习
+  - 记录
 reward: true
 ---
 
