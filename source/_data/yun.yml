@@ -171,8 +171,8 @@ say:
   hitokoto:
     enable: false
 
-codeblock:
-  copy_btn: true
-  prismjs:
-    light: default
-    dark: tomorrow
+# codeblock:
+#   copy_btn: true
+#   prismjs:
+#     light: default
+#     dark: tomorrow
