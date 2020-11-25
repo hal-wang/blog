@@ -51,7 +51,7 @@ deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe m
 # deb-src http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiver
 ```
 
-## 更新源
+### 更新
 
 ```bash
 apt update
@@ -135,18 +135,39 @@ alter user 'name'@'%' identified with mysql_native_password by 'password';
 
 ### 大小写敏感
 
+需要做以下操作
+
+#### 删除现有数据
+
+必须删除现有数据才有效
+
+```bash
+service mysql stop
+rm -rf /var/lib/mysql/
+mkdir /var/lib/mysql/
+```
+
+#### 修改配置
+
 ```bash
 # Ubuntu下配置文件是/etc/mysql/mysql.conf.d/mysqld.cnf
 # CentOS下配置文件是/etc/my.cnf，在[mysqld]下添加配置
 
-lower_case_table_names = 1/2/3
+lower_case_table_names = 0/1/2
+```
+
+#### 初始化
+
+```bash
+mysqld --initialize
+service mysql start
 ```
 
 ### 卸载
 
 ```bash
-rm /var/lib/mysql/ -R
-rm /etc/mysql/ -R
+rm -rf /var/lib/mysql/
+rm -rf /etc/mysql/
 apt autoremove mysql* --purge
 apt remove apparmor
 ```

@@ -48,11 +48,11 @@ future: true
 highlight:
   enable: false
 
-prism_plugin:
-  mode: preprocess # realtime/preprocess
-  theme: default
-  line_number: true # default false
-  # custom_css: "path/to/your/custom.css" # optional
+prismjs:
+  enable: true
+  preprocess: true
+  line_number: true
+  tab_replace: ""
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
@@ -89,7 +89,7 @@ theme: yun
 ## Docs: https://hexo.io/docs/deployment.html
 # deploy:
 #   - type: git
-#     repository: 
+#     repository:
 #     branch: master
 
 search:
