@@ -3,13 +3,13 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: hubery的自言自语
+title: 宅居自言自语
 subtitle:
 description:
 keywords:
-author: h.wang
+author: hubery.wang
 language: zh-CN
-SEOTitle: hubery的自言自语
+SEOTitle: 宅居自言自语
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -49,7 +49,7 @@ highlight:
   enable: true
   auto_detect: false
   line_number: true
-  tab_replace: ''
+  tab_replace: ""
   wrap: true
   hljs: false
 
