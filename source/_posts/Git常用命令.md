@@ -90,3 +90,7 @@ reward: true
 1. git fetch upstream
 1. git merge upstream/dev // 合并 fork 源 dev 分支至当前分支
 1. git push origin dev // 推送至远程仓库
+
+## 换行符
+
+git config --global core.autocrlf input  // 提交时转换为LF，检出时不转换
