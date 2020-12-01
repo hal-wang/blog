@@ -6,7 +6,7 @@
     "version": "5.2.0"
   },
   "scripts": {
-    "deploy": "hexo g && tcb hosting deploy ./public/ -e blog-1gn9vvn6fda46bdc"
+    "deploy": "hexo g && tcb login && tcb hosting deploy ./public/ -e blog-1gn9vvn6fda46bdc"
   },
   "dependencies": {
     "hexo": "^5.2.0",
