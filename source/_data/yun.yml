@@ -8,11 +8,11 @@ reward:
   comment: 我 秦始皇 打钱
   methods:
     - name: 支付宝
-      path: /imgs/alipay_sm.jpg
+      path: /imgs/qr/alipay_sm.jpg
       color: "#00A3EE"
       icon: icon-alipay-line
     - name: 微信支付
-      path: /imgs/wxpay_sm.jpg
+      path: /imgs/qr/wxpay_sm.jpg
       color: "#2DC100"
       icon: icon-wechat-pay-line
 
@@ -103,7 +103,7 @@ social:
     icon: icon-qq-line
     color: "#12B7F5"
   - name: 微信
-    link: https://blog.hubery.wang/imgs/wxqr.png
+    link: /imgs/qr/weixin.jpg
     icon: icon-wechat
     color: green
   - name: GitHub

@@ -28,27 +28,26 @@ comments: true
 ```JS
 const hbrwang = {
   avatar: "戴眼镜、黑眼圈、格子衫、牛仔裤、双肩包",
-  birthday: new Date("1995-04-02"),
+  birthday: new Date("1995-04-20"),
   weChat: "hbrwang",
   phoneNumber: "187********", // I won't tell you. Please use email
   email: "hbrwang@outlook.com",
   hobby: ["电脑", "女朋友"],
-  sex: "男",
+  gender: "男",
   major: {
-    csharp: ["WPF", "Asp.NET Core", "UWP", "Xamarin"],
-    js: {
-      vue: ["网页", "uniapp"],
+    "C#": ["WPF", "Asp.NET Core", "UWP", "Xamarin"],
+    "js/ts": {
+      vue: ["Web", "uniapp"],
       nodejs: ["Api"],
     },
   },
   minor: [
-    "Dart(Plutter)",
-    "SQL Server",
-    "Photoshop (NOT PS ^o^/)",
-    "修电脑（这个算吗？）",
+    "Dart(Flutter)",
+    "MSSQL/MYSQL",
+    "Photoshop (NOT PS ^o^/)"
   ],
   working: "Secret",
-  workExperience: (new Date().getTime() - new Date("2019/01/17").getTime()) / (24 * 3600 * 1000),
+  workExperience: Math.round((new Date().getTime() - new Date("2019/01/17").getTime()) / (24 * 3600 * 1000)),
 };
 
 console.log("hbrwang", hbrwang);
