@@ -59,14 +59,14 @@ cd ngrok
 
 ### 成证书
 
-_将域名"ngrok.hubery.wang"改成自己的域名_
+_将域名"ngrok.hal.wang"改成自己的域名_
 
 ```
 mkdir cert
 
 cd cert
 
-export NGROK_DOMAIN="ngrok.hubery.wang"
+export NGROK_DOMAIN="ngrok.hal.wang"
 
 openssl genrsa -out rootCA.key 2048
 
@@ -143,7 +143,7 @@ Windows:
 创建 config 文件，内容如下：
 
 ```
-server_addr: "ngrok.hubery.wang:4443"
+server_addr: "ngrok.hal.wang:4443"
 trust_host_root_certs: false
 tunnels:
       tcpa:

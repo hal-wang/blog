@@ -187,7 +187,7 @@ private string GetSha1ToHexString(byte[] content)
 }
 ```
 
-扩展函数`ToX2`是`Hubery.Tools`中`DataExtend`类的扩展函数
+扩展函数`ToX2`是`HTools`中`DataExtend`类的扩展函数
 
 ```CSharp
 public static string ToX2(this byte[] data)

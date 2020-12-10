@@ -25,8 +25,8 @@ comment:
 
 github_issues:
   enable: false
-  # username: hbrwang
-  # repository: hbrwang.github.io
+  # username: hal-wang
+  # repository: hal-wang.github.io
   # filters: is:issue
 
 valine:
@@ -90,7 +90,7 @@ pages:
     icon: icon-sqless
     color: green
   - name: cloudbase-access
-    url: https://github.com/hbrwang/cloudbase-access
+    url: https://github.com/hal-wang/cloudbase-access
     icon: icon-function
     color: "#ECAD9E"
 
@@ -101,7 +101,7 @@ head:
 
 social:
   - name: E-Mail
-    link: mailto:hbrwang@outlook.com
+    link: mailto:hi@hal.wang
     icon: icon-mail-line
     color: "#8E71C1"
   - name: QQ
@@ -113,7 +113,7 @@ social:
     icon: icon-wechat
     color: green
   - name: GitHub
-    link: https://github.com/hbrwang
+    link: https://github.com/hal-wang
     icon: icon-github-line
     color: "#2ea44f"
   - name: 微博

@@ -33,4 +33,4 @@ comments: true
 
 > #### 联系我们
 >
-> 如果对本隐私政策有任何疑问，您可以通过电子邮件联系我们：[hbrwang@outlook.com](mailto:hbrwang@outlook.com "Email")
+> 如果对本隐私政策有任何疑问，您可以通过电子邮件联系我们：<support@hal.wang>

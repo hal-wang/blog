@@ -26,12 +26,12 @@ comments: true
 #### 进入正题
 
 ```JS
-const hbrwang = {
+const hal = {
   avatar: "戴眼镜、黑眼圈、格子衫、牛仔裤、双肩包",
   birthday: new Date("1995-04-20"),
   weChat: "hbrwang",
   phoneNumber: "187********", // I won't tell you. Please use email
-  email: "hbrwang@outlook.com",
+  email: "hi@hal.wang",
   hobby: ["电脑", "女朋友"],
   gender: "男",
   major: {
@@ -50,5 +50,5 @@ const hbrwang = {
   workExperience: Math.round((new Date().getTime() - new Date("2019/01/17").getTime()) / (24 * 3600 * 1000)),
 };
 
-console.log("hbrwang", hbrwang);
+console.log("hal", hal);
 ```
