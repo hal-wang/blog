@@ -33,4 +33,4 @@ comments: true
 
 > #### Contacting Us
 >
-> If there are any questions regarding this privacy policy you may contact us by email: [hbrwang@outlook.com](mailto:hbrwang@outlook.com "Email")
+> If there are any questions regarding this privacy policy you may contact us by email: <support@hal.wang>

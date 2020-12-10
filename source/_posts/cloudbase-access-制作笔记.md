@@ -13,9 +13,8 @@ tags:
   - cloudbase-access
 ---
 
-cloudbase-access 源码：<https://github.com/hbrwang/cloudbase-access>
-cloudbase-access npm：<https://www.npmjs.com/package/@hbrwang/cloudbase-access>
-cloudbase-access-demo：<https://github.com/hbrwang/cloudbase-access-demo>
+cloudbase-access 源码：<https://github.com/hal-wang/cloudbase-access>
+cloudbase-access npm：<https://www.npmjs.com/package/@hal-wang/cloudbase-access>
 
 Serverless 的开发模式一直在演进，各个云服务商也有自己的产品，其中代表性的就是云函数，也就是使用 NodeJS 写的 API。云函数比较轻量，不需要服务器即可实现运算。我最喜欢的是腾讯云 [CloudBase](https://www.cloudbase.net/) 中的云函数，虽然腾讯云也有独立的云函数，但与其他云服务商的云函数都差不多，没什么特点。
 
@@ -59,11 +58,11 @@ CloudBase 中的云函数与其他云函数写法相同，使用 HTTP 调用的�
 
 但对代码有强迫症的我，看着这蹩脚的写法，越看越难受。后来偶然发现云函数调用的环境 `event` ，有个`path`字段，可以获取到访问路径，如调用 `https://***/api/user/login`，path 字段值为 `/user/login`，既然能获取到访问路径，就好办多了，开始重构！
 
-## 初版 [cloudbase-access](https://www.npmjs.com/package/@hbrwang/cloudbase-access)
+## 初版 [cloudbase-access](https://www.npmjs.com/package/@hal-wang/cloudbase-access)
 
 现有 API 已经使用了之前蹩脚的做法，重构的工程量稍大，因此就想着写个 npm 包，这也是我第一次尝试发布 npm 包。
 
-把原来的 API 和路由有关的部分提出来，新写了个项目 [cloudbase-access](https://www.npmjs.com/package/@hbrwang/cloudbase-access)，目的是写出通用的 MVC API 框架。
+把原来的 API 和路由有关的部分提出来，新写了个项目 [cloudbase-access](https://www.npmjs.com/package/@hal-wang/cloudbase-access)，目的是写出通用的 MVC API 框架。
 
 ### 做法
 
@@ -331,8 +330,8 @@ test("router test login access", async function () {
 
 ## Demo
 
-本想着如果别人用 cloudbase-access 只要参考单元测试即可，但我把现有代码迁移到 cloudbase-access 时，发现可能会有一些细节我没注意到，但是又阻挡别人使用，所以只有单元测试可能不够，就着手写个 Demo：
+本想着如果别人用 cloudbase-access 只要参考单元测试即可，但我把现有代码迁移到 cloudbase-access 时，发现可能会有一些细节我没注意到，但是又阻挡别人使用，所以只有单元测试可能不够，就着手写个 Demo。
 
-[cloudbase-access-demo](https://github.com/hbrwang/cloudbase-access-demo)
+之前是单独项目，后面又整合至源码中了。
 
 这个 Demo 也使用 TS 写的，模仿真实使用环境，是一个简单的 todo API。
