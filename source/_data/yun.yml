@@ -82,11 +82,11 @@ pages:
     icon: icon-choshim
     color: "#19CAAD"
   - name: Lavcode
-    url: https://lavcode.hubery.wang
+    url: https://lavcode.hal.wang
     icon: icon-lavcode
     color: dodgerblue
   - name: Sqless
-    url: https://sqless.hubery.wang
+    url: https://sqless.hal.wang
     icon: icon-sqless
     color: green
   - name: cloudbase-access
