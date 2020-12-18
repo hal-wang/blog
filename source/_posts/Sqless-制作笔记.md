@@ -16,7 +16,7 @@ tags:
 
 <!--more-->
 
-![Sqless](https://sqless.hubery.wang/logo.png)
+![Sqless](https://sqless.hal.wang/logo.png)
 
 _logo 好像有些丑_
 
