@@ -13,7 +13,7 @@ SEOTitle: H
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://blog.hubery.wang/
+url: https://blog.hal.wang/
 root: /
 permalink: :abbrlink/
 permalink_defaults:
