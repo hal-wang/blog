@@ -6,4 +6,4 @@
 
 ## 线上地址
 
-<https://blog.hubery.wang>
+<https://blog.hal.wang>
