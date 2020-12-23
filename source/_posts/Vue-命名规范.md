@@ -6,7 +6,7 @@ date: 2020-10-17 20:59:30
 categories:
   - 记录
 tags:
-  - VUE
+  - Vue
   - JS
   - uniapp
   - 规范
