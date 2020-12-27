@@ -51,7 +51,7 @@ menu:
 footer:
   since: 2018
   icon:
-    name: icon-h
+    name: icon-hal
     animated: true
     color: "#000"
   beian:
@@ -97,7 +97,7 @@ pages:
 head:
   js:
     async:
-      iconfont: //at.alicdn.com/t/font_1864116_p8e1du47amm.js
+      iconfont: //at.alicdn.com/t/font_1864116_367oznelkth.js
 
 social:
   - name: E-Mail
