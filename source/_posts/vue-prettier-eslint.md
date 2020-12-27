@@ -4,8 +4,7 @@ comments: true
 categories:
   - 记录
 tags:
-  - VUE
-  - 前端
+  - Vue
   - prettier
   - eslint
 abbrlink: 2b2119ea

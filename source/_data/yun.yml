@@ -78,7 +78,7 @@ banner:
 
 pages:
   - name: 初心日记
-    url: https://choshim.hubery.wang
+    url: https://choshim.hal.wang
     icon: icon-choshim
     color: "#19CAAD"
   - name: Lavcode
@@ -142,7 +142,7 @@ engine_search:
   # href: "https://www.google.com/search?q=site:"
   href: "https://www.baidu.com/s?wd=site:"
   # href: "https://www.bing.com/search?q=site:"
-  domain: blog.hubery.wang
+  domain: blog.hal.wang
 
 local_search:
   enable: true

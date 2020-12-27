@@ -4,7 +4,7 @@ comments: true
 categories:
   - 速查
 tags:
-  - VUE
+  - Vue
   - Markdown
 abbrlink: f3fa287
 date: 2020-07-14 16:47:55
