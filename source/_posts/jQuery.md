@@ -2,7 +2,6 @@
 title: jQuery
 comments: true
 tags:
-  - 前端
   - JS
 abbrlink: 3bf3e06d
 date: 2019-12-05 17:08:04
