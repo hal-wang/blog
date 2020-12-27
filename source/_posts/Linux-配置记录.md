@@ -15,6 +15,8 @@ tags:
 
 修改文件 `/etc/apt/sources.list` 为以下源内容
 
+<!--more-->
+
 ### 清华源
 
 ```bash
