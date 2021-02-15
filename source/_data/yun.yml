@@ -18,22 +18,18 @@ reward:
 
 comment:
   enable: true
-  tips: 
+  tips:
     - 留下个脚印再走吧
   candidates:
     - valine
 
 github_issues:
   enable: false
-  # username: hal-wang
-  # repository: hal-wang.github.io
-  # filters: is:issue
 
 valine:
   enable: true
-  appId: 52vBt7HFfQNwNcsB9WIvFVs6-gzGzoHsz # your leancloud application appid
-  appKey: WSP9SA1y17Kf5x45PfTotKld # your leancloud application appkey
-  # https://github.com/DesertsP/Valine-Admin
+  appId: 52vBt7HFfQNwNcsB9WIvFVs6-gzGzoHsz
+  appKey: WSP9SA1y17Kf5x45PfTotKld
   placeholder: 在这里填写评论内容，支持 Markdown 语法
   visitor: true
   recordIP: true
@@ -127,9 +123,7 @@ social:
 
 engine_search:
   enable: false
-  # href: "https://www.google.com/search?q=site:"
   href: "https://www.baidu.com/s?wd=site:"
-  # href: "https://www.bing.com/search?q=site:"
   domain: blog.hal.wang
 
 local_search:
@@ -147,9 +141,6 @@ symbols_count_time:
   item_text_total: true
   awl: 2
   wpm: 250
-
-# custom:
-#   style: source/_data/style/*
 
 creative_commons:
   license: by
