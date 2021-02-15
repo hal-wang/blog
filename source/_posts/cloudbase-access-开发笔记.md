@@ -1,5 +1,5 @@
 ---
-title: cloudbase-access 制作笔记
+title: cloudbase-access 开发笔记
 comments: true
 abbrlink: 2d5e04ac
 date: 2020-11-10 09:17:37
