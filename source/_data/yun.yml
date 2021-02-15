@@ -18,22 +18,18 @@ reward:
 
 comment:
   enable: true
-  tips: 
+  tips:
     - 留下个脚印再走吧
   candidates:
     - valine
 
 github_issues:
   enable: false
-  # username: hal-wang
-  # repository: hal-wang.github.io
-  # filters: is:issue
 
 valine:
   enable: true
-  appId: 52vBt7HFfQNwNcsB9WIvFVs6-gzGzoHsz # your leancloud application appid
-  appKey: WSP9SA1y17Kf5x45PfTotKld # your leancloud application appkey
-  # https://github.com/DesertsP/Valine-Admin
+  appId: 52vBt7HFfQNwNcsB9WIvFVs6-gzGzoHsz
+  appKey: WSP9SA1y17Kf5x45PfTotKld
   placeholder: 在这里填写评论内容，支持 Markdown 语法
   visitor: true
   recordIP: true
@@ -120,28 +116,14 @@ social:
     link: https://weibo.com/hhhhal
     icon: icon-weibo-line
     color: "#E6162D"
-  - name: 豆瓣
-    link: https://www.douban.com/people/hal-wang
-    icon: icon-douban-line
-    color: orange
-  - name: 网易云音乐
-    link: https://music.163.com/#/user/home?id=478251848
-    icon: icon-netease-cloud-music-line
-    color: "#C10D0C"
   - name: 知乎
     link: https://www.zhihu.com/people/hal.wang
     icon: icon-zhihu-line
     color: "#0084FF"
-  - name: 哔哩哔哩动画
-    link: https://space.bilibili.com/436353947
-    icon: icon-bilibili-line
-    color: "#FF8EB3"
 
 engine_search:
   enable: false
-  # href: "https://www.google.com/search?q=site:"
   href: "https://www.baidu.com/s?wd=site:"
-  # href: "https://www.bing.com/search?q=site:"
   domain: blog.hal.wang
 
 local_search:
@@ -161,9 +143,6 @@ symbols_count_time:
   item_text_total: true
   awl: 2
   wpm: 250
-
-# custom:
-#   style: source/_data/style/*
 
 creative_commons:
   license: by
