@@ -335,3 +335,45 @@ test("router test login access", async function () {
 之前是单独项目，后面又整合至源码中了。
 
 这个 Demo 也使用 TS 写的，模仿真实使用环境，是一个简单的 todo API。
+
+## cba-map
+
+考虑到增加更多 RESTFul 的路由适配，如 `get /user/:id` 的方式，在此前是没有的，因为路由仅仅是简单的文件路径匹配。
+
+### 生成 map
+
+在 `2020-12-25` 着手改进路由匹配。于是加了个 `cba-map` 脚本，在 API 发布前，找到所有 Action 并生成文件地址的 map。
+
+新写一个 `MapCreater` 类，用于找到所有 `Action` 并获取 `map`。
+
+由于有些开发者可能在发布前不使用 `cba-map` 脚本，因此在调用 API 时，如果包括 cba-map.json 文件，就从文件中获取 map，否则将在运行阶段获取 map。
+
+经过测试，使用 `cba-map` 匹配路由的方式速度更快。
+
+### 改进路由匹配
+
+在有了所有 Action 地址后，路由匹配就变得简单起来，为了适配 RESTFul，需要满足以下功能：
+
+#### 地址包含查询
+
+如 `get user/:userId/todo/:todoId` 等访问路径，不但要正确匹配路由，还要得到对应的查询参数。
+
+但在文件系统的命名中，是不允许有 `:` 存在的，因此在 `cba` 中使用 `^` 代替。
+
+#### 区分 `httpMethod`
+
+由于云函数是允许任意方式访问的，并且操作与 `httpMethod` (`get/post/put/patch/delete`) 完全无关。
+
+在创建 `Action` 文件时，以 `httpMethod` 命名，以此来区分 `httpMethod` 并匹配。
+
+## Demo 改进
+
+在 `2021-01-11` 收到 `cloudbase-framework` 团队的优秀案例邀请，去看了一下其他优秀案例，都有 `一键部署`，并且都有一个完整的 demo 或成品。
+
+看一下自己写的及其简陋的 demo，不好意思放上去，于是改进一下之前的简单 demo，写个包含前后端的 `todo list` 小网站 `cba-todo`。
+
+在写 api 时，参考了 github api，尽力写个符合 RESTFul 规范的 API。
+
+API 写差不多时，才开始写网站。网站是使用 Vue + ts 写的，只有两个页面，比较简单。
+
+根据 `cloudbase-framework` 文档，编辑 `cloudbaserc.json`，完美支持一键部署，测试一键部署一切良好，感叹腾讯云 `cloudbase` 一键部署这一方面做的非常完善。
