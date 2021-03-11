@@ -12,6 +12,8 @@ tags:
 
 在 windows 系统上，使用 docker 运行 MSSQL 能避免系统逐渐变得臃肿，并且可以很方便的运行多个不同版本的 MSSQL。
 
+<!--more-->
+
 ## 前提条件
 
 1. WSL 安装和升级 WSL 2
