@@ -85,12 +85,18 @@ rclone mount sync:/ S: --cache-dir D:\temp --vfs-cache-mode writes &
 
 如果不设置自动挂载，每次重启后挂载的磁盘都会消失，因此需要开机自动挂载磁盘。
 
-1. win+r 打开运行窗口，输入`taskschd.msc`并回车，打开任务计划程序。
-2. 选择最左侧 `任务计划程序库`，再点击最右侧 `创建基本任务`
-3. 在 `创建基本任务向导` 中，输入名称和描述，然后点击下一步
-4. `触发器`页面选择 `当前用户登陆时`，然后点击下一步
-5. `操作` 页面选择 `启动程序`，然后点击下一步
-6. `启动程序`页面，`程序或脚本` 处输入 `rclone `，`添加参数（可选）` 处输入 `mount sync:/ S: --cache-dir D:\temp --vfs-cache-mode writes &`，可参考前面 `挂载本地磁盘` 使用的命令行，然后点击下一步
-7. `完成` 页面确认无误后点击 `完成`
+1. 任意位置新建文件，如 `D:/rclone.bat`，写入上述挂载本地磁盘的命令，命名以.bat 结尾
+
+```
+rclone mount sync:/ S: --cache-dir D:\temp --vfs-cache-mode writes &
+```
+
+2. 在 `%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup` 新建文件，写入
+
+```
+CreateObject("WScript.Shell").Run "cmd /c D:/rclone.bat",0
+```
+
+其中 `D:/rclone.bat` 改为前面 `.bat` 文件所在位置
 
 > 可以愉快的使用对象存储来同步文件了
