@@ -4,10 +4,15 @@ comments: true
 abbrlink: aad5ddf8
 date: 2021-05-14 22:02:12
 categories:
+  - 教程
 tags:
+  - Vue
+  - TS
 ---
 
 本文主要针对 Vue2，有些内容适合 Vue3，但有些不适合。Vue3 对 ts 的支持已经很友好了，而且也有相应的文档。但在 Vue2 中，使用 ts 需要一定写法才能更优雅。
+
+<!--more-->
 
 ## 创建项目
 
@@ -169,23 +174,6 @@ store.dispatch('app/toggleSideBar')
 
 如果使用`Vue-CLI`构建时，在`Use class-style component syntax`这一步选择了`Y`，那么就已经支持了类装饰器
 
-否则需要单独安装：`npm i vue-property-decorator`
+否则需要单独安装：`npm i vue-property-decorator vue-class-component`
 
-### @Prop
-
-用于父组件向子组件传值，与传统 props 作用相同
-
-```TS
-import { Vue, Component, Prop } from 'vue-property-decorator'
-
-@Component
-export default class YourComponent extends Vue {
-  @Prop(Number) readonly propA: number | undefined
-  @Prop({ default: 'default value' }) readonly propB!: string
-  @Prop([String, Boolean]) readonly propC: string | boolean | undefined
-}
-```
-
-### @PropSync
-
-> 未完待续
+具体使用方式参考 [vue-property-decorator](https://github.com/kaorun343/vue-property-decorator)
