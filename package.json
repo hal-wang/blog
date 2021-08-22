@@ -1,12 +1,10 @@
 {
-  "name": "hexo-site",
-  "version": "0.0.0",
-  "private": true,
+  "name": "blog",
   "hexo": {
     "version": "5.2.0"
   },
   "scripts": {
-    "deploy": "hexo g && tcb login && tcb hosting deploy ./public/ -e env-caafniqh"
+    "deploy": "hexo g && tcb login && tcb hosting deploy ./public/ -e blog-5gxsa2td07fbd2b0"
   },
   "dependencies": {
     "hexo": "^5.2.0",
