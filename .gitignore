@@ -5,7 +5,6 @@ db.json
 node_modules/
 public/
 .deploy*/
-themes/yun
 
 package-lock.json
 yarn.lock

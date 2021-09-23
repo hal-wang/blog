@@ -40,7 +40,7 @@ menu:
   home: / || fa fa-home
   about: /about/ || fa fa-user
   archives: /archives/ || fa fa-archive
-  #sitemap: /sitemap.xml || fa fa-sitemap
+  sitemap: /sitemap.xml || fa fa-sitemap
   #commonweal: /404/ || fa fa-heartbeat
 
 menu_settings:
@@ -162,10 +162,10 @@ mediumzoom: true
 comments:
   lazyload: true
 
-disqus:
-  enable: true
-  shortname: hal-wang
-  count: true
+# disqus:
+#   enable: true
+#   shortname: hal-wang
+#   count: true
 
 # ============================================================= #
 # ================= Statistics and Analytics ================== #
@@ -219,6 +219,11 @@ motion:
 vendors:
   internal: jsdelivr
 
-reward_comment: 您的支持将给予我莫大的鼓励！
-wechatpay: /imgs/qr/wxpay_sm.jpg
-alipay: /imgs/qr/alipay_sm.jpg
+reward_settings:
+  enable: true
+  animation: true
+  comment: 您的支持将给予我莫大的鼓励！
+
+reward:
+  wechatpay: /imgs/qr/wxpay_sm.jpg
+  alipay: /imgs/qr/alipay_sm.jpg
