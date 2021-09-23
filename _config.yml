@@ -4,9 +4,9 @@
 
 # Site
 title: H
-subtitle:
+subtitle: 自言自语
 description:
-keywords:
+keywords: blog
 author: hal-wang
 language: zh-CN
 SEOTitle: H
@@ -31,9 +31,6 @@ code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
   - static/**
-  - baidu_verify_code-zmNG2oAsrL.html
-  - google582a355bb66686cf.html
-  - jO9Ivs2cia.txt
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -45,14 +42,6 @@ render_drafts: false
 post_asset_folder: true
 relative_link: false
 future: true
-
-highlight:
-  enable: false
-prismjs:
-  enable: true
-  preprocess: true
-  line_number: false
-  tab_replace: ""
 
 # Home page setting
 # path: Root path for your blogs index page. (default = '')
@@ -83,7 +72,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: yun
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

@@ -1,7 +1,6 @@
 ---
 title: asp.net core 学习笔记
 comments: true
-hide: index
 abbrlink: 703f2894
 date: 2021-05-17 16:15:17
 categories:

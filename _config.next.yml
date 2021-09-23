@@ -1,0 +1,224 @@
+#################################################################
+###################### NexT Configuration #######################
+#################################################################
+
+# ============================================================= #
+# ============= Theme Core Configuration Settings ============= #
+# ============================================================= #
+
+custom_file_path:
+  # sidebar: source/_data/sidebar.njk
+  # footer: source/_data/footer.njk
+  # variable: source/_data/variables.styl
+  # style: source/_data/styles.styl
+
+# ============================================================= #
+# ====================== Scheme Settings ====================== #
+# ============================================================= #
+
+#scheme: Muse
+#scheme: Mist
+#scheme: Pisces
+scheme: Gemini
+
+darkmode: true
+
+# ============================================================= #
+# ================= Site Information Settings ================= #
+# ============================================================= #
+
+creative_commons:
+  license: by
+  size: small
+  sidebar: true
+
+# ============================================================= #
+# ======================= Menu Settings ======================= #
+# ============================================================= #
+
+menu:
+  home: / || fa fa-home
+  about: /about/ || fa fa-user
+  archives: /archives/ || fa fa-archive
+  #sitemap: /sitemap.xml || fa fa-sitemap
+  #commonweal: /404/ || fa fa-heartbeat
+
+menu_settings:
+  icons: true
+  badges: true
+
+# ============================================================= #
+# ===================== Sidebar Settings ====================== #
+# ============================================================= #
+
+sidebar:
+  position: left
+  display: post
+  padding: 18
+  offset: 12
+
+avatar:
+  url: /imgs/h/h_mini.png
+  rounded: true
+
+social:
+  GitHub: https://github.com/hal-wang || fab fa-github
+  Email: mailto:hi@hal.wang || fa fa-envelope
+  微信: /imgs/qr/weixin.jpg || fab fa-weixin
+  QQ: https://wpa.qq.com/msgrd?v=3&uin=790264027&site=qq&menu=yes || fab fa-qq
+  微博: https://weibo.com/hhhhal || fab fa-weibo
+  RSS: /atom.xml || fa fa-rss
+
+toc:
+  enable: true
+  number: true
+  wrap: true
+
+# ============================================================= #
+# ====================== Footer Settings ====================== #
+# ============================================================= #
+
+footer:
+  since: 2018
+  icon:
+    name: fa fa-heart
+    animated: true
+    color: "#808080"
+  copyright: hal-wang
+
+# ============================================================= #
+# ======================= Post Settings ======================= #
+# ============================================================= #
+
+post_meta:
+  updated_at:
+    enable: false
+
+symbols_count_time:
+  separated_meta: true
+  item_text_total: true
+
+post_edit:
+  enable: true
+  url: https://github.com/hal-wang/blog/edit/main/source/
+
+# ============================================================= #
+# ==================== Misc Theme Settings ==================== #
+# ============================================================= #
+
+mobile_layout_economy: true
+
+highlight_theme: normal
+codeblock:
+  theme:
+    light: default
+    dark: tomorrow-night
+  copy_button:
+    enable: true
+    style: default
+
+back2top:
+  enable: true
+  sidebar: false
+  scrollpercent: true
+
+github_banner:
+  enable: false
+
+font:
+  enable: true
+  host: //fonts.loli.net
+  codes:
+    external: true
+    family: Inconsolata
+
+# ============================================================= #
+# ======================= SEO Settings ======================== #
+# ============================================================= #
+
+index_with_subtitle: true
+
+exturl: true
+
+google_site_verification: rYpHgEMR6BLENOrvxg5n431yWs2HNmyfp14UbZ5Xgbw
+
+# ============================================================= #
+# =============== Third Party Services Settings =============== #
+# ============================================================= #
+
+math:
+  mathjax:
+    enable: true
+    tags: ams
+
+pjax: true
+
+mediumzoom: true
+
+# ============================================================= #
+# =================== Comments and Widgets ==================== #
+# ============================================================= #
+
+comments:
+  lazyload: true
+
+disqus:
+  enable: true
+  shortname: hal-wang
+  count: true
+
+# ============================================================= #
+# ================= Statistics and Analytics ================== #
+# ============================================================= #
+
+google_analytics: UA-172152606-1
+
+baidu_analytics: c70051d9b6ed3cbc101f3a64ae4c98c2
+
+# ============================================================= #
+# ====================== Search Services ====================== #
+# ============================================================= #
+
+local_search:
+  enable: true
+  trigger: auto
+  top_n_per_article: 1
+
+# ============================================================= #
+# ======================= Chat Services ======================= #
+# ============================================================= #
+
+gitter:
+  enable: true
+  room: hal-wang/blog
+
+# ============================================================= #
+# ======================== Tag Plugins ======================== #
+# ============================================================= #
+
+note:
+  style: simple
+  icons: true
+  light_bg_offset: -3
+
+tabs:
+  transition:
+    tabs: true
+    labels: true
+
+mermaid:
+  enable: true
+
+# ============================================================= #
+# ==================== External Libraries ===================== #
+# ============================================================= #
+
+motion:
+  async: true
+
+vendors:
+  internal: jsdelivr
+
+reward_comment: 您的支持将给予我莫大的鼓励！
+wechatpay: /imgs/qr/wxpay_sm.jpg
+alipay: /imgs/qr/alipay_sm.jpg
