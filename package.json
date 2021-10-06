@@ -3,6 +3,7 @@
   "hexo": {
     "version": "5.4.0"
   },
+  "license": "MIT",
   "scripts": {
     "dev": "hexo g && hexo s",
     "deploy": "hexo g && tcb login && tcb hosting deploy ./public/ -e blog-5gxsa2td07fbd2b0"
