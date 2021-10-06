@@ -1,5 +1,5 @@
 ---
-title: docker 安装 MSSQL 并开启远程连接
+title: docker 安装 mssql 并开启远程连接
 comments: true
 abbrlink: 6a03a8f1
 date: 2021-03-09 23:12:41
@@ -33,7 +33,7 @@ docker pull mcr.microsoft.com/mssql/server
 创建容器
 
 ```
-docker run --name=MSSQL -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2019-latest
+docker run --name=MSSQL -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 1433:1433 -v mssql2019 /var/opt/mssql -d mcr.microsoft.com/mssql/server:2019-latest
 ```
 
 连接数据库
