@@ -173,3 +173,17 @@ rm -rf /etc/mysql/
 apt autoremove mysql* --purge
 apt remove apparmor
 ```
+
+## 安装 docker
+
+1. 阿里云
+
+```
+curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+```
+
+2. daocloud
+
+```
+curl -sSL https://get.daocloud.io/docker | sh
+```
