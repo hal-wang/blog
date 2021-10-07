@@ -33,7 +33,7 @@ docker pull mcr.microsoft.com/mssql/server
 创建容器
 
 ```
-docker run --name=MSSQL -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 1433:1433 -v mssql2019 /var/opt/mssql -d mcr.microsoft.com/mssql/server:2019-latest
+docker run --name=mssql2019 -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 1433:1433 -v mssql2019:/var/opt/mssql -d mcr.microsoft.com/mssql/server:2019-latest
 ```
 
 连接数据库

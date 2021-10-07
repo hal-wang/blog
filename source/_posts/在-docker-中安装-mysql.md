@@ -12,7 +12,7 @@ docker pull mysql:8.0
 ```
 
 ```
-docker run --name mysql8.0 -v mysql8.0:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=H -d -p 3306:3306 mysql:8.0 --lower-case-table-names=1 --default-authentication-plugin=mysql_native_password
+docker run --name mysql8 -v mysql8:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=H -d -p 3306:3306 mysql:8.0 --lower-case-table-names=1 --default-authentication-plugin=mysql_native_password
 ```
 
 <!--more-->
