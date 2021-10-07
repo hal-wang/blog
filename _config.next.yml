@@ -228,3 +228,9 @@ reward_settings:
 reward:
   wechatpay: /imgs/qr/wxpay_sm.jpg
   alipay: /imgs/qr/alipay_sm.jpg
+
+favicon:
+  small: /imgs/h/h.png
+  medium: /imgs/h/h.png
+  apple_touch_icon: /imgs/h/h.png
+  safari_pinned_tab: /imgs/h/h.png

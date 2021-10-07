@@ -13,17 +13,7 @@ comments: true
 
 </center>
 
-先上猫照
-
-<center>
-
-![滴滴](./index/didi.jpg)
-
-</center>
-
 <br>
-
-#### 进入正题
 
 ```JS
 const hal = {
@@ -37,17 +27,17 @@ const hal = {
   major: {
     "C#": ["WPF", "Asp.NET Core", "UWP", "Xamarin"],
     "js/ts": {
-      vue: ["Web", "uniapp"],
-      nodejs: ["Api"],
+      Vue: ["Web", "uniapp"],
+      NodeJS: ["KoaJS", "Express", "NestJS"],
     },
   },
   minor: [
     "Dart(Flutter)",
-    "MSSQL/MYSQL",
+    "MSSQL/MySQL/MongoDB/Redis",
     "Photoshop (NOT PS ^o^/)"
   ],
   working: "Secret",
-  workExperience: Math.round((new Date().getTime() - new Date("2019/01/17").getTime()) / (24 * 3600 * 1000)),
+  workExperience: Math.round((new Date().getTime() - new Date("2019/01/17").getTime()) / (24 * 3600 * 1000)) + " days",
 };
 
 console.log("hal", hal);
