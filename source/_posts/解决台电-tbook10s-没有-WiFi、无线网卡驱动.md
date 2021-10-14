@@ -1,5 +1,5 @@
 ---
-title: 解决台电tbook10s没有WiFi、无线网卡驱动
+title: 解决台电 tbook10s 没有 WiFi、无线网卡驱动
 comments: true
 tags:
   - 驱动

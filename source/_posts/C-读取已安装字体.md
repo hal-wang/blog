@@ -2,7 +2,7 @@
 title: "C#读取已安装字体"
 comments: true
 tags:
-  - "C#"
+  - C#
 abbrlink: 2fb47029
 date: 2019-09-15 17:54:43
 categories:

@@ -5,7 +5,6 @@ categories:
 tags:
   - C#
   - Blazor
-  - Razor
 abbrlink: 1e28067e
 date: 2021-10-13 10:22:24
 ---

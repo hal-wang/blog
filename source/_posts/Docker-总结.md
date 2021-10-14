@@ -15,7 +15,7 @@ tags:
 
 - `docker ps` 列出正在运行的容器
   - `-a` 列出所有容器，包括未运行的
-  - `-q` 只列出容器 id
+  - `-q` 只列出容器 id <!--more-->
 - `docker container ls` 等同于 `docker ps`
 - `docker image ls` 列出镜像
   - `-q` 只列出镜像 id

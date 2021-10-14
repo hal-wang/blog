@@ -1,10 +1,10 @@
 ---
-title: NPM使用总结
+title: npm 使用总结
 comments: true
 categories:
   - 记录
 tags:
-  - NPM
+  - npm
   - JS
 abbrlink: 754bb81e
 date: 2020-07-17 16:32:00

@@ -1,12 +1,12 @@
 ---
-title: Hexo常用命令
+title: Hexo 常用命令
 comments: true
 abbrlink: 24caea6b
 date: 2020-02-16 22:03:04
 categories:
   - 速查
 tags:
-  - HEXO
+  - Hexo
 reward: true
 ---
 

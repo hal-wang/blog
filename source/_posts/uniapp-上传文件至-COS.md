@@ -1,11 +1,11 @@
 ---
-title: uniapp上传文件至cos
+title: uniapp 上传文件至 COS
 comments: true
 categories:
   - 记录
 tags:
   - UWP
-  - "C#"
+  - C#
   - uniapp
 abbrlink: 13ed501a
 date: 2020-08-24 23:48:22
@@ -33,9 +33,9 @@ uniapp 上传文件至腾讯云对象存储 cos，折腾了两天，终于搞定
 
 但是并不好用啊，把 API 得到的预签名的参数放到 formData 中，仍然不行，按 uniapp 官网的用法，总是报错。
 
-各种查文档，苦于 uniapp 和 cos 教程和解决方案都不多，只能看官方文档。
+各种查文档，苦于 uniapp 和 COS 教程和解决方案都不多，只能看官方文档。
 
-在 cos 文档看到`POST Object`的签名方式和预签名方式不同。。。另外也看到这部分：*3. 构造“策略”（Policy）*才知道，预签名的参数在这种方式中完全没用啊。
+在 COS 文档看到`POST Object`的签名方式和预签名方式不同。。。另外也看到这部分：*3. 构造“策略”（Policy）*才知道，预签名的参数在这种方式中完全没用啊。
 
 ```JSON
 {
@@ -58,7 +58,7 @@ uniapp 上传文件至腾讯云对象存储 cos，折腾了两天，终于搞定
 
 那就重新写计算签名的 API 吧。
 
-一开始，想找现成的，查看.net 平台下 cos 的 sdk `qcloud-sdk-dotnet`，但并没有现成的计算`PostObject`的接口。
+一开始，想找现成的，查看.net 平台下 COS 的 sdk `qcloud-sdk-dotnet`，但并没有现成的计算`PostObject`的接口。
 
 于是就开始翻源码，一顿操作下来，发现在`qcloud-sdk-dotnet`中并没有计算`Policy`，用法是头部传认证参数`Authorization`，摘部分源码：
 

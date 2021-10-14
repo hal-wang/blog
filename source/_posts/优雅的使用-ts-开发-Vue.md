@@ -1,5 +1,5 @@
 ---
-title: 优雅的使用 ts 开发 Vue
+title: 优雅的使用 TS 开发 Vue
 comments: true
 abbrlink: aad5ddf8
 date: 2021-05-14 22:02:12
@@ -10,17 +10,17 @@ tags:
   - TS
 ---
 
-本文主要针对 Vue2，有些内容适合 Vue3，但有些不适合。Vue3 对 ts 的支持已经很友好了，而且也有相应的文档。但在 Vue2 中，使用 ts 需要一定写法才能更优雅。
+本文主要针对 Vue2，有些内容适合 Vue3，但有些不适合。Vue3 对 TS 的支持已经很友好了，而且也有相应的文档。但在 Vue2 中，使用 ts 需要一定写法才能更优雅。
 
 <!--more-->
 
 ## 创建项目
 
-使用 `Vue CLI 4` 创建，可以用 `vue create proj-name` 或者 `vue ui`，按提示，选择 `ts` 模板。
+使用 `Vue CLI 4` 创建，可以用 `vue create proj-name` 或者 `vue ui`，按提示，选择 `TS` 模板。
 
 ## 使用 Vuex
 
-在 vue2 中，官方的 vuex 写法完全没有 ts 的味道，类型判断也没有作用，好在有更好的写法，那就是使用 `vuex-module-decorators` 。
+在 vue2 中，官方的 vuex 写法完全没有 TS 的味道，类型判断也没有作用，好在有更好的写法，那就是使用 `vuex-module-decorators` 。
 
 ### 配置
 

@@ -8,7 +8,6 @@ categories:
 tags:
   - Vue
   - JS
-  - uniapp
   - 规范
 ---
 

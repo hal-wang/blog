@@ -1,15 +1,15 @@
 ---
-title: tfs 命令行用法
+title: TFS 命令行用法
 comments: true
 abbrlink: 5f08ecb7
 date: 2020-12-17 09:00:41
 categories:
   - 记录
 tags:
-  - tfs
+  - TFS
 ---
 
-所在部门还在使用老旧的 tfs，开发前端项目时极不方便，领导也不愿意改用 git，我就学了些 tfs 命令编写脚本，简化一下工作量。
+所在部门还在使用老旧的 tfs，开发前端项目时极不方便，领导也不愿意改用 git，我就学了些 TFS 命令编写脚本，简化一下工作量。
 
 <!--more-->
 
@@ -22,9 +22,9 @@ tags:
 之前我会在别处写项目，使用 git。完成一个功能后，做以下操作：
 
 1. 打开 visual studio
-1. 删除 tfs 上的项目文件
+1. 删除 TFS 上的项目文件
 1. checkin
-1. 将 git 管理的项目必要文件，复制到 tfs 项目目录
+1. 将 git 管理的项目必要文件，复制到 TFS 项目目录
 1. checkin
 
 本来很简单的东西，却需要这一系列操作，真是影响工作心情啊
@@ -91,9 +91,9 @@ npm run tfs
 
 终于，懒才是驱动进步的主要动力，可以愉快的用 git 了
 
-## tfs 用法
+## TFS 用法
 
-接下来就是 tfs 内容了
+接下来就是 TFS 内容了
 
 具体请参考文档 <https://docs.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2010/z51z7zy0(v=vs.100)>
 
@@ -111,7 +111,7 @@ npm run tfs
 
 完成后，在控制台输入 tf，能找到命令即设置正确
 
-### tfs 命令常用参数
+### TFS 命令常用参数
 
 #### /recursive
 
@@ -121,7 +121,7 @@ npm run tfs
 
 静默方式，如 `checkin` 默认要点击确认才继续，加上这个参数后会自动确认并继续执行。
 
-### tfs 常用命令
+### TFS 常用命令
 
 #### add
 

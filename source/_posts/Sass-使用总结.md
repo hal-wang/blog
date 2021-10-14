@@ -1,10 +1,10 @@
 ---
-title: SASS使用总结
+title: SASS 使用总结
 comments: true
 categories:
   - 记录
 tags:
-  - SASS
+  - Sass
   - CSS
 abbrlink: c9bac016
 date: 2020-07-17 16:31:03

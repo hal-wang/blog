@@ -1,5 +1,5 @@
 ---
-title: VuePress扩展md语法
+title: VuePress 扩展 Markdown 语法
 comments: true
 categories:
   - 速查

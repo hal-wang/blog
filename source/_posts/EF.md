@@ -3,7 +3,7 @@ title: EF
 comments: true
 tags:
   - EF
-  - "C#"
+  - C#
 abbrlink: 53684d1a
 date: 2020-02-16 22:09:32
 categories:

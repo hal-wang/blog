@@ -13,8 +13,6 @@ date: 2021-10-06 21:51:13
 
 默认情况 Linux 不允许 root 账号 ssh 登录，但有些远程命令如 `scp` 却需要 sudo 权限，因此需要使用 root 账号 ssh 登录
 
-<!--more-->
-
 ## 开启 root 账号 ssh 登录
 
 ### 编辑 `/etc/ssh/sshd_config` 文件
@@ -22,6 +20,8 @@ date: 2021-10-06 21:51:13
 ```
 vim /etc/ssh/sshd_config
 ```
+
+<!--more-->
 
 将以下内容
 

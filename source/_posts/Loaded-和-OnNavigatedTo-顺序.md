@@ -1,8 +1,8 @@
 ---
-title: Loaded和OnNavigatedTo顺序
+title: Loaded 和 OnNavigatedTo 顺序
 comments: true
 tags:
-  - "C#"
+  - C#
   - UWP
 abbrlink: 4bf2d4b5
 date: 2019-09-17 15:29:56
