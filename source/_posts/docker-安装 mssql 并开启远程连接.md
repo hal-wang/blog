@@ -1,12 +1,12 @@
 ---
-title: docker 安装 mssql 并开启远程连接
+title: Docker 安装 MSSQL 并开启远程连接
 comments: true
 abbrlink: 6a03a8f1
 date: 2021-03-09 23:12:41
 categories:
   - 教程
 tags:
-  - docker
+  - Docker
   - WSL
 ---
 

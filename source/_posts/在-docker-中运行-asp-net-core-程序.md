@@ -1,12 +1,12 @@
 ---
-title: 在 docker 中运行 asp.net core 程序
+title: 在 Docker 中运行 Asp.Net Core 程序
 comments: true
 abbrlink: 623e6e49
 date: 2021-03-10 16:45:22
 categories:
   - 教程
 tags:
-  - docker
+  - Docker
 ---
 
 得益于 asp.net core 支持在 docker 中运行，asp.net core 可以更优雅的支持 `DevOps`，比如可以运行在各云服务商的容器服务内，如阿里云的“容器服务”和腾讯云的“云托管”等，让 C#后端开发也可以抛弃服务器了。
