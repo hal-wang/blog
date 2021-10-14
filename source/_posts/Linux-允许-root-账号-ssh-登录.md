@@ -5,7 +5,7 @@ tags:
   - Linux
   - SSH
 categories:
-  - 教程
+  - 记录
 reward: true
 abbrlink: 1f9e5277
 date: 2021-10-06 21:51:13

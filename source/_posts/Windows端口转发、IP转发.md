@@ -6,7 +6,7 @@ tags:
 abbrlink: dc8977d
 date: 2019-09-19 16:27:51
 categories:
-  - 教程
+  - 记录
 reward: true
 ---
 

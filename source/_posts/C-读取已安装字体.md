@@ -6,7 +6,7 @@ tags:
 abbrlink: 2fb47029
 date: 2019-09-15 17:54:43
 categories:
-  - 教程
+  - 记录
 reward: true
 ---
 

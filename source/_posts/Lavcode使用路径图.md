@@ -9,7 +9,7 @@ reward: true
 abbrlink: aa87f3dc
 date: 2020-05-03 13:52:40
 categories:
-  - 教程
+  - 记录
 ---
 
 在 Lavcode 中，目前支持 3 种图标：

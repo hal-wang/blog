@@ -2,7 +2,7 @@
 title: uniapp上传文件至cos
 comments: true
 categories:
-  - 教程
+  - 记录
 tags:
   - UWP
   - "C#"

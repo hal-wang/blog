@@ -4,7 +4,7 @@ comments: true
 abbrlink: aad5ddf8
 date: 2021-05-14 22:02:12
 categories:
-  - 教程
+  - 记录
 tags:
   - Vue
   - TS

@@ -7,7 +7,7 @@ tags:
 abbrlink: f2359bee
 date: 2019-09-16 15:46:10
 categories:
-  - 教程
+  - 记录
 reward: true
 ---
 

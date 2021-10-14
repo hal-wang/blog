@@ -6,7 +6,7 @@ tags:
 abbrlink: fb5c96fb
 date: 2019-09-09 16:39:07
 categories:
-  - 教程
+  - 记录
 reward: true
 ---
 

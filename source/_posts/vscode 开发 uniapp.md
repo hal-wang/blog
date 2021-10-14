@@ -4,7 +4,7 @@ comments: true
 abbrlink: caf85fee
 date: 2020-09-03 09:06:23
 categories:
-  - 教程
+  - 记录
 tags:
   - Vue
   - uniapp

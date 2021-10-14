@@ -6,7 +6,7 @@ tags:
 abbrlink: 38f11925
 date: 2020-04-11 19:55:06
 categories:
-  - 教程
+  - 记录
 reward: true
 ---
 

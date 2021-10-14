@@ -4,7 +4,7 @@ comments: true
 abbrlink: 623e6e49
 date: 2021-03-10 16:45:22
 categories:
-  - 教程
+  - 记录
 tags:
   - Docker
   - C#

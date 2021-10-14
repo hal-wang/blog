@@ -7,7 +7,7 @@ tags:
 abbrlink: 462699f1
 date: 2019-09-18 12:20:07
 categories:
-  - 教程
+  - 记录
 reward: true
 ---
 

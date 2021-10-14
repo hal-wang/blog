@@ -4,7 +4,7 @@ comments: true
 abbrlink: 20deb005
 date: 2021-05-13 13:52:48
 categories:
-  - 教程
+  - 记录
 tags:
   - rclone
 ---
