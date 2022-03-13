@@ -38,7 +38,7 @@ creative_commons:
 
 menu:
   home: / || fa fa-home
-  about: /about/ || fa fa-user
+  about: https://hal.wang || fa fa-user
   tags: /tags/ || fa fa-tags
   archives: /archives/ || fa fa-archive
   sitemap: /sitemap.xml || fa fa-sitemap
@@ -63,11 +63,11 @@ avatar:
   rounded: true
 
 social:
+  主页: https://hal.wang || fa fa-user
   GitHub: https://github.com/hal-wang || fab fa-github
-  Email: mailto:hi@hal.wang || fa fa-envelope
   微信: /imgs/qr/weixin.jpg || fab fa-weixin
   QQ: https://wpa.qq.com/msgrd?v=3&uin=790264027&site=qq&menu=yes || fab fa-qq
-  微博: https://weibo.com/hhhhal || fab fa-weibo
+  Email: mailto:hi@hal.wang || fa fa-envelope
   RSS: /atom.xml || fa fa-rss
 
 toc:
