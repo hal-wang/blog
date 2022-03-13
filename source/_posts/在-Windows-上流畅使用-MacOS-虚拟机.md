@@ -297,12 +297,36 @@ qemu-img create -f qcow2 mac_hdd_ng.img 128G
 
 此部分是在 WSL Linux 系统中操作
 
+#### 安装 systemd-genie
+
+后面脚本需要用这个插件
+
+```
+apt install systemd-genie
+```
+
 #### 下载脚本
 
 ```
 cd /tmp
 wget --content-disposition \
   "https://gist.githubusercontent.com/djfdyuruiry/6720faa3f9fc59bfdf6284ee1f41f950/raw/952347f805045ba0e6ef7868b18f4a9a8dd2e47a/install-sg.sh"
+```
+
+#### 修改脚本
+
+这一步是可选操作，为了安装新版 genie
+
+genie Release 列表可以在这里查看 <https://github.com/arkane-systems/genie/releases>
+
+```
+vim /tmp/install-sg.sh
+```
+
+目前最新版是，2.2，因此修改 `GENIE_VERSION` 值为 2.2，如
+
+```
+GENIE_VERSION="2.2"
 ```
 
 #### 执行脚本
@@ -312,28 +336,20 @@ chmod +x /tmp/install-sg.sh
 /tmp/install-sg.sh && rm /tmp/install-sg.sh
 ```
 
-#### 重启 WSL
-
-关闭 WSL
-
-```
-wsl --shutdown
-```
-
-启动 WSL
-
-```
-wsl genie -s
-```
-
-注意启动方式和普通简单的 `wsl` 启动方式不同，这里是用 `genie` 启动的。
-
 ### 开启 libvirtd
 
-现在我们已经可以使用 `systemctl` 命令了
+在 WSL 中执行
 
 ```
+genie -c systemctl start libvirtd
+```
+
+这个命令表示进入 genie 并执行 `systemctl start libvirtd` 命令，等同于：
+
+```
+genie -s
 systemctl start libvirtd
+exit
 ```
 
 正常启动后就可以使用 virt-manager 了，但是我们还没有将刚才创建的虚拟机加入 virt-manager。
@@ -376,17 +392,26 @@ _在 Windows 宿主机中 virt-manager 截图_
 
 现在你可以用 UI 的方式，编辑或启动名为 macOS 的虚拟机了
 
+## 快捷启动
+
+`virt-manager` 正确配置后，在 Windows 宿主机中，创建 `.bat` 脚本文件，内容为
+
+```
+wsl genie -c systemctl start libvirtd
+wsl virt-manager
+```
+
+每次运行这个脚本就可以快速打开 `virt-manager` 了
+
 ## 遇到的问题
+
+下面是可能会遇到的问题，有已解决的，也有未解决但有替代方案的
 
 ### virt-manager 检测不到 libvirtd
 
-已解决
-
-在 `使用 virt-manager 管理` 部分
+在 `使用 virt-manager 管理` 部分有说明
 
 ### MacOS 一段时间不操作假死
-
-已解决
 
 在 MacOS 中，关闭节能
 
@@ -397,12 +422,24 @@ _在 Windows 宿主机中 virt-manager 截图_
 
 ![关闭节能](./energy.png)
 
+### Waiting for systemd....!
+
+运行 `genie` 命令可能出现这个问题，是由于 `genie` 在等待 systemd 回应
+
+你可以 `Control + C` 取消并继续操作，也可以永久性的解决这个问题，参考
+
+<https://github.com/arkane-systems/genie/wiki/Systemd-units-known-to-be-problematic-under-WSL>
+
 ### 和 Windows 宿主机的文件/剪切板传输
 
-暂未解决
+可以用其他传输工具和剪切板共享工具
 
-可以用其他传输工具先凑合
+暂时没有直接复制粘贴的方法
 
-### 虚拟机中无法收到 Windows 键的响应
+### 虚拟机中无法收到 Win 键的响应
 
-暂未解决
+即徽标键，在 MacOS 中是 Command 键，影响如 `Command + C`, `Command + V` 等快捷键
+
+可以临时改建，或用 VNC 连接 MacOS 使用
+
+暂未没有更好的方法
