@@ -253,13 +253,27 @@ qemu-img create -f qcow2 mac_hdd_ng.img 128G
 
 #### 安装界面
 
+显示要一个多小时，甚至二两多小时，实则不用那么久
+
 ![安装界面](./install.png)
+
+<center>
+
+_正在安装 MacOS_
+
+</center>
 
 #### 安装完成后启动
 
 选择如图第二个启动项
 
 ![startup](./startup.png)
+
+<center>
+
+_启动项_
+
+</center>
 
 还需要安装一会，才能进入系统。
 
@@ -360,13 +374,13 @@ exit
 
 此部分参考 <https://github.com/kholia/OSX-KVM>
 
-- 进入前面步骤使用 git 下载的 OSX-KVM 项目目录下，编辑虚拟机配置文件`macOS-libvirt-Catalina.xml`，把 `CHANGEME` 全部换为你的 wsl 用户名
+- 进入前面步骤使用 git 下载的 OSX-KVM 项目目录下，编辑虚拟机配置文件`macOS-libvirt-Catalina.xml`，把 `CHANGEME` 全部换为 OSX-KVM 所在路径，根据此教程就是你的 wsl 用户名
 
 ```
 vim ./macOS-libvirt-Catalina.xml
 ```
 
-- 你也可以用以下脚本快速替换：
+- 你也可以用以下脚本快速替换为用户路径：
 
 ```
 sed "s/CHANGEME/$USER/g" macOS-libvirt-Catalina.xml > macOS.xml
@@ -443,3 +457,31 @@ wsl virt-manager
 可以临时改建，或用 VNC 连接 MacOS 使用
 
 暂未没有更好的方法
+
+### 反复进入启动项选择界面
+
+- 可能是 CPU 性能不够，或者线程数给的不够，这种只能增加配置或者换电脑
+
+- 也可能是 CPU 配置不正确，将 CPU 配置改为和 KVM 宿主机相同，即与 WSL CPU 配置相同，如图
+
+![配置CPU](./cpu-config.png)
+
+<center>
+
+_CPU 配置_
+
+</center>
+
+### 虚拟机显示大小与窗口大小不匹配
+
+依次点击 KVM 中的菜单 `View -> Resize to VM`，如图：
+
+![配置CPU](./screen.png)
+
+<center>
+
+_虚拟机显示大小与窗口大小不匹配_
+
+</center>
+
+或勾选 `Fullscreen` 以全屏
