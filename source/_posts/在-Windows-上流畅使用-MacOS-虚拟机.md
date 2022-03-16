@@ -311,14 +311,6 @@ _启动项_
 
 此部分是在 WSL Linux 系统中操作
 
-#### 安装 systemd-genie
-
-后面脚本需要用这个插件
-
-```
-apt install systemd-genie
-```
-
 #### 下载脚本
 
 ```
@@ -350,6 +342,22 @@ chmod +x /tmp/install-sg.sh
 /tmp/install-sg.sh && rm /tmp/install-sg.sh
 ```
 
+- 如果报错 `Errors were encountered while processing: systemd-genie`
+
+执行
+
+```
+apt install systemd-genie
+```
+
+- 如果报错 `Unmet dependencies. Try 'apt --fix-broken install' with no packages (or specify a solution). root@PC:/tmp# apt update`
+
+执行
+
+```
+apt --fix-broken install
+```
+
 ### 开启 libvirtd
 
 在 WSL 中执行
@@ -367,6 +375,8 @@ exit
 ```
 
 正常启动后就可以使用 virt-manager 了，但是我们还没有将刚才创建的虚拟机加入 virt-manager。
+
+如果出现 `Waiting for systemd....!`，用 `Ctrl + C` 取消即可
 
 **注意：**这时你不能使用 vGPU，因为启动方式没有采用 WSL 默认的方式。你需要退出 WSL 并重新用 `wsl` 命令进入 WSL，才可以继续操作
 
