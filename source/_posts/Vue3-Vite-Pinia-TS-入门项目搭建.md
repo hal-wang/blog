@@ -12,7 +12,11 @@ tags:
   - TS
 ---
 
-主要内容：
+本文示例项目：<https://github.com/hal-wang/vue3-vite-ts-template>
+
+```
+git clone https://github.com/hal-wang/vue3-vite-ts-template.git
+```
 
 - Vue3 + Vite
 - Pinia: 新的状态管理工具，替代 Vuex
