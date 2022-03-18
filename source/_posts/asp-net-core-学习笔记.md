@@ -4,7 +4,10 @@ comments: true
 abbrlink: 703f2894
 date: 2021-05-17 16:15:17
 categories:
+  - 记录
 tags:
+  - C#
+  - .netcore
 ---
 
 ## 环境变量
@@ -147,4 +150,3 @@ Model = 模型类 + 仓储
 ### more
 
 <https://docs.microsoft.com/en-us/aspnet/core/mvc/views/tag-helpers/intro?view=aspnetcore-5.0>
-
