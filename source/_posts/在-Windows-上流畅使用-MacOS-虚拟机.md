@@ -6,6 +6,7 @@ date: 2022-03-10 12:50:53
 categories:
   - 记录
 tags:
+  - Windows
   - Linux
   - KVM
   - MacOS
@@ -26,12 +27,12 @@ _在 Windows 宿主机中成果截图_
 
 </center>
 
-文中所出现的 WSL，如果没有特指，都是 WSL2。
-
 ## 前提条件
 
 - Windows 10/11 22000+
 - 开启 WSL2，详见 <https://docs.microsoft.com/zh-cn/windows/wsl/install>
+
+文中所出现的 WSL，如果没有特指，都是 WSL2。
 
 ## 与其他方案相比
 
