@@ -87,6 +87,13 @@ footer:
     color: "#808080"
   copyright: hal-wang
 
+  beian:
+    enable: true
+    icp: 京ICP备19029465号-5
+    gongan_id: 34122602000299
+    gongan_num: 皖公网安备 34122602000299号
+    gongan_icon_url: http://www.beian.gov.cn/img/new/gongan.png
+
 # ============================================================= #
 # ======================= Post Settings ======================= #
 # ============================================================= #

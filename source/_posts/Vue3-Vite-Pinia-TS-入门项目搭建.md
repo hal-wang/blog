@@ -10,7 +10,7 @@ tags:
   - Vite
   - Pinia
   - TS
-  - Prettier
+  - prettier
 ---
 
 本文示例项目：<https://github.com/hal-wang/vue3-vite-ts-template>
