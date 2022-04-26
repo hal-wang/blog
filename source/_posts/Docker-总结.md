@@ -59,3 +59,10 @@ $ docker exec -it mongo5 mongo admin
 ```
 docker run -itd --name redis6 -v redis6:/data -p 6379:6379 redis:6
 ```
+
+指定配置
+
+```
+docker run -itd --name redis -v redis:/data -v redis-cfg:/etc/redis -p 6379:6379 redis:6.0 redis
+-server /etc/redis/redis.conf --appendonly yes
+```
