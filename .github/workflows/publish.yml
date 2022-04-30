@@ -1,0 +1,28 @@
+on:
+  push:
+    branches: [main]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm i -g pnpm
+      - run: npm i -g @cloudbase/cli
+      - run: pnpm install
+      - run: npx hexo g
+      - name: Deploy
+        env:
+          TENCENT_SECRET_ID: ${{ secrets.TENCENT_SECRET_ID }}
+          TENCENT_SECRET_KEY: ${{ secrets.TENCENT_SECRET_KEY }}
+          CLUDBASE_ENV: ${{ secrets.CLUDBASE_ENV }}
+        run: |
+          tcb login --apiKeyId $TENCENT_SECRET_ID --apiKey $TENCENT_SECRET_KEY
+          tcb hosting deploy ./public/ -e $CLUDBASE_ENV
