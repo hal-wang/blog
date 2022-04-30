@@ -9,3 +9,7 @@
 ## 线上地址
 
 <https://blog.hal.wang>
+
+## 注意事项
+
+要使用 `pnpm install`，`hexo 6.x` 的 bug
