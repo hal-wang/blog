@@ -58,29 +58,173 @@ yarn dev
 
 ## 基本配置
 
+### 环境变量
+
+如果你不需要区分多个环境，可以跳过这部分
+
+Vite 不再提供 `process.env` 的方式访问环境变量，Vite 使用方法为
+
+```TS
+import.meta.env.VITE_NAME
+```
+
+你可以使用多个环境来用于 开发/生产 环境
+
+#### 环境变量文件
+
+在项目根目录下创建环境变量文件
+
+命名格式为 `.env.<name>`，如 `.env.production` 和 `.env.development`
+
+环境变量文件内容
+
+```
+NODE_ENV=development
+# NODE_ENV=production
+
+VITE_BASE_URL= 'Base api url'
+# more...
+```
+
+其中 NODE_ENV 值为 `development` 或 `production`，对应 开发/生产 环境
+
+#### 使用环境变量
+
+在组件中，使用方式如下
+
+```TS
+const url = import.meta.env.VITE_BASE_URL
+```
+
+#### 指定环境
+
+在 `package.json` 文件的 scripts 命令中，增加参数 `--mode <name>` 即可指定环境
+
+如
+
+```JSON
+"dev": "vite",
+"build": "vue-tsc --noEmit && vite build",
+```
+
+改为
+
+```JSON
+"dev": "vite --mode development",
+"dev:prod": "vite --mode production",
+"build:dev": "vue-tsc --noEmit && vite build --mode development",
+"build:prod": "vue-tsc --noEmit && vite build --mode production",
+```
+
+#### 环境变量智能提示
+
+添加文件 `src/types/global`
+
+```TS
+// 添加项目实际需要的内容
+interface ViteEnv {
+  readonly VITE_GLOB_API_PROXY_PREFIX: string;
+  readonly VITE_GLOB_API_URL: string;
+  readonly VITE_GLOB_PROXY_API_URL: string;
+  readonly VITE_PORT: number;
+  readonly VITE_GLOB_APP_TITLE: string;
+  readonly VITE_PUBLIC_PATH: string;
+  readonly VITE_DROP_CONSOLE: boolean;
+}
+
+interface ImportMetaEnv extends ViteEnv {
+  __: unknown;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+```
+
+添加文件 `src/build/env.ts`
+
+```TS
+export function wrapperEnv(envConf: Record<string, any>): ViteEnv {
+  const ret: any = {};
+
+  for (const envName of Object.keys(envConf)) {
+    let realName = envConf[envName].replace(/\\n/g, '\n');
+    realName = realName === 'true' ? true : realName === 'false' ? false : realName;
+
+    if (envName === 'VITE_PORT') {
+      realName = Number(realName);
+    }
+    ret[envName] = realName;
+    if (typeof realName === 'string') {
+      process.env[envName] = realName;
+    } else if (typeof realName === 'object') {
+      process.env[envName] = JSON.stringify(realName);
+    }
+  }
+  return ret;
+}
+```
+
+在使用的地方可以这样
+
+```TS
+import { wrapperEnv } from '/@/build/env';
+const viteEnv = wrapperEnv(env);
+```
+
 ### 网络代理
 
 配置网络代理可以解决开发时的跨域问题，此配置仅开发环境有效，生产环境应配合 nginx 等实现转发
 
 如果你的项目不需要与后端交互，或无需考虑跨域问题，可忽略此部分
 
+#### 创建帮助函数
+
+添加文件 `src/build/proxy.ts`
+
+创建 `createProxy` 函数用于创建代理
+
+```TS
+import type { ProxyOptions } from 'vite';
+
+type ProxyItem = [string, string];
+type ProxyList = ProxyItem[];
+type ProxyTargetList = Record<string, ProxyOptions>;
+
+const httpsRE = /^https:\/\//;
+export function createProxy(list: ProxyList = []) {
+  const ret: ProxyTargetList = {};
+  for (const [prefix, target] of list) {
+    const isHttps = httpsRE.test(target);
+    ret[prefix] = {
+      target: target,
+      changeOrigin: true,
+      ws: true,
+      rewrite: (path) => path.replace(new RegExp(`^${prefix}`), ''),
+      ...(isHttps ? { secure: false } : {}),
+    };
+  }
+  return ret;
+}
+```
+
 #### 配置
 
 修改 `vite.config.ts` 文件，增加
 
 ```TS
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://hal.wang',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-    },
-  },
+  const viteEnv = wrapperEnv(env);
 ```
 
-`/api` 为代理的路由段，也可以为其他，只要与你的接口命名不冲突即可
+```TS
+    server: {
+      host: true,
+      port: VITE_PORT,
+      proxy: createProxy([[VITE_GLOB_API_PROXY_PREFIX, VITE_GLOB_PROXY_API_URL]]),
+    },
+```
+
+`VITE_GLOB_API_PROXY_PREFIX` 为代理的路由段
 
 #### 使用
 
@@ -145,64 +289,6 @@ export default defineConfig({
     }
   },
 }
-```
-
-### 环境变量
-
-如果你不需要区分多个环境，可以跳过这部分
-
-Vite 不再提供 `process.env` 的方式访问环境变量，Vite 使用方法为
-
-```TS
-import.meta.env.VITE_NAME
-```
-
-你可以使用多个环境来用于 开发/生产 环境
-
-#### 环境变量文件
-
-在项目根目录下创建环境变量文件
-
-命名格式为 `.env.<name>`，如 `.env.production` 和 `.env.development`
-
-环境变量文件内容
-
-```
-NODE_ENV=development
-# NODE_ENV=production
-
-VITE_BASE_URL= 'Base api url'
-# more...
-```
-
-其中 NODE_ENV 值为 `development` 或 `production`，对应 开发/生产 环境
-
-#### 使用环境变量
-
-在组件中，使用方式如下
-
-```TS
-const url = import.meta.env.VITE_BASE_URL
-```
-
-#### 指定环境
-
-在 `package.json` 文件的 scripts 命令中，增加参数 `--mode <name>` 即可指定环境
-
-如
-
-```JSON
-"dev": "vite",
-"build": "vue-tsc --noEmit && vite build",
-```
-
-改为
-
-```JSON
-"dev": "vite --mode development",
-"dev:prod": "vite --mode production",
-"build:dev": "vue-tsc --noEmit && vite build --mode development",
-"build:prod": "vue-tsc --noEmit && vite build --mode production",
 ```
 
 ### VScode 配置
@@ -700,7 +786,6 @@ ESlint 可以规范代码格式
 - 在项目目录下执行以下命令安装插件
 
 ```
-yarn add eslint-define-config --dev
 yarn add @typescript-eslint/eslint-plugin --dev
 yarn add @typescript-eslint/parser --dev
 yarn add eslint --dev
@@ -726,9 +811,7 @@ yarn config set ignore-engines true
 - 项目目录下创建 `.eslintrc.js` 文件
 
 ```JS
-// @ts-check
-const { defineConfig } = require('eslint-define-config');
-module.exports = defineConfig({
+module.exports = {
   root: true,
   env: {
     browser: true,
@@ -804,7 +887,7 @@ module.exports = defineConfig({
     ],
     'vue/multi-word-component-names': 'off',
   },
-});
+};
 ```
 
 - 项目目录下创建 `.eslintignore` 文件，用于配置那些文件需要忽略检查
@@ -1625,70 +1708,89 @@ export default defineConfig({
 根据此教程，完整的 `vite.config.ts` 文件内容为
 
 ```TS
-import { defineConfig } from 'vite';
+import { ConfigEnv, loadEnv, UserConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { resolve } from 'path';
 import WindiCSS from 'vite-plugin-windicss';
 import PurgeIcons from 'vite-plugin-purge-icons';
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import path from 'path';
+import { createProxy } from '/@/build/proxy';
+import { wrapperEnv } from '/@/build/env';
 
 function pathResolve(dir: string) {
   return resolve(process.cwd(), '.', dir);
 }
 
-export default defineConfig({
-  plugins: [
-    vue(),
-    WindiCSS(),
-    PurgeIcons(),
-    createSvgIconsPlugin({
-      iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
-      symbolId: 'icon-[dir]-[name]',
-      svgoOptions: true,
-    }),
-  ],
-  resolve: {
-    alias: [
-      {
-        find: /\/@\//,
-        replacement: pathResolve('src') + '/',
-      },
-      {
-        find: /\/#\//,
-        replacement: pathResolve('types') + '/',
-      },
+export default ({ mode }: ConfigEnv): UserConfig => {
+  const root = process.cwd();
+  const env = loadEnv(mode, root);
+
+  const viteEnv = wrapperEnv(env);
+
+  const {
+    VITE_GLOB_API_PROXY_PREFIX,
+    VITE_GLOB_PROXY_API_URL,
+    VITE_PORT,
+    VITE_PUBLIC_PATH,
+    VITE_DROP_CONSOLE,
+  } = viteEnv;
+
+  return {
+    base: VITE_PUBLIC_PATH,
+    root,
+    plugins: [
+      vue(),
+      WindiCSS(),
+      PurgeIcons(),
+      createSvgIconsPlugin({
+        iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+        symbolId: 'icon-[dir]-[name]',
+        svgoOptions: true,
+      }),
     ],
-  },
-  css: {
-    preprocessorOptions: {
-      less: {
-        modifyVars: {
-          'primary-color': '#1e80ff', //  Primary color
-          'success-color': '#55D187', //  Success color
-          'error-color': '#ED6F6F', //  False color
-          'warning-color': '#EFBD47', //   Warning color
-          'font-size-base': '14px', //  Main font size
-          'border-radius-base': '2px', //  Component/float fillet
-          'app-content-background': '#fafafa', //   Link color
+    resolve: {
+      alias: [
+        {
+          find: /\/@\//,
+          replacement: pathResolve('src') + '/',
         },
-        javascriptEnabled: true,
+        {
+          find: /\/#\//,
+          replacement: pathResolve('types') + '/',
+        },
+      ],
+    },
+    css: {
+      preprocessorOptions: {
+        less: {
+          modifyVars: {
+            'primary-color': '#1e80ff', //  Primary color
+            'success-color': '#55D187', //  Success color
+            'error-color': '#ED6F6F', //  False color
+            'warning-color': '#EFBD47', //   Warning color
+            'font-size-base': '14px', //  Main font size
+            'border-radius-base': '2px', //  Component/float fillet
+            'app-content-background': '#fafafa', //   Link color
+          },
+          javascriptEnabled: true,
+        },
       },
     },
-  },
-  build: {
-    sourcemap: true,
-  },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://hal.wang',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
+    esbuild: {
+      pure: VITE_DROP_CONSOLE ? ['console.log', 'debugger'] : [],
     },
-  },
-});
+    build: {
+      sourcemap: import.meta.env.DEV
+      outDir: 'dist',
+    },
+    server: {
+      host: true,
+      port: VITE_PORT,
+      proxy: createProxy([[VITE_GLOB_API_PROXY_PREFIX, VITE_GLOB_PROXY_API_URL]]),
+    },
+  };
+};
 ```
 
 ## 完整的 package.json
@@ -1698,7 +1800,7 @@ export default defineConfig({
 ```JSON
 {
   "name": "vue3-vite-ts-template",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "hal-wang",
     "email": "hi@hal.wang",
@@ -1715,44 +1817,43 @@ export default defineConfig({
     "prepare": "husky install"
   },
   "dependencies": {
-    "@iconify/iconify": "^2.1.2",
+    "@iconify/iconify": "^2.2.1",
     "nprogress": "^0.2.0",
-    "pinia": "^2.0.12",
-    "vue": "^3.2.25",
+    "pinia": "^2.0.13",
+    "vue": "^3.2.33",
     "vue-router": "^4.0.14"
   },
   "devDependencies": {
-    "@iconify/json": "^2.1.16",
-    "@types/node": "^17.0.21",
+    "@iconify/json": "^2.1.34",
+    "@types/node": "^17.0.30",
     "@types/nprogress": "^0.2.0",
-    "@typescript-eslint/eslint-plugin": "^5.15.0",
-    "@typescript-eslint/parser": "^5.15.0",
-    "@vitejs/plugin-vue": "^2.2.0",
-    "eslint": "^8.11.0",
+    "@typescript-eslint/eslint-plugin": "^5.21.0",
+    "@typescript-eslint/parser": "^5.21.0",
+    "@vitejs/plugin-vue": "^2.3.1",
+    "eslint": "^8.14.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-define-config": "^1.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^8.5.0",
+    "eslint-plugin-vue": "^8.7.1",
     "husky": "^7.0.4",
     "less": "^4.1.2",
-    "lint-staged": "^12.3.6",
-    "postcss": "^8.4.12",
-    "postcss-html": "^1.3.0",
+    "lint-staged": "^12.4.1",
+    "postcss": "^8.4.13",
+    "postcss-html": "^1.4.1",
     "postcss-less": "^6.0.0",
-    "prettier": "^2.6.0",
-    "stylelint": "^14.6.0",
+    "prettier": "^2.6.2",
+    "stylelint": "^14.8.1",
     "stylelint-config-html": "^1.0.0",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recommended": "^7.0.0",
     "stylelint-config-standard": "^25.0.0",
     "stylelint-order": "^5.0.0",
-    "typescript": "^4.5.4",
-    "vite": "^2.8.0",
+    "typescript": "^4.6.4",
+    "vite": "^2.9.6",
     "vite-plugin-purge-icons": "^0.8.1",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vite-plugin-windicss": "^1.8.3",
+    "vite-plugin-windicss": "^1.8.4",
     "vue-eslint-parser": "^8.3.0",
-    "vue-tsc": "^0.29.8",
+    "vue-tsc": "^0.34.11",
     "windicss": "^3.5.1"
   },
   "repository": {
