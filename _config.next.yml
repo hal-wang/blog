@@ -225,7 +225,9 @@ motion:
   async: true
 
 vendors:
-  internal: jsdelivr
+  internal: local
+  plugins: custom
+  custom_cdn_url: https://lib.baomitu.com/${cdnjs_name}/${version}/${cdnjs_file}
 
 reward_settings:
   enable: true
