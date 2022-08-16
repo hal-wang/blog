@@ -77,7 +77,7 @@ function Father() {} // 父类构造函数
 function Son() { // 子类构造函数
   Father.call(this); // 等同于ES6: this.super();
 }
-Son.proptotype = new Father(); // 不能直接 = Father，这样会导致 Father 和 Son 的对象原型指向同一个原型对象
+Son.prototype = new Father(); // 不能直接 = Father，这样会导致 Father 和 Son 的对象原型指向同一个原型对象
 Son.prototype.constructor = Son; // 原型对象需要指向构造函数，如果不赋值，指向的是 Father 构造函数
 ```
 
