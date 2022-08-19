@@ -1,6 +1,6 @@
 set -e
 
-npm install
+pnpm install
 npm run build
 cd public
 git config --global user.name 'hal-wang' 
