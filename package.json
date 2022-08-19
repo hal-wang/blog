@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "hexo g && hexo s",
-    "dev": "npm start"
+    "dev": "npm start",
+    "build": "hexo generate"
   },
   "dependencies": {
     "hexo": "^6.2.0",
