@@ -1,14 +1,7 @@
 ---
 title: 激活 Win10/11 或 Office2010-2019
 comments: true
-tags:
-  - Windows
-  - Office
-abbrlink: 41b5ce22
 date: 2020-03-23 22:33:48
-categories:
-  - 记录
-reward: true
 ---
 
 系统免费激活分两种

@@ -1,13 +1,8 @@
 ---
 title: 重置 UWP 应用
 comments: true
-tags:
-  - UWP
-abbrlink: b8c11bdd
+layout: "guide"
 date: 2020-03-23 22:15:05
-categories:
-  - 记录
-reward: true
 ---
 
 UWP 软件出现异常情况，可通过重置使软件恢复最初状态。

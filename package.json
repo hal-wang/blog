@@ -5,7 +5,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "hexo g && hexo s",
+    "start": "hexo clean && hexo g && hexo s",
     "dev": "npm start",
     "build": "hexo generate"
   },
