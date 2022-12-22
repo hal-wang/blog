@@ -42,7 +42,6 @@ menu:
   tags: /tags/ || fa fa-tags
   archives: /archives/ || fa fa-archive
   sitemap: /sitemap.xml || fa fa-sitemap
-  #commonweal: /404/ || fa fa-heartbeat
 
 menu_settings:
   icons: true
