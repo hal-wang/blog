@@ -2,7 +2,7 @@ set -e
 
 pnpm install
 npm run build
-cd public
+cd dist
 git config --global user.name 'hal-wang' 
 git config --global user.email 'hi@hal.wang'
 git init -b gh-pages
