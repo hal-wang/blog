@@ -38,7 +38,7 @@ creative_commons:
 
 menu:
   home: / || fa fa-home
-  about: https://hal.wang || fa fa-user
+  about: /about/ || fa fa-user
   tags: /tags/ || fa fa-tags
   archives: /archives/ || fa fa-archive
   sitemap: /sitemap.xml || fa fa-sitemap

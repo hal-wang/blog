@@ -25,8 +25,9 @@ date: 2020-03-23 22:33:48
 
 ### 下载激活工具
 
-首先要下载一个激活工具 KMSPICO，下载地址：[KMSPICO](https://pan.baidu.com/s/1nCSYzQ5EztDYuRc4QQ__qg "激活工具")。下载的文件为下载的文件为 KMSPICO.ZIP。
-ZIP 文件可以在 win10/11 中直接打开，所以如果没有压缩软件，直接双击打开然后把文件夹复制出来。如果有压缩软件，可以使用其他软件解压。
+首先要下载一个激活工具 KMSPICO，下载地址：[KMSPICO](https://pan.baidu.com/s/1nCSYzQ5EztDYuRc4QQ__qg "激活工具")
+
+ZIP 文件可以在 win10/11 中直接打开，所以如果没有压缩软件，直接双击打开然后把文件夹复制出来。或使用其他压缩软件解压
 
 ### 运行并激活
 

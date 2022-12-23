@@ -54,7 +54,7 @@ const obj=new Func(); // 用构造函数创建对象
 Func.prototype == obj.__proto__ // true
 ```
 
-由于 JS 中调用函数时，先查找自身函数，再查找原型对象 `__proto__` 中的函数，因此对象可以使用对象原型中的方法
+由于 JS 中调用对象方法时，先查找对象自身方法，再查找原型对象 `__proto__` 中的方法，因此对象可以使用对象原型中的方法
 
 原型对象也可以置空，这样构造函数创建的对象将没有额外方法，如 `toString`, `hasOwnProperty` 等
 
@@ -65,7 +65,7 @@ Func.prototype == obj.__proto__ // true
 由前面得出结论，对象和对象原型 `__proto__` 形成了一个原型链，原型链的最顶端是 `null`，形如
 
 ```JS
-obj.__proto__.__proto__.proto.__ == null // true
+obj.__proto__.__proto__.__proto__ == null // true
 ```
 
 上面可能有很多节点，也可能没有节点，取决于创建方法
