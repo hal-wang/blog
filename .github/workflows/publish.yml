@@ -22,7 +22,15 @@ jobs:
         with:
           version: 7.7.1
 
-      - run: sh publish.sh
+      - run: |
+          pnpm install
+          npm run build
+          cd dist
+          git config --global user.name 'hal-wang' 
+          git config --global user.email 'hi@hal.wang'
+          git init -b gh-pages
+          git add -A
+          git commit -m "publish"
 
       - name: push
         uses: ad-m/github-push-action@master
