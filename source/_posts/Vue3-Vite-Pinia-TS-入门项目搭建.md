@@ -13,7 +13,9 @@ tags:
   - prettier
 ---
 
-本文示例项目：<https://github.com/hal-wang/vue3-vite-ts-template>
+本文将从零开始搭建一个 `Vue3` + `Vite` + `Pinia` + `TS` 入门项目
+
+源码：<https://github.com/hal-wang/vue3-vite-ts-template>
 
 ```
 git clone https://github.com/hal-wang/vue3-vite-ts-template.git
@@ -27,6 +29,8 @@ git clone https://github.com/hal-wang/vue3-vite-ts-template.git
 - ESlint: 格式标准工具
 - Windi CSS: 功能类优先的 CSS 框架，与 Tailwind CSS 用法相同，但速度更快
 - iconify + svg: iconify 是功能丰富的图标框架，加上 svg 文件解析，让你选图标随心所欲
+- huskey + lint-staged 每次提交代码校验格式规范
+- huskey + commitlint 每次提交代码校验提交消息规范
 
 <!--more-->
 
@@ -62,7 +66,7 @@ yarn dev
 
 如果你不需要区分多个环境，可以跳过这部分
 
-Vite 不再提供 `process.env` 的方式访问环境变量，Vite 使用方法为
+Vite 使用 `ESM` 的方式访问环境变量，即不再使用 `process.env`
 
 ```TS
 import.meta.env.VITE_NAME
@@ -291,7 +295,7 @@ export default defineConfig({
 }
 ```
 
-### VScode 配置
+### VSCode 配置和断点调试
 
 配置好编辑器，能让开发更顺畅
 
@@ -440,7 +444,7 @@ export default defineConfig({
 
 ## 添加 Pinia
 
-Pinia 是新一代状态管理工具，对 TS 的支持很完善，用起来也比较舒服
+Pinia 是 Vue3 推荐的状态管理工具，对 TS 的支持很完善，用起来也比较舒服
 
 ### 安装
 
@@ -450,7 +454,7 @@ Pinia 是新一代状态管理工具，对 TS 的支持很完善，用起来也�
 yarn add pinia
 ```
 
-### 创建
+### 创建文件
 
 - 在 `src` 下创建 store 文件夹，在 store 文件夹下创建 `index.ts` 文件，便于统一管理
 
@@ -554,6 +558,8 @@ pinia 中的 getters 和 vuex 中的 getters 功能相同
 
 ## 添加路由
 
+如果你的网站不涉及多页面跳转，可以忽略此部分内容
+
 ### 安装
 
 - 在项目下运行
@@ -645,7 +651,7 @@ app.mount("#app");
 </template>
 ```
 
-`router-view` 是用来显示与 url 对应的组件
+`router-view` 是用来渲染路由对应的页面组件
 
 ### 增加 nProgress
 
@@ -716,7 +722,7 @@ export function setupRouter(app: App<Element>) {
 }
 ```
 
-`@primary-color` 是后面 `添加 CSS 插件` 部分增加的 `less` 变量
+`@primary-color` 是后面 `增加 stylelint + postcss + less` 部分增加的 `less` 变量
 
 - `main.ts` 中引入
 
@@ -918,86 +924,6 @@ Dockerfile
 
 之后运行 `npm run lint:eslint` 即可检查全部代码是否有不规范的地方
 
-## 增加 husky + lint-staged
-
-使用 `husky` + `lint-staged` 可以支持每次提交 git 前自动执行一次 lint 检查
-
-### 安装
-
-在项目目录下执行以下命令安装插件
-
-```
-yarn add lint-staged --dev
-yarn add husky --dev
-```
-
-### 配置
-
-#### lint-staged
-
-- 在 package.json 中的 scripts 中新增
-
-```JSON
-    "lint:lint-staged": "lint-staged",
-```
-
-之后运行 `npm run lint-staged` 即可手动检查
-
-- 修改 package.json 文件，增加如下代码
-
-```JSON
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "{!(package)*.json,*.code-snippets,.!(browserslist)*rc}": [
-      "prettier --write--parser json"
-    ],
-    "package.json": [
-      "prettier --write"
-    ],
-    "*.vue": [
-      "eslint --fix",
-      "prettier --write",
-      "stylelint --fix"
-    ],
-    "*.{scss,less,styl,html}": [
-      "stylelint --fix",
-      "prettier --write"
-    ],
-    "*.md": [
-      "prettier --write"
-    ]
-  }
-```
-
-#### husky
-
-在 package.json 中的 scripts 中新增
-
-```JSON
-    "prepare": "husky install",
-```
-
-然后运行
-
-```shell
-yarn prepare
-yarn husky add .husky/pre-commit
-```
-
-将自动创建 `.husky` 文件夹和 `.husky/pre-commit` 文件
-
-修改 `.husky/pre-commit` 文件
-
-```shell
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-npm run lint:lint-staged
-```
-
 ## 增加 Windi CSS
 
 Windi CSS 是一个功能类优先的 CSS 框架，与 Tailwind CSS 用法相同，但速度更快
@@ -1110,7 +1036,7 @@ function createEnterPlugin(maxOutput = 6) {
 }
 ```
 
-## 添加 CSS 插件
+## 增加 stylelint + postcss + less
 
 - stylelint 是一个现代的、强大的 CSS 检测工具，用这个比 eslint 检查 css 更强大
 - postcss 是一个使 CSS 更容易，更灵活，更快速工作的工具
@@ -1131,7 +1057,10 @@ yarn add stylelint --dev
 yarn add stylelint-config-html --dev
 yarn add stylelint-config-prettier --dev
 yarn add stylelint-config-recommended --dev
+yarn add stylelint-config-recommended-less --dev
 yarn add stylelint-config-standard --dev
+yarn add stylelint-config-standard-vue --dev
+yarn add stylelint-less --dev
 yarn add stylelint-order --dev
 ```
 
@@ -1147,101 +1076,44 @@ yarn add stylelint-order --dev
 
 ### 配置
 
-- 项目目录下创建 `stylelint.config.js` 文件
+- 项目目录下创建 `stylelint.config.js` 文件存放 stylelint 的配置
 
 ```JS
 module.exports = {
-  root: true,
-  plugins: ['stylelint-order'],
-  customSyntax: 'postcss-html',
-  extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
+  extends: [
+    'stylelint-config-standard',
+    'stylelint-config-prettier',
+    'stylelint-config-recommended-less',
+    'stylelint-config-standard-vue',
+  ],
+  plugins: ['stylelint-order', 'stylelint-less'],
+  overrides: [
+    {
+      files: ['**/*.(less|css|vue|html)'],
+      customSyntax: 'postcss-less',
+    },
+    {
+      files: ['**/*.(html|vue)'],
+      customSyntax: 'postcss-html',
+    },
+  ],
+  ignoreFiles: ['**/*.js', '**/*.jsx', '**/*.tsx', '**/*.ts', '**/*.json', '**/*.md', '**/*.yaml'],
   rules: {
-    'selector-class-pattern': null,
-    'selector-pseudo-class-no-unknown': [
-      true,
-      {
-        ignorePseudoClasses: ['global'],
-      },
-    ],
+    'no-descending-specificity': null,
     'selector-pseudo-element-no-unknown': [
       true,
       {
         ignorePseudoElements: ['v-deep'],
       },
     ],
-    'at-rule-no-unknown': [
+    'selector-pseudo-class-no-unknown': [
       true,
       {
-        ignoreAtRules: [
-          'tailwind',
-          'apply',
-          'variants',
-          'responsive',
-          'screen',
-          'function',
-          'if',
-          'each',
-          'include',
-          'mixin',
-        ],
+        ignorePseudoClasses: ['deep'],
       },
     ],
-    'no-empty-source': null,
-    'named-grid-areas-no-invalid': null,
-    'unicode-bom': 'never',
-    'no-descending-specificity': null,
-    'font-family-no-missing-generic-family-keyword': null,
-    'declaration-colon-space-after': 'always-single-line',
-    'declaration-colon-space-before': 'never',
-    // 'declaration-block-trailing-semicolon': 'always',
-    'rule-empty-line-before': [
-      'always',
-      {
-        ignore: ['after-comment', 'first-nested'],
-      },
-    ],
-    'unit-no-unknown': [true, { ignoreUnits: ['rpx'] }],
-    'order/order': [
-      [
-        'dollar-variables',
-        'custom-properties',
-        'at-rules',
-        'declarations',
-        {
-          type: 'at-rule',
-          name: 'supports',
-        },
-        {
-          type: 'at-rule',
-          name: 'media',
-        },
-        'rules',
-      ],
-      { severity: 'warning' },
-    ],
+    'function-no-unknown': null,
   },
-  ignoreFiles: ['**/*.js', '**/*.jsx', '**/*.tsx', '**/*.ts'],
-  overrides: [
-    {
-      files: ['*.vue', '**/*.vue', '*.html', '**/*.html'],
-      extends: ['stylelint-config-recommended', 'stylelint-config-html'],
-      rules: {
-        'keyframes-name-pattern': null,
-        'selector-pseudo-class-no-unknown': [
-          true,
-          {
-            ignorePseudoClasses: ['deep', 'global'],
-          },
-        ],
-        'selector-pseudo-element-no-unknown': [
-          true,
-          {
-            ignorePseudoElements: ['v-deep', 'v-global', 'v-slotted'],
-          },
-        ],
-      },
-    },
-  ],
 };
 ```
 
@@ -1297,6 +1169,141 @@ export default defineConfig({
     },
   },
 });
+```
+
+## 增加 husky + lint-staged
+
+使用 `husky` + `lint-staged` ，可以实现每次提交 git 前，自动检查代码的格式规范
+
+### 安装
+
+在项目目录下执行以下命令安装插件
+
+```
+yarn add lint-staged --dev
+yarn add husky --dev
+```
+
+### 配置
+
+#### lint-staged
+
+在 package.json 中的 scripts 中新增
+
+```JSON
+    "lint:staged": "lint-staged",
+```
+
+之后运行 `npm run lint:staged` 即可手动检查
+
+修改 package.json 文件，增加如下配置内容
+
+```JSON
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "{!(package)*.json,*.code-snippets,.!(browserslist)*rc}": [
+      "prettier --write--parser json"
+    ],
+    "package.json": [
+      "prettier --write"
+    ],
+    "*.vue": [
+      "eslint --fix",
+      "prettier --write",
+      "stylelint --fix"
+    ],
+    "*.{scss,less,styl,html}": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "*.md": [
+      "prettier --write"
+    ]
+  }
+```
+
+#### husky
+
+在 package.json 中的 scripts 中新增
+
+```JSON
+    "prepare": "husky install",
+```
+
+然后执行下面语句自动创建 `.husky` 文件夹
+
+```shell
+yarn prepare
+```
+
+在此之后，每次执行 `yarn install` 语句，会自动执行上面的语句
+
+然后创建文件 `.husky/pre-commit`，每次提交代码前会执行这个脚本
+
+```shell
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npm run lint:staged
+```
+
+## 增加 husky + commitlint
+
+使用 `husky` + `commitlint` ，可以实现每次提交 git 前，自动检查格式规范
+
+规划化提交格式，可用于自动更新 `CHANGELOG.md`、自动生成 Release 内容等功能
+
+husky 按前面的 `增加 husky + lint-staged` 部分安装和配置，此处仅介绍 `commitlint` 相关
+
+### 安装
+
+在项目目录下执行以下命令安装插件，
+
+```
+yarn add @commitlint/cli --dev
+yarn add @commitlint/config-conventional --dev
+```
+
+### 配置
+
+增加文件 `.commitlintrc.js` 用于存放 `commitlint` 校验规则
+
+```js
+module.exports = {
+  extends: ["@commitlint/config-conventional"],
+  rules: {
+    "type-enum": [
+      2,
+      "always",
+      [
+        "build",
+        "chore",
+        "ci",
+        "docs",
+        "feat",
+        "fix",
+        "perf",
+        "refactor",
+        "revert",
+        "style",
+        "test",
+        "typo",
+      ],
+    ],
+  },
+};
+```
+
+新增文件 `.husky/commit-msg` 存放提交代码前执行的脚本
+
+```sh
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npx --no-install commitlint --edit $1
 ```
 
 ## 增加 svg 支持
@@ -1813,48 +1820,53 @@ export default ({ mode }: ConfigEnv): UserConfig => {
     "lint:prettier": "prettier --write  \"src/**/*.{js,json,tsx,css,less,scss,vue,html,md}\"",
     "lint:eslint": "eslint --cache --max-warnings 0  \"{src,mock}/**/*.{vue,ts,tsx}\" --fix",
     "lint:stylelint": "stylelint --cache --fix \"**/*.{vue,less,postcss,css,scss}\" --cache --cache-location node_modules/.cache/stylelint/",
-    "lint:lint-staged": "lint-staged",
+    "lint:staged": "lint-staged",
     "prepare": "husky install"
   },
   "dependencies": {
-    "@iconify/iconify": "^2.2.1",
+    "@iconify/iconify": "^3.1.0",
     "nprogress": "^0.2.0",
-    "pinia": "^2.0.13",
-    "vue": "^3.2.33",
-    "vue-router": "^4.0.14"
+    "pinia": "^2.0.33",
+    "vue": "^3.2.47",
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
-    "@iconify/json": "^2.1.34",
-    "@types/node": "^17.0.30",
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
+    "@iconify/json": "^2.2.36",
+    "@types/node": "^18.15.3",
     "@types/nprogress": "^0.2.0",
-    "@typescript-eslint/eslint-plugin": "^5.21.0",
-    "@typescript-eslint/parser": "^5.21.0",
-    "@vitejs/plugin-vue": "^2.3.1",
-    "eslint": "^8.14.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^8.7.1",
-    "husky": "^7.0.4",
-    "less": "^4.1.2",
-    "lint-staged": "^12.4.1",
-    "postcss": "^8.4.13",
-    "postcss-html": "^1.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
+    "@vitejs/plugin-vue": "^4.1.0",
+    "eslint": "^8.36.0",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-vue": "^9.9.0",
+    "husky": "^8.0.3",
+    "less": "^4.1.3",
+    "lint-staged": "^13.2.0",
+    "postcss": "^8.4.21",
+    "postcss-html": "^1.5.0",
     "postcss-less": "^6.0.0",
-    "prettier": "^2.6.2",
-    "stylelint": "^14.8.1",
-    "stylelint-config-html": "^1.0.0",
-    "stylelint-config-prettier": "^9.0.3",
-    "stylelint-config-recommended": "^7.0.0",
-    "stylelint-config-standard": "^25.0.0",
-    "stylelint-order": "^5.0.0",
-    "typescript": "^4.6.4",
-    "vite": "^2.9.6",
-    "vite-plugin-purge-icons": "^0.8.1",
+    "prettier": "^2.8.4",
+    "stylelint": "^15.3.0",
+    "stylelint-config-html": "^1.1.0",
+    "stylelint-config-prettier": "^9.0.5",
+    "stylelint-config-recommended": "^11.0.0",
+    "stylelint-config-recommended-less": "^1.0.4",
+    "stylelint-config-standard": "^31.0.0",
+    "stylelint-config-standard-vue": "^1.0.0",
+    "stylelint-less": "^1.0.6",
+    "stylelint-order": "^6.0.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.2.0",
+    "vite-plugin-purge-icons": "^0.9.2",
     "vite-plugin-svg-icons": "^2.0.1",
-    "vite-plugin-windicss": "^1.8.4",
-    "vue-eslint-parser": "^8.3.0",
-    "vue-tsc": "^0.34.11",
-    "windicss": "^3.5.1"
+    "vite-plugin-windicss": "^1.8.10",
+    "vue-eslint-parser": "^9.1.0",
+    "vue-tsc": "^1.2.0",
+    "windicss": "^3.5.6"
   },
   "repository": {
     "type": "git",
