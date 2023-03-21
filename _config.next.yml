@@ -58,7 +58,7 @@ sidebar:
   offset: 12
 
 avatar:
-  url: /imgs/h/h_mini.png
+  url: /imgs/avatar.jpg
   rounded: true
 
 social:
@@ -238,7 +238,7 @@ reward:
   alipay: /imgs/qr/alipay_sm.jpg
 
 favicon:
-  small: /imgs/h/h.png
-  medium: /imgs/h/h.png
-  apple_touch_icon: /imgs/h/h.png
-  safari_pinned_tab: /imgs/h/h.png
+  small: /imgs/avatar.jpg
+  medium: /imgs/avatar.jpg
+  apple_touch_icon: /imgs/avatar.jpg
+  safari_pinned_tab: /imgs/avatar.jpg
