@@ -1367,7 +1367,12 @@ import 'virtual:svg-icons-register';
 
 ```VUE
 <template>
-  <svg :class="[$attrs.class, spin && 'svg-icon-spin']" :style="getStyle" aria-hidden="true">
+  <svg
+    :class="[$attrs.class, spin && 'svg-icon-spin']"
+    :style="getStyle"
+    :fill="color"
+    aria-hidden="true"
+  >
     <use :xlink:href="symbolId" />
   </svg>
 </template>
@@ -1394,6 +1399,10 @@ import 'virtual:svg-icons-register';
         type: Boolean,
         default: false,
       },
+      color: {
+        type: String,
+        default: '',
+      },
     },
     setup(props) {
       const symbolId = computed(() => `#${props.prefix}-${props.name}`);
@@ -1418,7 +1427,7 @@ import 'virtual:svg-icons-register';
     display: inline-block;
     overflow: hidden;
     vertical-align: -0.15em;
-    fill: currentColor;
+    fill: currentcolor;
   }
 
   .svg-icon-spin {
@@ -1430,12 +1439,12 @@ import 'virtual:svg-icons-register';
 使用时
 
 ```VUE
-<SvgIcon name="name"/>
+<SvgIcon name="name" color="red"/>
 ```
 
 ## 增加 iconify
 
-svg 下载还不够方便，用上更强大的 iconify 吧
+通过文件的方式使用 svg 还不够方便，用上更强大的 iconify 吧
 
 iconify 是功能丰富的图标框架，可以与任意图标库一起使用
 
@@ -1589,7 +1598,14 @@ export default defineConfig({
 
 ```VUE
 <template>
-  <SvgIcon :size="size" :name="getSvgIcon" v-if="isSvgIcon" :class="[$attrs.class]" :spin="spin" />
+  <SvgIcon
+    :size="size"
+    :name="getSvgIcon"
+    v-if="isSvgIcon"
+    :class="[$attrs.class]"
+    :spin="spin"
+    :color="color"
+  />
   <span
     v-else
     ref="elRef"
@@ -1706,8 +1722,8 @@ export default defineConfig({
 使用时
 
 ```VUE
-<Icon icon="lavcode|svg" color="black" />
-<Icon icon="ant-design:aliyun-outlined" />
+<Icon icon="lavcode|svg" color="red" size="50"/>
+<Icon icon="ant-design:aliyun-outlined"  color="red" size="50"/>
 ```
 
 ## 完整的 vite.config.ts
