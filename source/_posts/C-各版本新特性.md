@@ -11,6 +11,8 @@ tags:
 
 仅记录 C# 5 及以后版本
 
+<!--more-->
+
 ## C# 5
 
 随 Visual Studio 2012 发布
@@ -273,8 +275,264 @@ Func(arg2: 2);
 Func(arg2: 2, arg1: 1);
 ```
 
+### ref
+
+将值类型声明为引用类型
+
+```cs
+int number = 6;
+ref int n = ref number;
+n = 8;
+
+Console.WriteLine($"number = {number}"); // 8
+Console.WriteLine($"n = {n}"); // 8
+```
+
 ## C# 8
 
 是专门面向 .net core 的第一个主要 C# 版本
 
-> 未完待续
+### 默认接口方法
+
+可以不止是约束，也可以实现完整的方法
+
+### 模式匹配
+
+增强 switch 的模式匹配
+
+#### 属性模式
+
+可以匹配对象中的属性
+
+```cs
+public class Cls
+{
+  public string Prop { get; set; } = null!;
+}
+
+public static string Func(Cls obj) => obj switch
+{
+  { Prop: "val1" } => "result1",
+  { Prop: "val2" } => "result2",
+  { Prop: "val3" } => "result3",
+  _ => "result4"
+};
+
+var v = Func(new Cls()
+{
+  Prop = "val2"
+});
+Console.WriteLine(v); // result2
+```
+
+#### 元组模式
+
+可以匹配元组
+
+#### 位置模式
+
+按属性位置取，组成元组，然后匹配
+
+### using 新版声明
+
+using 块如果范围为整个函数，可以省略大括号
+
+### 静态本地函数
+
+本地函数可以声明为静态的
+
+### 可处置的 ref 结构
+
+可以用 ref 声明 struct，表示此 struct 的实例对象都是引用类型
+
+### 可空引用类型
+
+更灵活的可空特性
+
+通过 `?` 为字段、属性、方法参数、返回值等添加是否可为 null 的特性
+
+### 异步流
+
+可以返回异步版本的迭代器
+
+```cs
+async IAsyncEnumerable<int> GetList()
+{
+  for (var i = 0; i < 100; i++)
+  {
+    await Task.Delay(100);
+    yield return i;
+  }
+}
+
+await foreach (var num in GetList())
+{
+  Console.WriteLine(num); // 0-99
+}
+```
+
+### 异步释放
+
+增加 IDisposable 的异步版本 IDisposableAsync
+
+接口函数为 `DisposeAsync()`
+
+```cs
+public class Cls : IAsyncDisposable
+{
+  public async ValueTask DisposeAsync()
+  {
+  }
+}
+```
+
+### 索引和范围
+
+可以指定数组范围
+
+```cs
+var nums = new int[]{
+  1,2,3,4,5
+};
+var nums2 = nums[^2]; // 倒数
+var nums3 = nums[1..3];
+var nums4 = nums[^2..^0]; // 倒数范围
+var nums5 = nums[..];
+var nums6 = nums[..3]; // 前三个
+var nums7 = nums[2..]; // 第三个开始直到结尾
+```
+
+声明范围
+
+```cs
+Range rg = 1..4;
+var n = nus[rg];
+```
+
+### null 合并赋值
+
+语法 `??=`
+
+如果左侧不为空，直接返回左侧
+
+如果左侧为空，则将右侧赋值给左侧，然后返回左侧
+
+```cs
+// WPF 常用
+private ICommand _okCommand = null;
+public ICommand OkCommand => _okCommand ??= new DelegateCommand(() =>
+{
+
+});
+```
+
+### 内插字符串增强功能
+
+可以结合 `$` 和 `@` 声明字符串，结合二者功能，声明顺序不分先后
+
+```cs
+var text = $@"abc\de{12}";
+Console.WriteLine(text); // abc\de12
+```
+
+## C# 9
+
+随 .NET5 一起发布，是面向 .NET5 版本的任何程序集的默认语言版本
+
+### 记录类型
+
+用 `record` 声明的类型
+
+是新的引用类型，相当于引用类型的 `struct`
+
+与类的区别是，`record` 可以使用基于值的相等性
+
+#### 简单声明
+
+可以简单声明只读记录
+
+```cs
+record Personal(string FirstName, string LastName);
+
+var person = new Personal("n1", "n2");
+Console.WriteLine($"FirstName = {person.FirstName}");
+Console.WriteLine($"LastName = {person.LastName}");
+```
+
+#### 可初始化记录
+
+也可以用 `init` 声明可初始化的记录，只能在构造函数中或初始化类时赋值
+
+```cs
+public record Personal
+{
+  public string FirstName { get; init; } = null!;
+  public string LastName { get; init; } = null!;
+}
+```
+
+#### 读写记录
+
+也可以声明可读写记录
+
+```cs
+public record Personal
+{
+  public string FirstName { get; set; } = null!;
+  public string LastName { get; set; } = null!;
+}
+```
+
+#### 值相等性
+
+同类 record 的两个实例对象，只要属性值都相同，`==` 运算符就为 `true`
+
+运行时类型必须相等，派生类型也不行
+
+#### 非破坏性修改
+
+用 `with` 基于已有记录，新建一条记录
+
+```cs
+Personal person1 = new("n1", "n2");
+Personal person2 = person1 with { FirstName = "John" };
+```
+
+#### ToString
+
+.ToString 会格式化属性名和属性值
+
+```
+DailyTemperature { HighTemp = 57, LowTemp = 30, Mean = 43.5 }
+```
+
+### 仅限 Init 的资源库
+
+用 init 替换 set 声明属性，只能在构造函数或初始化时设置属性值
+
+### 顶级语句
+
+不用 Main 方法和 namespace，直接写函数体代码
+
+### 模式匹配增强功能
+
+改进模式匹配
+
+- 类型模式匹配一个与特定类型匹配的对象
+- 带圆括号的模式强制或强调模式组合的优先级
+- 联合 `and` 模式要求两个模式都匹配
+- 析取 `or` 模式要求任一模式匹配
+- 否定 `not` 模式要求模式不匹配
+- 关系模式要求输入小于、大于、小于等于或大于等于给定常数。
+
+```cs
+public static bool IsLetter(this char c) =>
+    c is >= 'a' and <= 'z' or >= 'A' and <= 'Z';
+```
+
+```cs
+public static bool IsLetterOrSeparator(this char c) =>
+    c is (>= 'a' and <= 'z') or (>= 'A' and <= 'Z') or '.' or ',';
+```
+ 
+ > 未完待续
