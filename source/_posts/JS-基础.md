@@ -9,7 +9,7 @@ categories:
   - 记录
 ---
 
-JS 基础
+JS 学习
 
 ## 基础
 
@@ -133,14 +133,170 @@ eval(“var y=3;”);
 2. toExponential()使用指数记数法，小数点后位数由参数指定，将数字转换为字符串
 3. toPrecision()根据参数保留有效数字，转换成字符串
 
-### 其他
+## 事件循环
 
-1. 在不影响语义时，结尾分号可省
-2. 特殊情况：++和--作为下一行代码的前缀
+JS 的异步和多线程是通过事件循环（EventLoop） 实现的
 
-```
-x
-++/--
-y
-解释为x; ++/--y；
+### 宏任务/微任务
+
+JS 把异步任务分为宏任务和微任务
+
+宏任务是由宿主（浏览器、Node）发起的
+
+微任务是 JS 引擎发起的任务
+
+- 宏任务
+  - script
+  - setTimeout
+  - setInterval
+  - 事件
+  - AJAX 请求
+- DOM 渲染
+- 微任务
+  - Promise（Promise 本身是同步代码）
+  - async/await
+
+执行顺序
+
+1. 同步代码（js 执行栈、回调栈）
+2. 微任务的异步代码（js 引擎）
+3. 宏任务的异步代码（宿主环境）
+
+## Promise
+
+使用 TS 实现的一个符合 `Promise/A+` 规范的 Promise
+
+```TS
+type ResolveCallback<T> = (result: T) => void;
+type RejectCallback = (reason?: any) => void;
+
+class CustomPromise<T = any> {
+  constructor(
+    executor: (resolve: ResolveCallback<T>, reject: RejectCallback) => void
+  ) {
+    try {
+      executor(this.resolve.bind(this), this.reject.bind(this));
+    } catch (e) {
+      this.reject(e);
+    }
+  }
+
+  private status: "pending" | "fullFilled" | "rejected" = "pending";
+  private result?: T;
+  private reason?: any;
+  private onFullFilledCallbacks: RejectCallback[] = [];
+  private onRejectedCallbacks: ResolveCallback<T>[] = [];
+
+  resolve(result?: T) {
+    if (this.status != "pending") {
+      return;
+    }
+
+    this.status = "fullFilled";
+    this.result = result;
+    this.onFullFilledCallbacks.forEach((fn) => fn());
+  }
+
+  reject(reason?: any) {
+    if (this.status != "pending") {
+      return;
+    }
+
+    this.status = "rejected";
+    this.reason = reason;
+    this.onRejectedCallbacks.forEach((fn) => fn(this.reason));
+  }
+
+  then(onFulfilled?: ResolveCallback<T>, onRejected?: RejectCallback) {
+    const nextPromise = new CustomPromise((resolve, reject) => {
+      const onMicrotaskFulfilled: ResolveCallback<T> = () => {
+        queueMicrotask(() => {
+          try {
+            if (typeof onFulfilled != "function") {
+              resolve(this.result);
+            } else {
+              const val = onFulfilled(this.result);
+              this.resolvePromise(nextPromise, val, resolve, reject);
+            }
+          } catch (e) {
+            reject(e);
+          }
+        });
+      };
+      const onMicrotaskRejected: RejectCallback = () => {
+        queueMicrotask(() => {
+          try {
+            if (typeof onRejected != "function") {
+              resolve(this.reason);
+            } else {
+              const val = onRejected(this.reason);
+              this.resolvePromise(nextPromise, val, resolve, reject);
+            }
+          } catch (e) {
+            reject(e);
+          }
+        });
+      };
+
+      if (this.status == "fullFilled") {
+        onMicrotaskFulfilled(this.result);
+      }
+      if (this.status == "rejected") {
+        onMicrotaskRejected(this.reason);
+      }
+      if (this.status == "pending") {
+        this.onFullFilledCallbacks.push(() => {
+          onMicrotaskFulfilled(this.result);
+        });
+        this.onRejectedCallbacks.push(() => {
+          onMicrotaskRejected(this.reason);
+        });
+      }
+    });
+    return nextPromise;
+  }
+
+  private resolvePromise<T>(
+    promise: CustomPromise,
+    val: T,
+    resolve: ResolveCallback<T>,
+    reject: RejectCallback
+  ) {
+    if ((val as any) == promise) {
+      throw new TypeError("promise error");
+    }
+    if (val instanceof CustomPromise) {
+      val.then((v) => {
+        this.resolvePromise(promise, v, resolve, reject);
+      }, reject);
+    }
+    if (
+      (typeof val == "object" || typeof val == "function") &&
+      "then" in val &&
+      typeof val["then"] == "function"
+    ) {
+      let called = false;
+      const rej = (r: any) => {
+        if (called) return;
+        called = true;
+        reject(r);
+      };
+      try {
+        val["then"].call(
+          val,
+          (v: T) => {
+            if (called) return;
+            called = true;
+            this.resolvePromise(promise, v, resolve, reject);
+          },
+          (r: any) => {
+            rej(r);
+          }
+        );
+      } catch (e) {
+        rej(e);
+      }
+    }
+  }
+}
 ```
