@@ -526,13 +526,195 @@ DailyTemperature { HighTemp = 57, LowTemp = 30, Mean = 43.5 }
 - 关系模式要求输入小于、大于、小于等于或大于等于给定常数。
 
 ```cs
-public static bool IsLetter(this char c) =>
-    c is >= 'a' and <= 'z' or >= 'A' and <= 'Z';
+public static bool IsLetter(this char c) => c is >= 'a' and <= 'z' or >= 'A' and <= 'Z';
 ```
 
 ```cs
-public static bool IsLetterOrSeparator(this char c) =>
-    c is (>= 'a' and <= 'z') or (>= 'A' and <= 'Z') or '.' or ',';
+public static bool IsLetterOrSeparator(this char c) => c is (>= 'a' and <= 'z') or (>= 'A' and <= 'Z') or '.' or ',';
 ```
+
+### 可省略 new
+
+已知类型 `new` 表达式中可以省略类型
+
+```cs
+private List<WeatherObservation> _observations = new();
+```
+
+### 静态匿名函数
+
+允许对 lambda 和匿名方法，使用 `static` 修饰符
+
+```cs
+Action act = static () => {
+
+};
+```
+
+### 扩展 GetEnumerator
+
+允许 foreach 循环识别扩展方法 `GetEnumerator`
+
+```cs
+public class PeopleExtensions{
+  public static People GetEnumerator(this People people) => people;
+}
+
+var people = new People();
+
+foreach(var person in people){
+  //
+}
+```
+
+类内部需要实现迭代器功能，即包含 `Current` 和 `MoveNext`
+
+### lambda 弃元参数
+
+可以用 `_` 作为 lambda 和匿名方法的参数
+
+- lambda： `(_, _) => 0` ， `(int _, int _) => 0`
+- 匿名方法： `delegate(int _, int _) { return 0; }`
+
+### 分部方法
+
+对于 `partial` 类，可以在一处声明，在另一处实现
+
+```cs
+partial class D
+{
+    // Okay
+    internal partial bool TryParse(string s, out int i);
+}
+
+partial class D
+{
+    internal partial bool TryParse(string s, out int i) { }
+}
+```
+
+## C# 10
+
+.NET 6 的默认语言版本为 C# 10
+
+### 记录结构
+
+扩展之前的 record 记录
+
+- 用 `record struct` 声明值类型
+- 用 `record class` 声明引用类型
+- 用 `readonly record struct` 声明只读值类型
+
+#### 无参构造函数
+
+```cs
+record struct Person
+{
+  public int Id { get; set; } = 123;
+  public string Name { get; set; } = "h";
+}
+```
+
+#### 有参构造函数
+
+```cs
+record struct Person(string name)
+{
+  public int Id { get; set; } = 123;
+  public string Name { get; set; } = name;
+}
+```
+
+### 全局 using
+
+一次引入，整个项目可用
+
+```cs
+global using System.Math;
+```
+
+### 文件范围命名空间
+
+用新方式声明 namespace 后，整个文件中的类都是属于这个命名空间
+
+可以减少一组大括号，增加易读性
+
+```cs
+namespace CustomNamespace;
+
+public class Class1{
+
+}
+
+public class Class2{
+
+}
+```
+
+### 扩展属性模式
+
+模式匹配可以用嵌套的属性或字段
+
+```cs
+object people = new People
+{
+  Name = "H",
+  Contact = new
+  {
+    Email = "hi@hal.wang"
+  },
+};
+
+if (people is People { Contact.Email: "hi@hal.wang" })
+{
+
+}
+
+if (people is People { Contact: { Email: "hi@hal.wang" } })
+{
+
+}
+```
+
+### lambda 改进
+
+- Lambda 表达式可以具有自然类型，这使编译器可从 Lambda 表达式或方法组推断委托类型。
+- 如果编译器无法推断返回类型，Lambda 表达式可以声明该类型。
+- 特性可应用于 Lambda 表达式。
+- Lambda 支持关键字修饰，如 ref/out 等
+
+#### 特性应用到函数
+
+```cs
+var fn1 = [CustomAttribute] () => { };
+var fn2 = [Custom] () => { };
+```
+
+#### 特性应用到参数
+
+```cs
+var concat = ([DisallowNull] string a, [DisallowNull] string b) => a + b;
+```
+
+#### 特性应用到返回值
+
+```cs
+var inc = [return: NotNullifNotNull(nameof(s))] (int? s) => s.HasValue ? s++ : null;
+```
+
+### 常量内插字符串
+
+如果内插变量都是 const 修饰的，那么内插字符串也可以用 const 修饰
+
+```cs
+const string str1 = "s1";
+const string str2 = "s2";
+const string str = $"abc{str1}def{str2}g";
+```
+
+### 记录类型可密封 ToString
+
+用 `sealed` 修饰 `ToString`，子类不能再覆写 `ToString`
+
+## C# 11
  
- > 未完待续
