@@ -4,12 +4,12 @@
 
 # Site
 title: H
-subtitle: 自言自语
+subtitle: 精通多种语言 Hello World
 description:
 keywords: blog
-author: hal-wang
+author: hal.wang
 language: zh-CN
-SEOTitle: H
+SEOTitle: 学习笔记
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -23,7 +23,7 @@ abbrlink:
 
 # Directory
 source_dir: source
-public_dir: public
+public_dir: dist
 tag_dir: tags
 archive_dir: archives
 category_dir: categories
@@ -40,6 +40,9 @@ external_link: true # Open external links in new tab
 filename_case: 0
 render_drafts: false
 post_asset_folder: true
+marked:
+  prependRoot: false
+  postAsset: true
 relative_link: false
 future: true
 

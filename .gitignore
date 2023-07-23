@@ -3,5 +3,11 @@ Thumbs.db
 db.json
 *.log
 node_modules/
-public/
+dist/
 .deploy*/
+
+
+yarn.lock
+pnpm-lock.yaml
+
+source/guide/index.md

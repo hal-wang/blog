@@ -1,0 +1,42 @@
+name: "Publish"
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    if: github.repository == 'hal-wang/blog'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          registry-url: https://registry.npmjs.org/
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.7.1
+
+      - run: |
+          pnpm install
+          npm run build
+          cd dist
+          git config --global user.name 'hal-wang' 
+          git config --global user.email 'hi@hal.wang'
+          git init -b gh-pages
+          git add -A
+          git commit -m "publish"
+
+      - name: push
+        uses: ad-m/github-push-action@master
+        with:
+          directory: dist
+          repository: hal-wang/blog
+          force: true
+          branch: gh-pages
+          github_token: ${{ secrets.PUSH_REPO }}

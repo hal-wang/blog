@@ -376,6 +376,6 @@ API 写差不多时，才开始写网站。网站是使用 Vue + ts 写的，只
 
 根据 `cloudbase-framework` 文档，编辑 `cloudbaserc.json`，完美支持一键部署，测试一键部署一切良好，感叹腾讯云 `cloudbase` 一键部署这一方面做的非常完善。
 
-## sfa
+## ipare
 
-后改为更通用化、模块化的 `sfa`
+后改为更通用化、模块化的 [ipare](https://ipare.org)

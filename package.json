@@ -1,33 +1,36 @@
 {
   "name": "blog",
   "hexo": {
-    "version": "5.4.0"
+    "version": "6.3.0"
   },
   "license": "MIT",
   "scripts": {
-    "dev": "hexo g && hexo s",
-    "deploy": "hexo g && tcb login && tcb hosting deploy ./public/ -e blog-5gxsa2td07fbd2b0"
+    "build-guide": "ts-node build-guide.ts",
+    "build": "hexo clean && npm run build-guide && hexo g",
+    "start": "hexo clean && npm run build-guide && hexo g && hexo s",
+    "dev": "npm start"
   },
   "dependencies": {
-    "@cloudbase/cli": "^1.9.2",
-    "hexo": "^5.4.0",
+    "@types/node": "^18.11.17",
+    "hexo": "^6.3.0",
     "hexo-abbrlink": "^2.2.1",
-    "hexo-generator-archive": "^1.0.0",
+    "hexo-generator-archive": "^2.0.0",
     "hexo-generator-baidu-sitemap": "^0.1.9",
-    "hexo-generator-category": "^1.0.0",
+    "hexo-generator-category": "^2.0.0",
     "hexo-generator-feed": "^3.0.0",
-    "hexo-generator-index": "^2.0.0",
+    "hexo-generator-index": "^3.0.0",
     "hexo-generator-json-content": "^4.2.3",
     "hexo-generator-search": "^2.4.3",
-    "hexo-generator-sitemap": "^2.1.0",
-    "hexo-generator-tag": "^1.0.0",
+    "hexo-generator-sitemap": "^3.0.1",
+    "hexo-generator-tag": "^2.0.0",
     "hexo-render-pug": "^2.1.4",
-    "hexo-renderer-ejs": "^1.0.0",
-    "hexo-renderer-marked": "^4.1.0",
-    "hexo-renderer-stylus": "^2.0.1",
-    "hexo-server": "^2.0.0",
+    "hexo-renderer-ejs": "^2.0.0",
+    "hexo-renderer-marked": "^6.0.0",
+    "hexo-renderer-stylus": "^2.1.0",
+    "hexo-server": "^3.0.0",
     "hexo-symbols-count-time": "^0.7.1",
-    "hexo-theme-next": "^8.8.0",
-    "save": "^2.4.0"
+    "hexo-theme-next": "^8.14.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
   }
 }

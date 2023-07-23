@@ -94,3 +94,30 @@ reward: true
 ## 换行符
 
 git config --global core.autocrlf input  // 提交时转换为LF，检出时不转换
+
+## 修改当前仓库作者
+
+```bash
+git config user.name "name"
+git config user.email "email"
+```
+
+## 修改以前提交历史记录
+
+```bash
+git filter-branch -f --env-filter '
+OLD_EMAIL="old email"
+CORRECT_NAME="correct name"
+CORRECT_EMAIL="correct email"
+if [ "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL" ]
+then
+    export GIT_COMMITTER_NAME="$CORRECT_NAME"
+    export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL"
+fi
+if [ "$GIT_AUTHOR_EMAIL" = "$OLD_EMAIL" ]
+then
+    export GIT_AUTHOR_NAME="$CORRECT_NAME"
+    export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
+fi
+' --tag-name-filter cat -- --branches --tags
+```

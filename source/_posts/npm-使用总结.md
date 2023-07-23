@@ -57,12 +57,6 @@ profiler_binary_host_mirror "https://npm.taobao.org/mirrors/node-inspector/"
 chromedriver_cdnurl "https://cdn.npm.taobao.org/dist/chromedriver"
 ```
 
-## 快速 push
-
-git add .
-git commit -m "更新"
-git push origin master -f
-
 ## npm 常用参数
 
 | 参数            | 简写 | 作用                                             |
@@ -72,3 +66,15 @@ git push origin master -f
 | --save-dev      | -D   | 开发环境依赖，即添加到 devDependencies 中        |
 | --save-optional | -O   | 安装至可选依赖，即添加到 optionalDependencies 中 |
 | --save-exact    | -E   | 精确安装某个版本，即版本号没用`^`符号            |
+
+## 常见问题
+
+### 缺少 Python 或 Python 执行失败
+
+`gyp ERR! stack Error: Command failed: C:\Python310\python.EXE -c import sys; print "%s.%s.%s" % sys.version_info[:3];`
+
+需要安装 `windows-build-tools`
+
+```
+npm i -g windows-build-tools
+```

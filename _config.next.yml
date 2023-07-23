@@ -42,7 +42,6 @@ menu:
   tags: /tags/ || fa fa-tags
   archives: /archives/ || fa fa-archive
   sitemap: /sitemap.xml || fa fa-sitemap
-  #commonweal: /404/ || fa fa-heartbeat
 
 menu_settings:
   icons: true
@@ -59,15 +58,15 @@ sidebar:
   offset: 12
 
 avatar:
-  url: /imgs/h/h_mini.png
+  url: /imgs/avatar.jpg
   rounded: true
 
 social:
+  主页: https://hal.wang || fa fa-user
   GitHub: https://github.com/hal-wang || fab fa-github
-  Email: mailto:hi@hal.wang || fa fa-envelope
   微信: /imgs/qr/weixin.jpg || fab fa-weixin
   QQ: https://wpa.qq.com/msgrd?v=3&uin=790264027&site=qq&menu=yes || fab fa-qq
-  微博: https://weibo.com/hhhhal || fab fa-weibo
+  Email: mailto:hi@hal.wang || fa fa-envelope
   RSS: /atom.xml || fa fa-rss
 
 toc:
@@ -86,6 +85,13 @@ footer:
     animated: true
     color: "#808080"
   copyright: hal-wang
+
+  beian:
+    enable: true
+    icp: 京ICP备19029465号-5
+    gongan_id: 34122602000299
+    gongan_num: 皖公网安备 34122602000299号
+    gongan_icon_url: http://www.beian.gov.cn/img/new/gongan.png
 
 # ============================================================= #
 # ======================= Post Settings ======================= #
@@ -218,7 +224,9 @@ motion:
   async: true
 
 vendors:
-  internal: jsdelivr
+  internal: local
+  plugins: custom
+  custom_cdn_url: https://lib.baomitu.com/${cdnjs_name}/${version}/${cdnjs_file}
 
 reward_settings:
   enable: true
@@ -230,7 +238,7 @@ reward:
   alipay: /imgs/qr/alipay_sm.jpg
 
 favicon:
-  small: /imgs/h/h.png
-  medium: /imgs/h/h.png
-  apple_touch_icon: /imgs/h/h.png
-  safari_pinned_tab: /imgs/h/h.png
+  small: /imgs/avatar.jpg
+  medium: /imgs/avatar.jpg
+  apple_touch_icon: /imgs/avatar.jpg
+  safari_pinned_tab: /imgs/avatar.jpg
