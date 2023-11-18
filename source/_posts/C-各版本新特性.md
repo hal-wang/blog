@@ -887,3 +887,80 @@ file class HiddenWidget
 ```
 
 在其他代码文件的任何命名空间中，即使在部分类中，都无法访问该类型
+
+## C# 12
+
+### 主构造函数
+
+不再局限于 `record` 类型，也可以在 `class` 和 `struct` 中使用主构造函数
+
+```cs
+public class ExampleController(IService service) : ControllerBase
+{
+}
+```
+
+### 集合的展开运算符
+
+可以使用展开运算符 `..` 将集合中的元素与其他集合内敛
+
+```cs
+int[] arr1 = [1, 2, 3];
+int[] arr2 = [.. arr1, 4, 5];
+
+Console.WriteLine(string.Join(',', arr2));
+// 1,2,3,4,5
+```
+
+类似 `js` 中对数组操作的展开运算符 `...`
+
+### 默认 Lambda 参数
+
+可以为 Lambda 表达式的参数定义默认值，与普通方法相同
+
+### 类型别名
+
+可以用 `using` 指令为任意类型创建别名，类似 `ts` 中的 `type`
+
+```cs
+using CustomType = (int X, int Y);
+var val = new CustomType(1, 2);
+Console.WriteLine(val.X + val.Y); // 3
+```
+
+```cs
+using CustomList = System.Collections.Generic.List<int>;
+var val = new CustomList() { 1, 2 };
+Console.WriteLine(val[0] + val[1]); // 3
+```
+
+### 内联数组
+
+内联数组是包含多个元素的连续块的结构，适用于高性能场景
+
+- 内联数组是 struct
+- struct 仅有 1 个字段
+- struct 未指定显式布局
+- 使用 `System.Runtime.CompilerServices.InlineArrayAttribute` 特性修饰 struct
+- `System.Runtime.CompilerServices.InlineArrayAttribute` 参数必须大于 0
+
+```cs
+[System.Runtime.CompilerServices.InlineArray(10)]
+public struct Buffer
+{
+    private int _element0;
+}
+```
+
+```cs
+var buffer = new Buffer();
+for (int i = 0; i < 10; i++)
+{
+    buffer[i] = i;
+}
+
+foreach (var i in buffer)
+{
+    Console.WriteLine(i);
+}
+```
