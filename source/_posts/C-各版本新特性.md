@@ -717,4 +717,173 @@ const string str = $"abc{str1}def{str2}g";
 用 `sealed` 修饰 `ToString`，子类不能再覆写 `ToString`
 
 ## C# 11
- 
+
+.NET 7 的默认语言版本为 C# 11
+
+### 泛型特性
+
+可创建泛型类并继承 `Attribute`，实现泛型特性
+
+```cs
+public class GenericAttribute<T> : Attribute { }
+```
+
+```cs
+[GenericAttribute<string>()]
+public string Method() => default;
+```
+
+泛型类型必须完全构造，不能有任何参数
+
+- 不能是 dynamic，可以是 object
+- 不能是 `string?`/`int?` 等可空引用类型，应使用 string/int 等
+- 不能用元组如 `(int X, int Y)`，可使用 `ValueTuple<int, int>`
+
+```cs
+public class GenericType<T>
+{
+   [GenericAttribute<T>()] // Not allowed! generic attributes must be fully constructed types.
+   public string Method() => default;
+}
+```
+
+### 字符串内插中允许换行
+
+在字符串内插中 `{ }`, 允许换行
+
+```cs
+var str = $"abc{
+    1+2
+    +3
+    +4
+}def";
+Console.WriteLine(str); // abc10def
+```
+
+### 列表的模式匹配
+
+可以将数组或列表与模式的序列进行匹配
+
+```cs
+int[] numbers = { 1, 2, 3 };
+
+Console.WriteLine(numbers is [1, 2, 3]);  // True
+Console.WriteLine(numbers is [1, 2, 4]);  // False
+Console.WriteLine(numbers is [1, 2, 3, 4]);  // False
+Console.WriteLine(numbers is [0 or 1, <= 2, >= 3]);  // True
+```
+
+#### 弃元
+
+弃元可以匹配任何值
+
+```cs
+int[] numbers = { 1, 2, 3 };
+
+Console.WriteLine(numbers is [1, 2, _]);  // True
+Console.WriteLine(numbers is [1, _, _]);  // True
+```
+
+#### 取值
+
+```cs
+List<int> numbers = new() { 1, 2, 3 };
+
+if (numbers is [var first, _, _])
+{
+    Console.WriteLine($"The first element of a three-item list is {first}.");
+}
+```
+
+#### 切片
+
+在模式匹配中可使用切片模式
+
+切片可匹配 0 个或多个元素，最多出现一个切片
+
+```cs
+Console.WriteLine(new[] { 1, 2, 3, 4, 5 } is [> 0, > 0, ..]);  // True
+Console.WriteLine(new[] { 1, 1 } is [_, _, ..]);  // True
+Console.WriteLine(new[] { 0, 1, 2, 3, 4 } is [> 0, > 0, ..]);  // False
+Console.WriteLine(new[] { 1 } is [1, 2, ..]);  // False
+
+Console.WriteLine(new[] { 1, 2, 3, 4 } is [.., > 0, > 0]);  // True
+Console.WriteLine(new[] { 2, 4 } is [.., > 0, 2, 4]);  // False
+Console.WriteLine(new[] { 2, 4 } is [.., 2, 4]);  // True
+
+Console.WriteLine(new[] { 1, 2, 3, 4 } is [>= 0, .., 2 or 4]);  // True
+Console.WriteLine(new[] { 1, 0, 0, 1 } is [1, 0, .., 0, 1]);  // True
+Console.WriteLine(new[] { 1, 0, 1 } is [1, 0, .., 0, 1]);  // False
+```
+
+### 原始字符串文本
+
+用 3 个双引号 `"""` 开头和结尾
+
+```cs
+string longMessage = """
+    This is a long message.
+    It has several lines.
+        Some are indented
+                more than others.
+    Some should start at the first column.
+    Some have "quoted text" in them.
+    """;
+
+var location = $$"""
+   You are at {{{Longitude}}, {{Latitude}}}
+   """;
+```
+
+### UTF-8 字符串字面量
+
+用 `u8` 后缀修饰字符串字面量，可指定 UTF-8 编码
+
+```cs
+ReadOnlySpan<byte> AuthWithTrailingSpace = new byte[] { 0x41, 0x55, 0x54, 0x48, 0x20 };
+ReadOnlySpan<byte> AuthStringLiteral = "AUTH "u8;
+
+byte[] AuthStringLiteral = "AUTH "u8.ToArray();
+```
+
+### 必须的成员
+
+用 `required` 修饰属性，要求必须初始化该属性
+
+```cs
+public class Person
+{
+    public required string FirstName { get; init; }
+}
+
+var person = new Person { FirstName = "John"};
+```
+
+如果用构造函数初始化，需要用 `SetsRequiredMembers` 特性修饰构造函数
+
+```cs
+public class Person
+{
+    public Person() { }
+
+    [SetsRequiredMembers]
+    public Person(string firstName) => FirstName = firstName;
+
+    public required string FirstName { get; init; }
+}
+
+var person = new Person("John");
+```
+
+### 文件本地类型
+
+用 `file` 修饰类型，限制该类型的可见性为文件内
+
+```cs
+file class HiddenWidget
+{
+    // implementation
+}
+```
+
+在其他代码文件的任何命名空间中，即使在部分类中，都无法访问该类型
