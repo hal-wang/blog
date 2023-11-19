@@ -39,7 +39,7 @@ async Task Func() {
 
 随 Visual Studio 2015 发布
 
-### Using 静态引入
+### using 静态引入
 
 可以 using 引入类的静态成员
 
@@ -49,7 +49,7 @@ using static namespace.Class;
 
 引入后可直接访问该类中的静态成员
 
-### Using 引入别名
+### using 引入别名
 
 可以给引入的命名空间取别名
 
@@ -59,7 +59,7 @@ using name = namespace.subnamespace;
 var obj = name.Class();
 ```
 
-### 异常赛选器
+### 异常筛选器
 
 支持异常的条件过滤
 
@@ -123,7 +123,7 @@ public class Location
 }
 ```
 
-### Null 传播器
+### null 传播器
 
 运算符 `?.` 和 `?[]`
 
@@ -146,7 +146,7 @@ var text = $"你好，{name}";
 
 ```cs
 var user1 = new User();
-var naem = nameof(user1); // true
+Console.WriteLine(nameof(user1)); // user1
 ```
 
 ## C# 7
@@ -162,7 +162,7 @@ var naem = nameof(user1); // true
 ```cs
 var intput = "123";
 int num;
-if(int.TryParse(intput,out num)){
+if(int.TryParse(intput, out num)){
   //
 }
 ```
@@ -171,7 +171,7 @@ if(int.TryParse(intput,out num)){
 
 ```cs
 var intput = "123";
-if(int.TryParse(intput,out var num)){
+if(int.TryParse(intput, out var num)){
   //
 }
 ```
@@ -405,8 +405,10 @@ var nums7 = nums[2..]; // 第三个开始直到结尾
 声明范围
 
 ```cs
-Range rg = 1..4;
-var n = nus[rg];
+int[] nums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+Range rg = 3..6;
+int[] vals = nums[rg];
+Console.WriteLine(string.Join(',', vals)); // 4,5,6
 ```
 
 ### null 合并赋值
@@ -506,7 +508,7 @@ Personal person2 = person1 with { FirstName = "John" };
 DailyTemperature { HighTemp = 57, LowTemp = 30, Mean = 43.5 }
 ```
 
-### 仅限 Init 的资源库
+### 仅限 init 的资源库
 
 用 init 替换 set 声明属性，只能在构造函数或初始化时设置属性值
 
@@ -889,6 +891,8 @@ file class HiddenWidget
 在其他代码文件的任何命名空间中，即使在部分类中，都无法访问该类型
 
 ## C# 12
+
+.NET 8 的默认语言版本为 C# 12
 
 ### 主构造函数
 

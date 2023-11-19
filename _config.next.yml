@@ -41,6 +41,7 @@ menu:
   about: /about/ || fa fa-user
   tags: /tags/ || fa fa-tags
   archives: /archives/ || fa fa-archive
+  categories: /categories/ || fa fa-cubes
   sitemap: /sitemap.xml || fa fa-sitemap
 
 menu_settings:
