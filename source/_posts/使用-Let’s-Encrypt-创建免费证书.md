@@ -4,7 +4,9 @@ comments: true
 abbrlink: f965c2da
 date: 2023-09-18 20:08:03
 categories:
+  - 记录
 tags:
+  - ssl
 ---
 
 仅需简单几步，即可使用 Let’s Encrypt 创建免费的多域名和泛域名证书
