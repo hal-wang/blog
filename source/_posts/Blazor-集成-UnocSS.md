@@ -9,13 +9,13 @@ tags:
   - Blazor
 ---
 
-在原子化 css 中，最热门的当属 `tailwindcss`
-
-而且在 `Blazor` 中集成 `tailwindcss` 的教程也很多
+在原子化 css 中，最热门的当属 `tailwindcss`，而且在 `Blazor` 中集成 `tailwindcss` 的教程也很多
 
 本文使用一个更强大的 `UnoCSS`，目前 `Blazor` 集成 `UnoCSS` 的教程却一个也找不到
 
 这里记录一下如何在 `Blazor` 中集成 `UnoCSS`，相信能给你带来更愉快的开发体验
+
+本文对应源码：<https://github.com/hal-wang/BlazorUnoCSS>
 
 <!--more-->
 
@@ -144,3 +144,7 @@ export default defineConfig({
 之后每次编译项目，都会自动执行语句 `npm run buildcss`
 
 不需要再手动执行
+
+## 源码
+
+GitHub: <https://github.com/hal-wang/BlazorUnoCSS>
