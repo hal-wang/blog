@@ -49,7 +49,7 @@ npm init -y
 
 ```js
   "scripts": {
-    "buildcss": "postcss wwwroot/css/site.css -o wwwroot/css/site.min.css"
+    "buildcss": "postcss wwwroot/app.css -o wwwroot/app.min.css"
   },
 ```
 
@@ -76,30 +76,30 @@ pnpm add unocss
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@unocss/postcss": "^0.58.6",
+    "@unocss/postcss": "^0.59.4",
     "postcss-cli": "^11.0.0",
-    "unocss": "^0.58.6"
+    "unocss": "^0.59.4"
   }
 }
 ```
 
 ## 配置 unocss 和 postcss
 
-增加文件 `postcss.config.cjs`
+增加文件 `postcss.config.mjs`
 
 ```js
-// postcss.config.cjs
-module.exports = {
-  plugins: {
-    "@unocss/postcss": {},
-  },
+// postcss.config.mjs
+import unocss from "@unocss/postcss";
+
+export default {
+  plugins: [unocss()],
 };
 ```
 
-增加文件 `uno.config.ts`
+增加文件 `uno.config.mjs`
 
 ```js
-// uno.config.ts
+// uno.config.mjs
 import { defineConfig, presetUno } from "unocss";
 
 export default defineConfig({
