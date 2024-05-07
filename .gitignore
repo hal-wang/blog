@@ -6,8 +6,4 @@ node_modules/
 dist/
 .deploy*/
 
-
-yarn.lock
-pnpm-lock.yaml
-
 source/guide/index.md
