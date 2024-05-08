@@ -9,7 +9,7 @@ tags:
   - C#
 ---
 
-概要
+内容概要
 
 - 前台线程/后台线程
 - 线程优先级
@@ -28,11 +28,18 @@ AppDomain 并不存在于操作系统，只存在于 .NET CLI 中，并且不能
 
 多个 AppDomain 之间不能互相访问代码。在程序层面，一个 AppDomain 相当于一个独立的程序
 
-每个 AppDomain 下可以拥有多个 Thread，在多线程程序开发中，一般涉及的都是 Thread 或其封装类
+每个 AppDomain 下可以拥有多个 Thread
+
+在多线程程序开发中，一般使用的都是 Thread 或其封装类
 
 ## 前台/后台线程
 
+线程按功能分为两类
+
 - 前台线程
+- 后台线程
+
+### 前台线程
 
 前台线程一般用来处理输入输出、响应事件、处理消息
 
@@ -42,15 +49,15 @@ UI 线程属于前台线程
 
 如果程序退出后，因为异常而没有退出干净，在任务管理器中仍然能看到，就是因为存在没有结束的前台线程
 
-- 后台线程
+### 后台线程
 
 后台线程一般用于处理耗时的任务，不会造成界面卡顿
 
-程序退出时，所有后台线程会被强制关闭
+程序退出时，所有后台线程会被强制关闭。因此退出程序可以不用手动停止后台线程。
 
 ## 优先级
 
-在多线程并发环境中，多线程的只写顺序是随机不可预测的。
+在多线程并发环境中，多线程的执行顺序是随机不可预测的
 
 线程开始后，只是被放在线程池中等待 CPU 调度
 
@@ -69,6 +76,8 @@ UI 线程属于前台线程
 - BackgroundWorker
 
 ### Thread
+
+使用多线程最基础的类
 
 ```cs
 var thread = new Thread(()=>{
@@ -100,7 +109,7 @@ Thread 类默认创建为前台线程，可通过 IsBackground 属性，设置�
 
 ### ThreadPool
 
-ThreadPool（线程池）维护了多个线程，用于执行小任务，防止频繁创建线程
+`ThreadPool`（线程池）维护了多个线程，用于执行小任务，防止频繁创建线程
 
 在线程池中的线程执行完后不会自动移除，而是处于挂起的状态，如果再次向线程池发出请求，那么挂起的线程会被激活，不用创建新的线程就可以执行任务，可以节约创建和销毁线程的开销
 
@@ -240,7 +249,7 @@ Console.ReadLine();
 
 ### Parallel
 
-`Parallel` 类位于 `System.Threading.Task` 命名空间中，与 `Task` 相同
+`Parallel` 类位于 `System.Threading.Task` 命名空间中，命名空间与 `Task` 相同
 
 Parallel 是对 Thread 和 ThreadPool 的封装和抽象
 
@@ -266,7 +275,7 @@ public static ParallelLoopResult For(int fromInclusive, int toExclusive, Action<
 
 第三个参数是任务函数体，函数的参数是循环迭代的次数
 
-还有一些重载版本，在重载版本中支持中断和线程初始化
+还有一些重载版本，在重载版本中支持中断和线程初始化，后面会有介绍
 
 #### Parallel.ForEach
 
@@ -289,7 +298,7 @@ Parallel.ForEach(data, (s) =>
 Console.ReadKey();
 ```
 
-还有一些重载版本，在重载版本中支持中断和线程初始化
+还有一些重载版本，在重载版本中支持中断和线程初始化，后面会有介绍
 
 #### Parallel.Invoke
 
@@ -325,7 +334,7 @@ Console.ReadKey();
 
 #### 中断执行
 
-回调函数的重载版本有参数 `ParallelLoopState`
+回调函数的重载版本，有的支持参数 `ParallelLoopState`
 
 该对象有函数 `Break()` 和 `Stop`，可以中断任务的执行
 
@@ -376,7 +385,7 @@ LowestBreakIteration: 6
 
 #### 线程初始化
 
-Parallel 下的模板函数重载版本，可以对每个线程进行初始化
+Parallel 下的模板函数重载版本，可以对每个线程进行初始化，如
 
 ```cs
 public static ParallelLoopResult For<TLocal>(int fromInclusive, int toExclusive, Func<TLocal> localInit, Func<int, ParallelLoopState, TLocal, TLocal> body, Action<TLocal> localFinally);
@@ -454,9 +463,12 @@ finally  i      1
 - 支持任务嵌套，一个任务中可以再开启多个任务
 - 可以获取任务的返回值
 - 任务基于线程，最终执行是需要线程来执行的
-- 任务和线程 不是一对一关系，任务的开销更小，控制更精确
+- 任务和线程不是一对一关系，一个线程可能有多个任务
+- 相比于线程，任务的开销更小，控制更精确
 
 #### 启动任务
+
+有多种方式启动一个任务
 
 ```cs
 _ = Task.Run(() =>
@@ -897,7 +909,12 @@ finally
 }
 ```
 
-### AutoResetEvent/ManualResetEvent
+### 事件
+
+有两种可以实现线程同步的事件
+
+- AutoResetEvent
+- ManualResetEvent
 
 可以控制是否阻塞线程
 
