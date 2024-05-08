@@ -1060,3 +1060,102 @@ Console.ReadLine();
 1结束
 3结束
 ```
+
+## 定时器
+
+在 C# 中有多种定时器，常见通用的两种为
+
+- System.Threading.Timer 线程计时器
+- System.Timers.Timer 服务器计时器
+
+还有和框架相关的，如
+
+| 框架     | 类和命名空间                             |
+| -------- | ---------------------------------------- |
+| WPF      | System.Windows.Threading.DispatcherTimer |
+| WinForm  | System.Windows.Forms.Timer               |
+| ASP\.NET | System.Web.UI.Timer                      |
+
+### 框架相关的定时器
+
+都是单线程的，并且在 UI 线程中执行，因此可以操作 UI 控件
+
+一般仅做一些简单的和 UI 交互的定时操作，耗时操作会导致 UI 卡顿
+
+### System.Threading.Timer
+
+线程计时器是轻量计时器，基于线程池实现，工作在后台线程
+
+如果前一个执行还未结束，会新开个线程执行新任务
+
+不是线程安全的
+
+```cs
+new System.Threading.Timer((obj) =>
+{
+    Console.WriteLine($"当前线程：{Environment.CurrentManagedThreadId}");
+    Thread.Sleep(20);
+}, null, 10, 10);
+Console.ReadLine();
+```
+
+输出
+
+```
+当前线程：11
+当前线程：5
+当前线程：10
+当前线程：11
+当前线程：10
+当前线程：5
+当前线程：10
+当前线程：5
+当前线程：10
+...
+```
+
+### System.Timers.Timer
+
+服务器计时器是针对服务器的服务程序，不过一般程序都可以使用
+
+对多线程环境下有更多优化
+
+如果前一个执行还未结束，与 `System.Threading.Timer` 相同，会新开个线程执行新任务
+
+```cs
+var timer = new System.Timers.Timer(10);
+timer.Elapsed += Timer_Elapsed;
+timer.Start();
+Console.ReadLine();
+
+static void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
+{
+    Console.WriteLine($"当前线程：{Environment.CurrentManagedThreadId}");
+    Thread.Sleep(20);
+}
+```
+
+输出
+
+```
+当前线程：5
+当前线程：11
+当前线程：10
+当前线程：11
+当前线程：5
+当前线程：11
+当前线程：5
+当前线程：11
+当前线程：5
+...
+```
+
+#### AutoReset
+
+`AutoReset` 属性默认为 false，如果设为 true，那么执行一次 `Elapsed` 后就不再执行了
+
+#### SynchronizingObject
+
+`SynchronizingObject` 属性可以指定同步上下文
+
+比如指定为 UI 控件，则回调会在 UI 线程中执行
