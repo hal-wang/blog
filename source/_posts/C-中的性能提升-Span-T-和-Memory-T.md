@@ -183,7 +183,7 @@ Console.WriteLine(num1 + num2); // 33
 
 `List<T>` 自增会造成 `Span<T>` 引用的位置错误，因此是这里是一个坑
 
-先创建容量为 10 的 `List<int>`，并赋初值，使用 `CollectionsMarshal` 创建一个 `Span<int>`
+先创建容量为 10 的 `List<int>`，并赋初值，使用 `CollectionsMarshal` 创建一个 `Span<int>`，指向 `List<int>` 内存块
 
 ```cs
 var list = new List<int>(10);
@@ -195,7 +195,7 @@ for (var i = 0; i < 10; i++)
 var span = CollectionsMarshal.AsSpan(list);
 ```
 
-到这里，span 就是 list 中元素的所在的内存段，对 `span[i]` 的读写都和 `list[i]` 的读写都是操作同一段内存数据，一切正常
+代码到这里，span 就是 list 中元素的所在的内存段，对 `span[i]` 的读写都和 `list[i]` 的读写都是操作同一段内存数据，一切正常
 
 现在我们给 list 增加一个元素，list 长度超过容量 10，因此容量会自增到 20
 
@@ -208,6 +208,8 @@ Console.WriteLine($"Capacity: {list.Capacity}"); // Capacity: 20
 
 那么现在 `span` 和 `list` 两个变量就不相干了，给 `span[i]` 和 `list[i]` 赋值都互不影响，`span` 就失去了作用和意义
 
+从逻辑上说，这也算是一种内存泄漏，只是这段内存没有用，即使内存泄漏也没有影响，这段内存会随着 span 变量的回收而回收
+
 ```cs
 span[0] = 100;
 Console.WriteLine($"span[0]: {span[0]}"); // span[0]: 100
@@ -218,6 +220,6 @@ Console.WriteLine($"list[0]: {list[0]}"); // list[0]: 0
 
 ```cs
 list[1] = 100;
-Console.WriteLine($"span[0]: {span[0]}"); // span[0]: 0
-Console.WriteLine($"list[0]: {list[0]}"); // list[0]: 100
+Console.WriteLine($"span[1]: {span[1]}"); // span[1]: 0
+Console.WriteLine($"list[1]: {list[1]}"); // list[1]: 100
 ```
