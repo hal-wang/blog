@@ -5,7 +5,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "build-guide": "ts-node build-guide.ts",
+    "build-guide": "ts-node build-guide.cts",
     "build": "hexo clean && npm run build-guide && hexo g",
     "start": "hexo clean && npm run build-guide && hexo g && hexo s",
     "dev": "npm start"
