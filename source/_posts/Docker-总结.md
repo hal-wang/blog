@@ -88,13 +88,34 @@ docker network connect <net1> <net2>
 ## MySQL
 
 ```
-docker run --name mysql8 -v mysql8:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=<password> -d -p 3306:3306 mysql:8 --lower-case-table-names=1 --default-authentication-plugin=mysql_native_password
+docker run --name mysql5 -v mysql5:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=<password> -d -p 55105:3306 mysql:5.7.44
+```
+
+```
+docker run --name mysql8 -v mysql8:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=<password> -d -p 55108:3306 mysql:8.4.3 --lower-case-table-names=1
 ```
 
 ## MSSQL
 
 ```
-docker run --name=mssql2019 -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 1433:1433 -v mssql2019:/var/opt/mssql -d mcr.microsoft.com/mssql/server:2019-latest
+docker run --name=mssql2022 -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 55022:1433 -v /mnt/c/volumes/mssql2022:/var/opt/mssql/data -d mcr.microsoft.com/mssql/server:2022-latest
+```
+
+### 连接数据库
+
+```
+docker exec -it <container_id|container_name> /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P <your_password>
+```
+
+### 开启远程访问
+
+连接数据库后运行
+
+```SQL
+EXEC sys.sp_configure N'remote access', N'1'
+GO
+RECONFIGURE WITH OVERRIDE
+GO
 ```
 
 ## MongoDB
@@ -113,12 +134,5 @@ $ docker exec -it mongo5 mongo admin
 ## Redis
 
 ```
-docker run -itd --name redis6 -v redis6:/data -p 6379:6379 redis:6
-```
-
-指定配置
-
-```
-docker run -itd --name redis -v redis:/data -v redis-cfg:/etc/redis -p 6379:6379 redis:6.0 redis
--server /etc/redis/redis.conf --appendonly yes
+docker run -itd --name redis7 -v redis7:/data -p 6379:6379 redis:7.4.1
 ```
