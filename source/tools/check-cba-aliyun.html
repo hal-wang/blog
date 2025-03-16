@@ -1,0 +1,42 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>自动打开网页</title>
+
+    <style>
+      #btn {
+        width: 100%;
+        padding: 20px 0;
+        font-size: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <button id="btn">开始</button>
+  </body>
+
+  <script>
+    !(() => {
+      document.getElementById("btn").onclick = async () => {
+        const urls = `
+          https://m.console.aliyun.com/ecs/cn-beijing/instances/i-2ze5xduwlgrsvfx2612k/monitor
+          https://m.console.aliyun.com/ecs/cn-beijing/instances/i-2ze1vfjj2spayf2x7n78/monitor
+          https://m.console.aliyun.com/ecs/cn-beijing/instances/i-2ze88tmjbxtca1rgcea0/monitor
+          https://m.console.aliyun.com/ecs/cn-beijing/instances/i-2ze0x2857b1asoiut5l4/monitor
+          https://m.console.aliyun.com/appmonitor/rds/monitor-list?regionId=cn-beijing&instanceId=rm-2zev2k7bcksnm8769
+          https://m.console.aliyun.com/redis/cn-beijing/basic-list/r-2zem9dminsf4nu8w2r/monitor`
+          .split("\n")
+          .map((x) => x.trim())
+          .filter((x) => !!x);
+
+        for (var i = 0; i < urls.length; i++) {
+          window.open(urls[i], "_blank");
+          await new Promise((resolve) => setTimeout(resolve, 3000));
+        }
+      };
+    })();
+  </script>
+</html>
