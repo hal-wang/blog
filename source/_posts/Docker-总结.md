@@ -88,17 +88,25 @@ docker network connect <net1> <net2>
 ## MySQL
 
 ```
-docker run --name mysql5 -v mysql5:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=<password> -d -p 55105:3306 mysql:5.7.44
+docker run --name mysql5 -v mysql5:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=<password> -d -p 3356:3306 mysql:5.7
 ```
 
 ```
-docker run --name mysql8 -v mysql8:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=<password> -d -p 55108:3306 mysql:8.4.3 --lower-case-table-names=1
+docker run --name mysql8 -v mysql8:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=<password> -d -p 3386:3306 mysql:8.4 --lower-case-table-names=1
 ```
 
 ## MSSQL
 
 ```
-docker run --name=mssql2022 -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -p 55022:1433 -v /mnt/c/volumes/mssql2022:/var/opt/mssql/data -d mcr.microsoft.com/mssql/server:2022-latest
+docker run --name=mssql2017 -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -e "MSSQL_COLLATION=Chinese_PRC_CI_AS" -p 14317:1433 -v mssql2017:/var/opt/mssql/data -v mssql2017backup:/DatabaseBackup -d mcr.microsoft.com/mssql/server:2017-latest
+```
+
+```
+docker run --name=mssql2019 -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -e "MSSQL_COLLATION=Chinese_PRC_CI_AS" -p 14319:1433 -v mssql2019:/var/opt/mssql/data -v mssql2019backup:/DatabaseBackup -d mcr.microsoft.com/mssql/server:2019-latest
+```
+
+```
+docker run --name=mssql2022 -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -e "MSSQL_COLLATION=Chinese_PRC_CI_AS" -p 14322:1433 -v mssql2022:/var/opt/mssql/data -v mssql2022backup:/DatabaseBackup -d mcr.microsoft.com/mssql/server:2022-latest
 ```
 
 ### 连接数据库
@@ -134,5 +142,5 @@ $ docker exec -it mongo5 mongo admin
 ## Redis
 
 ```
-docker run -itd --name redis7 -v redis7:/data -p 6379:6379 redis:7.4.1
+docker run -itd --name redis7 -v redis7:/data -p 6379:6379 redis:7.4
 ```
