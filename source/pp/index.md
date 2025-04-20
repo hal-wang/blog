@@ -6,5 +6,5 @@ comments: true
 ---
 
 <script>
-window.open("./en","_self")
+window.open("/agreement/privacy-policy/en","_self")
   </script>

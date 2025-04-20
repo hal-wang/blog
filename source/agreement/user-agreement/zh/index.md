@@ -1,5 +1,5 @@
 ---
-layout: "sp"
+layout: "agreement"
 title: "用户协议"
 date: 2025-04-20 12:00:00
 comments: true
