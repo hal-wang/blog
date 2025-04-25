@@ -34,3 +34,13 @@ comments: true
 > #### Contacting Us
 >
 > If there are any questions regarding this privacy policy you may contact us by email: <support@hal.wang>
+
+<style>
+  body .main .column,
+  body .main .page .post-block .post-header .post-meta-container,
+  body .main .page .breadcrumb,
+  body .footer,
+  body .toggle {
+    display: none !important;
+  }
+</style>
