@@ -92,3 +92,17 @@ Let’s Encrypt 创建的证书可能会出现证书链不完整的错误
 选择 `上传证书`
 
 编辑证书文件，将文件内容拷出来，粘贴到网页，再点击 `获取证书链`，即得到修复后的证书内容
+
+## 证书转换
+
+PEM -> PFX/PKCS12
+
+```bash
+openssl pkcs12 -export -out cert.pfx -inkey privkey1.pem -in cert1.pem -certfile chain1.pem
+```
+
+PFX/PKCS12 -> PEM
+
+```bash
+openssl pkcs12 -in cert.pfx -out cert.pem -nodes
+```
