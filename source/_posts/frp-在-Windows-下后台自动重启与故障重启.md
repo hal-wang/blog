@@ -1,13 +1,17 @@
 ---
-title: Windows 下 frp 自动重启与故障重启
+title: frp 在 Windows 下后台自动重启与故障重启
 comments: true
 abbrlink: b17a6507
 date: 2025-08-02 21:52:37
 categories:
+  - 记录
 tags:
+  - C#
+  - Windows
+  - frp
 ---
 
-frp 在 linux 下自动启动和故障重启可以用 systemd 实现，也较容易，文档中也有说明。
+frp 在 linux 下后台自动启动和故障重启可以用 systemd 实现，也较容易，文档中也有说明。
 
 但在 windows 下文档并没有说如何实现，这里说下本人在 windows 下的使用方法和经验。
 
@@ -44,9 +48,9 @@ _实测中文路径可能会影响自动启动，建议使用无特殊字符的�
 
 ## 方法 2：使用 pm2
 
-pm2 虽然是管理 nodejs 的，但实测也可以托管 frp 程序，且运行稳定
+pm2 虽然是管理 nodejs 的，但实测也可以托管 frp 程序，且运行稳定。
 
-这个方法需要 nodejs 环境，如果没有，自行搜索安装方式
+这个方法需要 nodejs 环境，如果没有，自行搜索安装方式。
 
 下面直接使用
 
@@ -63,7 +67,7 @@ npm install -g pm2-windows-startup
 pm2 start -n <name> <frp.exe 路径> -- -c "<配置文件路径>"
 ```
 
-frp 参数是服务名称，可自定义，frpc.exe 和 frpc.ini 的路径替换为你的实际路径
+frp 参数是服务名称，可自定义，frpc.exe 和 frpc.ini 的路径替换为你的实际路径。
 
 如
 
@@ -73,7 +77,7 @@ pm2 start -n frp E:\frp\frpc.exe -- -c "E:\frp\frpc.ini"
 
 ### 设置自动启动
 
-上面脚本默认是有故障重启的，因此这里只用设置开机自启即可
+上面脚本默认是有故障重启的，因此这里只用设置开机自启即可。
 
 控制台执行语句
 
@@ -84,4 +88,4 @@ pm2 save
 
 ## 其他守护程序
 
-本人也尝试过其他守护程序，主流的如 `nssm` 和 `WinSW` 目前都已经不再维护
+本人也尝试过其他守护程序，主流的如 `nssm` 和 `WinSW` 目前都已经不再维护。
