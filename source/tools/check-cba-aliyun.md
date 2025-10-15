@@ -1,26 +1,32 @@
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>自动打开网页</title>
+---
+layout: "tools"
+title: "阿里云资源检查"
+date: 2025-05-16 23:24:00
+---
 
-    <style>
-      #btn {
-        width: 100%;
-        padding: 20px 0;
-        font-size: 20px;
-        font-weight: bold;
-      }
-    </style>
-  </head>
+  <style>
+    #startBtn, #loginBtn {
+      width: 100%;
+      padding: 20px 0;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  </style>
 
-  <body>
-    <button id="btn">开始</button>
-  </body>
+  <div>
+    <button id="loginBtn">登录</button>
+    <button id="startBtn">开始</button>
+  </div>
 
   <script>
     !(() => {
-      document.getElementById("btn").onclick = async () => {
+      document.getElementById("loginBtn").onclick = async ()=>{
+          window.open("https://account.aliyun.com/login/login.htm", "_blank");
+      };
+      
+      document.getElementById("startBtn").onclick = async () => {
         const urls = `
           https://m.console.aliyun.com/ecs/cn-beijing/instances/i-2ze5xduwlgrsvfx2612k/monitor
           https://m.console.aliyun.com/ecs/cn-beijing/instances/i-2ze1vfjj2spayf2x7n78/monitor
@@ -39,4 +45,3 @@
       };
     })();
   </script>
-</html>
