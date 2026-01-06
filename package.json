@@ -1,18 +1,18 @@
 {
   "name": "blog",
   "hexo": {
-    "version": "7.3.0"
+    "version": "8.1.1"
   },
   "license": "MIT",
   "scripts": {
-    "build-guide": "ts-node build-guide.cts",
+    "build-guide": "node build-guide.js",
     "build": "hexo clean && npm run build-guide && hexo g",
     "start": "hexo clean && npm run build-guide && hexo g && hexo s",
     "dev": "npm start"
   },
   "dependencies": {
-    "@types/node": "^22.7.6",
-    "hexo": "^7.3.0",
+    "@types/node": "^25.0.3",
+    "hexo": "^8.1.1",
     "hexo-abbrlink": "^2.2.1",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-baidu-sitemap": "^0.1.9",
@@ -25,12 +25,12 @@
     "hexo-generator-tag": "^2.0.0",
     "hexo-render-pug": "^2.1.4",
     "hexo-renderer-ejs": "^2.0.0",
-    "hexo-renderer-marked": "^6.3.0",
+    "hexo-renderer-marked": "^7.0.1",
     "hexo-renderer-stylus": "^3.0.1",
     "hexo-server": "^3.0.0",
     "hexo-symbols-count-time": "^0.7.1",
-    "hexo-theme-next": "^8.21.0",
+    "hexo-theme-next": "^8.27.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3"
+    "typescript": "^5.9.3"
   }
 }

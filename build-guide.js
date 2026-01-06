@@ -1,15 +1,11 @@
 import path from "path";
 import * as fs from "fs";
+import { fileURLToPath } from "url";
 
-type GuideItem = {
-  title: string;
-  path: string;
-};
+const guideDir = path.join(path.dirname(fileURLToPath(import.meta.url)), "source/guide");
 
-const guideDir = path.join(__dirname, "source/guide");
-
-async function readGuide(rePath: string) {
-  const result: GuideItem[] = [];
+async function readGuide(rePath) {
+  const result = [];
 
   const abPath = path.join(guideDir, rePath);
   const stats = await fs.promises.stat(abPath);
@@ -32,7 +28,7 @@ async function readGuide(rePath: string) {
   return result;
 }
 
-async function readTitle(filePath: string) {
+async function readTitle(filePath) {
   const content = await fs.promises.readFile(filePath, "utf-8");
   const line = content
     .replace(/\r\n/, "\n")
@@ -44,7 +40,7 @@ async function readTitle(filePath: string) {
 }
 
 async function getGuides() {
-  const guides: GuideItem[] = [];
+  const guides = [];
   const children = await fs.promises.readdir(guideDir);
   for (const child of children) {
     const stats = await fs.promises.stat(path.join(guideDir, child));
