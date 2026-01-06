@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/imgs/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/imgs/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/imgs/avatar.jpg">
+  <link rel="mask-icon" href="/imgs/avatar.jpg" color="#222">
+  <meta name="google-site-verification" content="rYpHgEMR6BLENOrvxg5n431yWs2HNmyfp14UbZ5Xgbw">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.loli.net/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Inconsolata:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://lib.baomitu.com/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://lib.baomitu.com/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.hal.wang","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本教程使用 WSL2 + KVM 运行 MacOS 虚拟机，MacOS 运行在 Linux 虚拟机中的 KVM 虚拟机，即嵌套虚拟化，但由于 Windows 对 WSL2 优化很好，个人感觉此方案比其他方案更好。 步骤较多，操作较繁琐，但成果很值得。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 Windows 上流畅使用 MacOS 虚拟机">
+<meta property="og:url" content="https://blog.hal.wang/7afa8fc1/index.html">
+<meta property="og:site_name" content="H">
+<meta property="og:description" content="本教程使用 WSL2 + KVM 运行 MacOS 虚拟机，MacOS 运行在 Linux 虚拟机中的 KVM 虚拟机，即嵌套虚拟化，但由于 Windows 对 WSL2 优化很好，个人感觉此方案比其他方案更好。 步骤较多，操作较繁琐，但成果很值得。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.hal.wang/7afa8fc1/finished.png">
+<meta property="og:image" content="https://blog.hal.wang/7afa8fc1/nautilus.png">
+<meta property="og:image" content="https://blog.hal.wang/7afa8fc1/install.png">
+<meta property="og:image" content="https://blog.hal.wang/7afa8fc1/startup.png">
+<meta property="og:image" content="https://blog.hal.wang/7afa8fc1/virt-manager.png">
+<meta property="og:image" content="https://blog.hal.wang/7afa8fc1/energy.png">
+<meta property="og:image" content="https://blog.hal.wang/7afa8fc1/cpu-config.png">
+<meta property="og:image" content="https://blog.hal.wang/7afa8fc1/screen.png">
+<meta property="article:published_time" content="2022-03-10T12:50:53.000Z">
+<meta property="article:modified_time" content="2026-01-06T13:24:08.075Z">
+<meta property="article:author" content="hal.wang">
+<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="KVM">
+<meta property="article:tag" content="MacOS">
+<meta property="article:tag" content="WSL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.hal.wang/7afa8fc1/finished.png">
+
+
+<link rel="canonical" href="https://blog.hal.wang/7afa8fc1/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.hal.wang/7afa8fc1/","path":"7afa8fc1/","title":"在 Windows 上流畅使用 MacOS 虚拟机"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>在 Windows 上流畅使用 MacOS 虚拟机 | H</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js" defer></script>
+  <script async src="https://hm.baidu.com/hm.js?c70051d9b6ed3cbc101f3a64ae4c98c2"></script>
+
+
+
+
+
+
+
+  
+  <script src="https://lib.baomitu.com/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://lib.baomitu.com/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+  <script src="https://lib.baomitu.com/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://lib.baomitu.com/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://lib.baomitu.com/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="H" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">H</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">精通多种语言 Hello World</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">43</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-cubes fa-fw"></i>分类<span class="badge">2</span></a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E6%8F%90%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">前提条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E6%96%B9%E6%A1%88%E7%9B%B8%E6%AF%94"><span class="nav-number">2.</span> <span class="nav-text">与其他方案相比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#VMware-VitualBox"><span class="nav-number">2.1.</span> <span class="nav-text">VMware&#x2F;VitualBox</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">2.1.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">2.1.2.</span> <span class="nav-text">缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker-OSX"><span class="nav-number">2.2.</span> <span class="nav-text">Docker-OSX</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WSL2-%E5%BC%80%E5%90%AF-GUI"><span class="nav-number">3.</span> <span class="nav-text">WSL2 开启 GUI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85-vGPU-%E9%A9%B1%E5%8A%A8"><span class="nav-number">3.1.</span> <span class="nav-text">安装 vGPU 驱动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0-wsl"><span class="nav-number">3.2.</span> <span class="nav-text">更新 wsl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GUI-%E6%B5%8B%E8%AF%95"><span class="nav-number">3.3.</span> <span class="nav-text">GUI 测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%81%E8%AE%B8-WSL-%E5%B5%8C%E5%A5%97%E8%99%9A%E6%8B%9F%E5%8C%96"><span class="nav-number">4.</span> <span class="nav-text">允许 WSL 嵌套虚拟化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AE%B9%E5%A6%82%E4%B8%8B"><span class="nav-number">4.1.</span> <span class="nav-text">内容如下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E8%AF%B4%E6%98%8E"><span class="nav-number">4.2.</span> <span class="nav-text">简单说明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%90%AF-WSL"><span class="nav-number">4.3.</span> <span class="nav-text">重启 WSL</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E5%AE%89%E8%A3%85-MacOS"><span class="nav-number">5.</span> <span class="nav-text">开始安装 MacOS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD"><span class="nav-number">5.1.</span> <span class="nav-text">下载</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%88%E5%AE%89%E8%A3%85%E9%9C%80%E8%A6%81%E7%94%A8%E5%88%B0%E7%9A%84%E5%8C%85"><span class="nav-number">5.1.1.</span> <span class="nav-text">先安装需要用到的包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%99-KVM-%E5%A2%9E%E5%8A%A0%E4%B8%80%E4%B8%AA%E5%BC%80%E5%85%B3%E9%85%8D%E7%BD%AE"><span class="nav-number">5.1.2.</span> <span class="nav-text">给 KVM 增加一个开关配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%9D%83%E9%99%90"><span class="nav-number">5.1.3.</span> <span class="nav-text">设置权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%89%E5%8F%96-OSX-KVM"><span class="nav-number">5.1.4.</span> <span class="nav-text">拉取 OSX-KVM</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD-MacOS-%E5%AE%89%E8%A3%85%E9%95%9C%E5%83%8F"><span class="nav-number">5.2.</span> <span class="nav-text">下载 MacOS 安装镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%A3%81%E7%9B%98%E6%96%87%E4%BB%B6"><span class="nav-number">5.3.</span> <span class="nav-text">创建虚拟磁盘文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC"><span class="nav-number">5.4.</span> <span class="nav-text">执行脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E5%9C%A8%E5%AE%89%E8%A3%85"><span class="nav-number">5.5.</span> <span class="nav-text">正在安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E7%95%8C%E9%9D%A2"><span class="nav-number">5.5.1.</span> <span class="nav-text">安装界面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85%E5%AE%8C%E6%88%90%E5%90%8E%E5%90%AF%E5%8A%A8"><span class="nav-number">5.5.2.</span> <span class="nav-text">安装完成后启动</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6%8B%A9-OXS-KVM-%E8%80%8C%E4%B8%8D%E6%98%AF-macOS-Simple-KVM"><span class="nav-number">5.6.</span> <span class="nav-text">为什么选择 OXS-KVM 而不是 macOS-Simple-KVM</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-virt-manager-%E7%AE%A1%E7%90%86"><span class="nav-number">6.</span> <span class="nav-text">使用 virt-manager 管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E7%94%A8-systemd"><span class="nav-number">6.1.</span> <span class="nav-text">启用 systemd</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD%E8%84%9A%E6%9C%AC"><span class="nav-number">6.1.1.</span> <span class="nav-text">下载脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E8%84%9A%E6%9C%AC"><span class="nav-number">6.1.2.</span> <span class="nav-text">修改脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC-1"><span class="nav-number">6.1.3.</span> <span class="nav-text">执行脚本</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%80%E5%90%AF-libvirtd"><span class="nav-number">6.2.</span> <span class="nav-text">开启 libvirtd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%86%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%8A%A0%E5%85%A5-virt-manager"><span class="nav-number">6.3.</span> <span class="nav-text">将虚拟机加入 virt-manager</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E6%8D%B7%E5%90%AF%E5%8A%A8"><span class="nav-number">7.</span> <span class="nav-text">快捷启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text">遇到的问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#virt-manager-%E6%A3%80%E6%B5%8B%E4%B8%8D%E5%88%B0-libvirtd"><span class="nav-number">8.1.</span> <span class="nav-text">virt-manager 检测不到 libvirtd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MacOS-%E4%B8%80%E6%AE%B5%E6%97%B6%E9%97%B4%E4%B8%8D%E6%93%8D%E4%BD%9C%E5%81%87%E6%AD%BB"><span class="nav-number">8.2.</span> <span class="nav-text">MacOS 一段时间不操作假死</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Waiting-for-systemd%E2%80%A6"><span class="nav-number">8.3.</span> <span class="nav-text">Waiting for systemd….!</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%92%8C-Windows-%E5%AE%BF%E4%B8%BB%E6%9C%BA%E7%9A%84%E6%96%87%E4%BB%B6-%E5%89%AA%E5%88%87%E6%9D%BF%E4%BC%A0%E8%BE%93"><span class="nav-number">8.4.</span> <span class="nav-text">和 Windows 宿主机的文件&#x2F;剪切板传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%AD%E6%97%A0%E6%B3%95%E6%94%B6%E5%88%B0-Win-%E9%94%AE%E7%9A%84%E5%93%8D%E5%BA%94"><span class="nav-number">8.5.</span> <span class="nav-text">虚拟机中无法收到 Win 键的响应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E5%A4%8D%E8%BF%9B%E5%85%A5%E5%90%AF%E5%8A%A8%E9%A1%B9%E9%80%89%E6%8B%A9%E7%95%8C%E9%9D%A2"><span class="nav-number">8.6.</span> <span class="nav-text">反复进入启动项选择界面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%98%BE%E7%A4%BA%E5%A4%A7%E5%B0%8F%E4%B8%8E%E7%AA%97%E5%8F%A3%E5%A4%A7%E5%B0%8F%E4%B8%8D%E5%8C%B9%E9%85%8D"><span class="nav-number">8.7.</span> <span class="nav-text">虚拟机显示大小与窗口大小不匹配</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hal.wang"
+      src="/imgs/avatar.jpg">
+  <p class="site-author-name" itemprop="name">hal.wang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9oYWwud2FuZw==" title="主页 → https:&#x2F;&#x2F;hal.wang"><i class="fa fa-user fa-fw"></i>主页</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5n" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hal-wang"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/imgs/qr/weixin.jpg" title="微信 → &#x2F;imgs&#x2F;qr&#x2F;weixin.jpg" rel="noopener me"><i class="fab fa-weixin fa-fw"></i>微信</a>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93cGEucXEuY29tL21zZ3JkP3Y9MyZ1aW49NzkwMjY0MDI3JnNpdGU9cXEmbWVudT15ZXM=" title="QQ → https:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;790264027&amp;site&#x3D;qq&amp;menu&#x3D;yes"><i class="fab fa-qq fa-fw"></i>QQ</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmhpQGhhbC53YW5n" title="Email → mailto:hi@hal.wang"><i class="fa fa-envelope fa-fw"></i>Email</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml" rel="noopener me"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LzQuMC8="><img src="https://lib.baomitu.com/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.hal.wang/7afa8fc1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/imgs/avatar.jpg">
+      <meta itemprop="name" content="hal.wang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="在 Windows 上流畅使用 MacOS 虚拟机 | H">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          在 Windows 上流畅使用 MacOS 虚拟机<span class="exturl post-edit-link" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5nL2Jsb2cvZWRpdC9tYWluL3NvdXJjZS9fcG9zdHMv5ZyoLVdpbmRvd3Mt5LiK5rWB55WF5L2/55SoLU1hY09TLeiZmuaLn+acui9pbmRleC5tZA==" title="编辑"><i class="fa fa-pen-nib"></i></span>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-10 12:50:53" itemprop="dateCreated datePublished" datetime="2022-03-10T12:50:53+00:00">2022-03-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">记录</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>本教程使用 WSL2 + KVM 运行 MacOS 虚拟机，MacOS 运行在 Linux 虚拟机中的 KVM 虚拟机，即嵌套虚拟化，但由于 Windows 对 WSL2 优化很好，个人感觉此方案比其他方案更好。</p>
+<p>步骤较多，操作较繁琐，但成果很值得。</p>
+<span id="more"></span>
+
+<p><img src="./finished.png" alt="finished"></p>
+<center>
+
+<p><em>在 Windows 宿主机中成果截图</em></p>
+</center>
+
+<h2 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h2><ul>
+<li>Windows 10&#x2F;11 22000+</li>
+<li>开启 WSL2，详见 <span class="exturl" data-url="aHR0cHM6Ly9kb2NzLm1pY3Jvc29mdC5jb20vemgtY24vd2luZG93cy93c2wvaW5zdGFsbA==">https://docs.microsoft.com/zh-cn/windows/wsl/install<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<p>文中所出现的 WSL，如果没有特指，都是 WSL2。</p>
+<h2 id="与其他方案相比"><a href="#与其他方案相比" class="headerlink" title="与其他方案相比"></a>与其他方案相比</h2><h3 id="VMware-VitualBox"><a href="#VMware-VitualBox" class="headerlink" title="VMware&#x2F;VitualBox"></a>VMware&#x2F;VitualBox</h3><h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ul>
+<li>上手简单，安装快捷，“懒人版”更是无脑式安装</li>
+<li>VMware 搭配 <code>VMware Tools</code> 更是可以与宿主机互相复制文件，也能自适应窗口尺寸</li>
+</ul>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ul>
+<li>运行不如此方案流畅</li>
+<li>启动速度慢，固态硬盘启动时间可能也要几分钟</li>
+<li>与 Hyper-V 兼容有问题，在开启 Hyper-V 的情况下，由于宿主机也是运行在 Hyper-V 的虚拟机，而 VMware&#x2F;VitualBox 不支持嵌套虚拟化，不能虚拟化 CPU 的 MacOS 虚拟机能卡出翔。</li>
+</ul>
+<h3 id="Docker-OSX"><a href="#Docker-OSX" class="headerlink" title="Docker-OSX"></a>Docker-OSX</h3><p>Docker 中运行 MacOS 较成熟的项目是 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3NpY2tjb2Rlcy9Eb2NrZXItT1NY">https://github.com/sickcodes/Docker-OSX<i class="fa fa-external-link-alt"></i></span></p>
+<h4 id="优点-1"><a href="#优点-1" class="headerlink" title="优点"></a>优点</h4><p>上手简单，安装快捷，一行命令就可以启动一个运行 MacOS 的容器</p>
+<h4 id="缺点-1"><a href="#缺点-1" class="headerlink" title="缺点"></a>缺点</h4><p>Docker 中的 MacOS 也是运行在 Linux 中的 KVM</p>
+<ul>
+<li>Docker 容器没有 WSL 启动便捷</li>
+<li>没有 WSL 优化的好，因此流畅度不如此方案</li>
+</ul>
+<h2 id="WSL2-开启-GUI"><a href="#WSL2-开启-GUI" class="headerlink" title="WSL2 开启 GUI"></a>WSL2 开启 GUI</h2><blockquote>
+<p>此部分参考 <span class="exturl" data-url="aHR0cHM6Ly9kb2NzLm1pY3Jvc29mdC5jb20vemgtY24vd2luZG93cy93c2wvdHV0b3JpYWxzL2d1aS1hcHBz">https://docs.microsoft.com/zh-cn/windows/wsl/tutorials/gui-apps<i class="fa fa-external-link-alt"></i></span></p>
+</blockquote>
+<p>此部分用于在 Windows 中以窗口形式操作 MacOS 虚拟机</p>
+<p>完成后你也可以运行其他 Linux GUI 应用程序，你可以像本地应用一样运行 WSL Linux 中的应用程序，也可以将应用添加到开始菜单、固定到任务栏等</p>
+<p>安装后可以得到无缝的 Linux + Windows 桌面体验</p>
+<h3 id="安装-vGPU-驱动"><a href="#安装-vGPU-驱动" class="headerlink" title="安装 vGPU 驱动"></a>安装 vGPU 驱动</h3><p>安装 vGPU 驱动后可以使用虚拟 GPU，可以使用硬件加速 OpenGL 渲染</p>
+<p>根据你电脑显卡下载安装：</p>
+<ul>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuaW50ZWwuY29tL2NvbnRlbnQvd3d3L3VzL2VuL2Rvd25sb2FkLzE5MzQ0L2ludGVsLWdyYXBoaWNzLXdpbmRvd3MtMTAtd2luZG93cy0xMS1kY2gtZHJpdmVycy5odG1s">Intel GPU 驱动程序<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly93d3cuYW1kLmNvbS9lbi9zdXBwb3J0L2tiL3JlbGVhc2Utbm90ZXMvcm4tcmFkLXdpbi13c2wtc3VwcG9ydA==">AMD GPU 驱动程序<i class="fa fa-external-link-alt"></i></span></li>
+<li><span class="exturl" data-url="aHR0cHM6Ly9kZXZlbG9wZXIubnZpZGlhLmNvbS9jdWRhL3dzbA==">NVIDIA GPU 驱动程序<i class="fa fa-external-link-alt"></i></span></li>
+</ul>
+<h3 id="更新-wsl"><a href="#更新-wsl" class="headerlink" title="更新 wsl"></a>更新 wsl</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --update</span><br></pre></td></tr></table></figure>
+
+<p>然后重启</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --shutdown</span><br></pre></td></tr></table></figure>
+
+<h3 id="GUI-测试"><a href="#GUI-测试" class="headerlink" title="GUI 测试"></a>GUI 测试</h3><p>测试一下 GUI 能否正常使用</p>
+<p><code>Nautilus</code>是 gnome 的文件管理器，这里用来安装测试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install nautilus -y</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后可以直接打开，像 windows 应用一样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nautilus</span><br></pre></td></tr></table></figure>
+
+<p><img src="./nautilus.png" alt="nautilus"></p>
+<center>
+
+<p><em>在 Windows 宿主机中 Nautilus 运行截图</em></p>
+</center>
+
+<p>以后在 windows 的 cmd 中执行 <code>wsl nautilus</code> 即可直接打开</p>
+<h2 id="允许-WSL-嵌套虚拟化"><a href="#允许-WSL-嵌套虚拟化" class="headerlink" title="允许 WSL 嵌套虚拟化"></a>允许 WSL 嵌套虚拟化</h2><p>默认 WSL 没有支持嵌套虚拟化，需要修改一下配置。</p>
+<p>在 Windows 中，用户文件夹下编辑或新建文件 <code>C:\Users\%User%\.wslconfig</code>。<em>（User 是你的 Windows 系统用户名）</em></p>
+<h3 id="内容如下"><a href="#内容如下" class="headerlink" title="内容如下"></a>内容如下</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[wsl2]</span><br><span class="line">networkingMode=bridged</span><br><span class="line">vmSwitch=ex</span><br><span class="line">memory=32G</span><br><span class="line">processors=8</span><br><span class="line">swap=32G</span><br><span class="line">localhostForwarding=true</span><br><span class="line">nestedVirtualization=true</span><br><span class="line">pageReporting=true</span><br><span class="line">kernelCommandLine=intel_iommu=on iommu=pt kvm.ignore_msrs=1 kvm-intel.nested=1 kvm-intel.ept=1 kvm-intel.emulate_invalid_guest_state=0 kvm-intel.enable_shadow_vmcs=1 kvm-intel.enable_apicv=1</span><br></pre></td></tr></table></figure>
+
+<h3 id="简单说明"><a href="#简单说明" class="headerlink" title="简单说明"></a>简单说明</h3><p>此部分参考 <span class="exturl" data-url="aHR0cHM6Ly9kb2NzLm1pY3Jvc29mdC5jb20vemgtY24vd2luZG93cy93c2wvd3NsLWNvbmZpZw==">https://docs.microsoft.com/zh-cn/windows/wsl/wsl-config<i class="fa fa-external-link-alt"></i></span></p>
+<ul>
+<li>nestedVirtualization 关键，是否允许嵌套虚拟化</li>
+<li>memory 允许的 WSL 内存</li>
+<li>processors 虚拟 CPU 线程</li>
+<li>swap 要向 WSL 2 VM 添加的交换空间量，0 表示无交换文件。 交换存储是内存需求超过硬件设备限制时使用的基于磁盘的 RAM。</li>
+</ul>
+<h3 id="重启-WSL"><a href="#重启-WSL" class="headerlink" title="重启 WSL"></a>重启 WSL</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --shutdown</span><br></pre></td></tr></table></figure>
+
+<h2 id="开始安装-MacOS"><a href="#开始安装-MacOS" class="headerlink" title="开始安装 MacOS"></a>开始安装 MacOS</h2><p>使用 OSX-KVM 安装 MacOS 虚拟机</p>
+<p>此部分参考 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2tob2xpYS9PU1gtS1ZN">https://github.com/kholia/OSX-KVM<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><h4 id="先安装需要用到的包"><a href="#先安装需要用到的包" class="headerlink" title="先安装需要用到的包"></a>先安装需要用到的包</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install qemu uml-utilities virt-manager git wget libguestfs-tools p7zip-full make -y</span><br></pre></td></tr></table></figure>
+
+<h4 id="给-KVM-增加一个开关配置"><a href="#给-KVM-增加一个开关配置" class="headerlink" title="给 KVM 增加一个开关配置"></a>给 KVM 增加一个开关配置</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 1 &gt; /sys/module/kvm/parameters/ignore_msrs</span><br></pre></td></tr></table></figure>
+
+<h4 id="设置权限"><a href="#设置权限" class="headerlink" title="设置权限"></a>设置权限</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG kvm $(whoami)</span><br><span class="line">sudo usermod -aG libvirt $(whoami)</span><br></pre></td></tr></table></figure>
+
+<h4 id="拉取-OSX-KVM"><a href="#拉取-OSX-KVM" class="headerlink" title="拉取 OSX-KVM"></a>拉取 OSX-KVM</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/kholia/OSX-KVM.git</span><br><span class="line"></span><br><span class="line">cd OSX-KVM</span><br></pre></td></tr></table></figure>
+
+<h3 id="下载-MacOS-安装镜像"><a href="#下载-MacOS-安装镜像" class="headerlink" title="下载 MacOS 安装镜像"></a>下载 MacOS 安装镜像</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./fetch-macOS-v2.py</span><br></pre></td></tr></table></figure>
+
+<p>运行显示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1. High Sierra (10.13)</span><br><span class="line">2. Mojave (10.14)</span><br><span class="line">3. Catalina (10.15)</span><br><span class="line">4. Big Sur (11.6) - RECOMMENDED</span><br><span class="line">5. Monterey (latest)</span><br><span class="line"></span><br><span class="line">Choose a product to download (1-5):</span><br></pre></td></tr></table></figure>
+
+<p>实测 4 和 5 都可以，而且完成后 Big Sur 也能正常升级到 Monterey，其他没试。</p>
+<p>下载完成后会有 BaseSystem.dmg 文件，需要转为 img 格式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dmg2img BaseSystem.dmg BaseSystem.img</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建虚拟磁盘文件"><a href="#创建虚拟磁盘文件" class="headerlink" title="创建虚拟磁盘文件"></a>创建虚拟磁盘文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu-img create -f qcow2 mac_hdd_ng.img 128G</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>mac_hdd_ng.img</code> 是文件名，可以任意修改</p>
+<h3 id="执行脚本"><a href="#执行脚本" class="headerlink" title="执行脚本"></a>执行脚本</h3><p>先修改 <code>OpenCore-Boot.sh</code> 文件</p>
+<ul>
+<li><code>ALLOCATED_RAM</code> 运行内存，建议最低改为 8G</li>
+<li><code>CPU_THREADS</code> CPU 线程</li>
+<li><code>CPU_CORES</code> CUP 核心数</li>
+<li><code>-drive id=MacHDD,if=none,file=&quot;$REPO_PATH/mac.img&quot;,format=qcow2</code> 其中的 <code>$REPO_PATH/mac_hdd_ng.img</code> 为上一步创建的虚拟磁盘文件</li>
+</ul>
+<p>执行脚本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./OpenCore-Boot.sh</span><br></pre></td></tr></table></figure>
+
+<p>执行完成后应该会弹出 QEMU 窗口。</p>
+<p>如果没有，请确认前面的步骤 WSL2 是否正确开启 GUI，vGPU 驱动是否已正常安装。</p>
+<p>再次启动也是运行这个脚本</p>
+<h3 id="正在安装"><a href="#正在安装" class="headerlink" title="正在安装"></a>正在安装</h3><p>安装流程和其他方式安装大致相同，只用注意一点，安装完成后，再次启动会多出个引导盘，选择多出来的那个。</p>
+<h4 id="安装界面"><a href="#安装界面" class="headerlink" title="安装界面"></a>安装界面</h4><p>显示要一个多小时，甚至二两多小时，实则不用那么久</p>
+<p><img src="./install.png" alt="安装界面"></p>
+<center>
+
+<p><em>正在安装 MacOS</em></p>
+</center>
+
+<h4 id="安装完成后启动"><a href="#安装完成后启动" class="headerlink" title="安装完成后启动"></a>安装完成后启动</h4><p>选择如图第二个启动项</p>
+<p><img src="./startup.png" alt="startup"></p>
+<center>
+
+<p><em>启动项</em></p>
+</center>
+
+<p>还需要安装一会，才能进入系统。</p>
+<h3 id="为什么选择-OXS-KVM-而不是-macOS-Simple-KVM"><a href="#为什么选择-OXS-KVM-而不是-macOS-Simple-KVM" class="headerlink" title="为什么选择 OXS-KVM 而不是 macOS-Simple-KVM"></a>为什么选择 OXS-KVM 而不是 macOS-Simple-KVM</h3><p><code>macOS-Simple-KVM</code> 项目地址：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2ZveGxldC9tYWNPUy1TaW1wbGUtS1ZN">https://github.com/foxlet/macOS-Simple-KVM<i class="fa fa-external-link-alt"></i></span></p>
+<p>这个项目好像已经停滞不更新，截至目前已经一年多没更新了。</p>
+<p>引导方式是四叶草，最高版本只支持 mojave，连 xcode 都不能用</p>
+<p>故放弃</p>
+<h2 id="使用-virt-manager-管理"><a href="#使用-virt-manager-管理" class="headerlink" title="使用 virt-manager 管理"></a>使用 virt-manager 管理</h2><p>现在虽然你已经能成功使用 MacOS 了，但不方便管理，而且每次启动都需要运行脚本，如果有多个虚拟机就更难管理。</p>
+<p>你可以放弃这一步，若放弃这一步：</p>
+<ol>
+<li>你以后每次启动虚拟机，只能用命令 <code>./OpenCore-Boot.sh</code></li>
+<li>虚拟机运行期间，命令行窗口不能关闭</li>
+<li>虚拟机运行期间，QEMU 窗口不能关闭</li>
+<li>若修改虚拟机配置，需要修改脚本文件，不方便操作</li>
+<li>不能快捷启动，此部分完成后可以在 Windows 宿主机中运行 <code>wsl virt-manager</code> 直接打开管理界面</li>
+</ol>
+<p>我们现在开始使用 <code>virt-manager</code> 管理这个虚拟机，提升使用体验。</p>
+<h3 id="启用-systemd"><a href="#启用-systemd" class="headerlink" title="启用 systemd"></a>启用 systemd</h3><p>如果不是 WSL，Linux 应该都能使用 <code>systemctl</code> 命令，但 WSL 的启动方式决定其不支持 <code>systemctl</code> 命令，因此也无法开启 <code>libvirtd</code>，如果执行 <code>service libvirtd start</code> 会报找不到这个命令的错误，所以 <code>virt-manager</code> 就无法连接到 WSL 中的虚拟机。</p>
+<p>但我们可以使用 <code>genie</code> 工具启用 <code>systemctl</code>。</p>
+<p>启用 <code>systemctl</code> 的部分参考 <span class="exturl" data-url="aHR0cHM6Ly9naXN0LmdpdGh1Yi5jb20vZGpmZHl1cnVpcnkvNjcyMGZhYTNmOWZjNTliZmRmNjI4NGVlMWY0MWY5NTA=">https://gist.github.com/djfdyuruiry/6720faa3f9fc59bfdf6284ee1f41f950<i class="fa fa-external-link-alt"></i></span></p>
+<p>此部分是在 WSL Linux 系统中操作</p>
+<h4 id="下载脚本"><a href="#下载脚本" class="headerlink" title="下载脚本"></a>下载脚本</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /tmp</span><br><span class="line">wget --content-disposition \</span><br><span class="line">  &quot;https://gist.githubusercontent.com/djfdyuruiry/6720faa3f9fc59bfdf6284ee1f41f950/raw/952347f805045ba0e6ef7868b18f4a9a8dd2e47a/install-sg.sh&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改脚本"><a href="#修改脚本" class="headerlink" title="修改脚本"></a>修改脚本</h4><p>这一步是可选操作，为了安装新版 genie</p>
+<p>genie Release 列表可以在这里查看 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2Fya2FuZS1zeXN0ZW1zL2dlbmllL3JlbGVhc2Vz">https://github.com/arkane-systems/genie/releases<i class="fa fa-external-link-alt"></i></span></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /tmp/install-sg.sh</span><br></pre></td></tr></table></figure>
+
+<p>目前最新版是，2.2，因此修改 <code>GENIE_VERSION</code> 值为 2.2，如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GENIE_VERSION=&quot;2.2&quot;</span><br></pre></td></tr></table></figure>
+
+<h4 id="执行脚本-1"><a href="#执行脚本-1" class="headerlink" title="执行脚本"></a>执行脚本</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">chmod +x /tmp/install-sg.sh</span><br><span class="line">/tmp/install-sg.sh &amp;&amp; rm /tmp/install-sg.sh</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果报错 <code>Errors were encountered while processing: systemd-genie</code></li>
+</ul>
+<p>执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install systemd-genie</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果报错 <code>Unmet dependencies. Try &#39;apt --fix-broken install&#39; with no packages (or specify a solution). root@PC:/tmp# apt update</code></li>
+</ul>
+<p>执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt --fix-broken install</span><br></pre></td></tr></table></figure>
+
+<h3 id="开启-libvirtd"><a href="#开启-libvirtd" class="headerlink" title="开启 libvirtd"></a>开启 libvirtd</h3><p>在 WSL 中执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">genie -c systemctl start libvirtd</span><br></pre></td></tr></table></figure>
+
+<p>这个命令表示进入 genie 并执行 <code>systemctl start libvirtd</code> 命令，等同于：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">genie -s</span><br><span class="line">systemctl start libvirtd</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+<p>正常启动后就可以使用 virt-manager 了，但是我们还没有将刚才创建的虚拟机加入 virt-manager。</p>
+<p>如果出现 <code>Waiting for systemd....!</code>，用 <code>Ctrl + C</code> 取消即可</p>
+<p><strong>注意：</strong>这时你不能使用 vGPU，因为启动方式没有采用 WSL 默认的方式。你需要退出 WSL 并重新用 <code>wsl</code> 命令进入 WSL，才可以继续操作</p>
+<h3 id="将虚拟机加入-virt-manager"><a href="#将虚拟机加入-virt-manager" class="headerlink" title="将虚拟机加入 virt-manager"></a>将虚拟机加入 virt-manager</h3><p>此部分参考 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2tob2xpYS9PU1gtS1ZN">https://github.com/kholia/OSX-KVM<i class="fa fa-external-link-alt"></i></span></p>
+<ul>
+<li>进入前面步骤使用 git 下载的 OSX-KVM 项目目录下，编辑虚拟机配置文件<code>macOS-libvirt-Catalina.xml</code>，把 <code>CHANGEME</code> 全部换为 OSX-KVM 所在路径，根据此教程就是你的 wsl 用户名</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ./macOS-libvirt-Catalina.xml</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>你也可以用以下脚本快速替换为用户路径：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sed &quot;s/CHANGEME/$USER/g&quot; macOS-libvirt-Catalina.xml &gt; macOS.xml</span><br><span class="line"></span><br><span class="line">virt-xml-validate macOS.xml</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>执行下面命令将虚拟机加入 virt-manager</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">virsh --connect qemu:///system define macOS.xml</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>执行 <code>virt-manager</code> 以打开 <code>virt-manager</code>，你将能看到名称为 <code>macOS</code> 的虚拟机</li>
+</ul>
+<p><img src="./virt-manager.png" alt="virt-manager"></p>
+<center>
+
+<p><em>在 Windows 宿主机中 virt-manager 截图</em></p>
+</center>
+
+<p>现在你可以用 UI 的方式，编辑或启动名为 macOS 的虚拟机了</p>
+<h2 id="快捷启动"><a href="#快捷启动" class="headerlink" title="快捷启动"></a>快捷启动</h2><p><code>virt-manager</code> 正确配置后，在 Windows 宿主机中，创建 <code>.bat</code> 脚本文件，内容为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wsl genie -c systemctl start libvirtd</span><br><span class="line">wsl virt-manager</span><br></pre></td></tr></table></figure>
+
+<p>每次运行这个脚本就可以快速打开 <code>virt-manager</code> 了</p>
+<h2 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h2><p>下面是可能会遇到的问题，有已解决的，也有未解决但有替代方案的</p>
+<h3 id="virt-manager-检测不到-libvirtd"><a href="#virt-manager-检测不到-libvirtd" class="headerlink" title="virt-manager 检测不到 libvirtd"></a>virt-manager 检测不到 libvirtd</h3><p>在 <code>使用 virt-manager 管理</code> 部分有说明</p>
+<h3 id="MacOS-一段时间不操作假死"><a href="#MacOS-一段时间不操作假死" class="headerlink" title="MacOS 一段时间不操作假死"></a>MacOS 一段时间不操作假死</h3><p>在 MacOS 中，关闭节能</p>
+<p>设置位于 <code>系统偏好设置 -&gt; 节能</code></p>
+<ul>
+<li><code>此时间段后关闭显示器</code> 设为 <code>永不</code></li>
+<li>取消勾选 <code>如果可能，使硬盘进入睡眠</code></li>
+</ul>
+<p><img src="./energy.png" alt="关闭节能"></p>
+<h3 id="Waiting-for-systemd…"><a href="#Waiting-for-systemd…" class="headerlink" title="Waiting for systemd….!"></a>Waiting for systemd….!</h3><p>运行 <code>genie</code> 命令可能出现这个问题，是由于 <code>genie</code> 在等待 systemd 回应</p>
+<p>你可以 <code>Control + C</code> 取消并继续操作，也可以永久性的解决这个问题，参考</p>
+<p><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2Fya2FuZS1zeXN0ZW1zL2dlbmllL3dpa2kvU3lzdGVtZC11bml0cy1rbm93bi10by1iZS1wcm9ibGVtYXRpYy11bmRlci1XU0w=">https://github.com/arkane-systems/genie/wiki/Systemd-units-known-to-be-problematic-under-WSL<i class="fa fa-external-link-alt"></i></span></p>
+<h3 id="和-Windows-宿主机的文件-剪切板传输"><a href="#和-Windows-宿主机的文件-剪切板传输" class="headerlink" title="和 Windows 宿主机的文件&#x2F;剪切板传输"></a>和 Windows 宿主机的文件&#x2F;剪切板传输</h3><p>可以用其他传输工具和剪切板共享工具</p>
+<p>暂时没有直接复制粘贴的方法</p>
+<h3 id="虚拟机中无法收到-Win-键的响应"><a href="#虚拟机中无法收到-Win-键的响应" class="headerlink" title="虚拟机中无法收到 Win 键的响应"></a>虚拟机中无法收到 Win 键的响应</h3><p>即徽标键，在 MacOS 中是 Command 键，影响如 <code>Command + C</code>, <code>Command + V</code> 等快捷键</p>
+<p>可以临时改建，或用 VNC 连接 MacOS 使用</p>
+<p>暂未没有更好的方法</p>
+<h3 id="反复进入启动项选择界面"><a href="#反复进入启动项选择界面" class="headerlink" title="反复进入启动项选择界面"></a>反复进入启动项选择界面</h3><ul>
+<li><p>可能是 CPU 性能不够，或者线程数给的不够，这种只能增加配置或者换电脑</p>
+</li>
+<li><p>也可能是 CPU 配置不正确，将 CPU 配置改为和 KVM 宿主机相同，即与 WSL CPU 配置相同，如图</p>
+</li>
+</ul>
+<p><img src="./cpu-config.png" alt="配置CPU"></p>
+<center>
+
+<p><em>CPU 配置</em></p>
+</center>
+
+<h3 id="虚拟机显示大小与窗口大小不匹配"><a href="#虚拟机显示大小与窗口大小不匹配" class="headerlink" title="虚拟机显示大小与窗口大小不匹配"></a>虚拟机显示大小与窗口大小不匹配</h3><p>依次点击 KVM 中的菜单 <code>View -&gt; Resize to VM</code>，如图：</p>
+<p><img src="./screen.png" alt="配置CPU"></p>
+<center>
+
+<p><em>虚拟机显示大小与窗口大小不匹配</em></p>
+</center>
+
+<p>或勾选 <code>Fullscreen</code> 以全屏</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/imgs/qr/wxpay_sm.jpg" alt="hal.wang 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/imgs/qr/alipay_sm.jpg" alt="hal.wang 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Windows/" rel="tag"># Windows</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/KVM/" rel="tag"># KVM</a>
+              <a href="/tags/MacOS/" rel="tag"># MacOS</a>
+              <a href="/tags/WSL/" rel="tag"># WSL</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/8699d8dc/" rel="prev" title="Docker 总结">
+                  <i class="fa fa-angle-left"></i> Docker 总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/bc60d1b8/" rel="next" title="Vue3 + Vite + Pinia + TS 入门项目搭建">
+                  Vue3 + Vite + Pinia + TS 入门项目搭建 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5taWl0Lmdvdi5jbg==">京ICP备19029465号-5 </span>
+      <img src="http://www.beian.gov.cn/img/new/gongan.png" alt=""><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5tcHMuZ292LmNuLyMvcXVlcnkvd2ViU2VhcmNoP2NvZGU9MzQxMjI2MDIwMDAyOTk=">皖公网安备 34122602000299号 </span>
+  </div>
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hal-wang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">192k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:54</span>
+  </span>
+</div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

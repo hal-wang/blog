@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/imgs/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/imgs/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/imgs/avatar.jpg">
+  <link rel="mask-icon" href="/imgs/avatar.jpg" color="#222">
+  <meta name="google-site-verification" content="rYpHgEMR6BLENOrvxg5n431yWs2HNmyfp14UbZ5Xgbw">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.loli.net/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Inconsolata:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://lib.baomitu.com/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://lib.baomitu.com/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.hal.wang","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="内容概要  前台线程&#x2F;后台线程 线程优先级 实现多线程的方法 Thread &#x2F; ThreadPool &#x2F; Parallel &#x2F; Task &#x2F; BackgroundWorker 线程同步，线程锁">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C# 多线程总结">
+<meta property="og:url" content="https://blog.hal.wang/3189c6ac/index.html">
+<meta property="og:site_name" content="H">
+<meta property="og:description" content="内容概要  前台线程&#x2F;后台线程 线程优先级 实现多线程的方法 Thread &#x2F; ThreadPool &#x2F; Parallel &#x2F; Task &#x2F; BackgroundWorker 线程同步，线程锁">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-05-07T10:48:04.000Z">
+<meta property="article:modified_time" content="2026-01-06T13:24:08.070Z">
+<meta property="article:author" content="hal.wang">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.hal.wang/3189c6ac/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.hal.wang/3189c6ac/","path":"3189c6ac/","title":"C# 多线程总结"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C# 多线程总结 | H</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js" defer></script>
+  <script async src="https://hm.baidu.com/hm.js?c70051d9b6ed3cbc101f3a64ae4c98c2"></script>
+
+
+
+
+
+
+
+  
+  <script src="https://lib.baomitu.com/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://lib.baomitu.com/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+  <script src="https://lib.baomitu.com/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://lib.baomitu.com/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://lib.baomitu.com/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="H" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">H</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">精通多种语言 Hello World</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">43</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-cubes fa-fw"></i>分类<span class="badge">2</span></a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-%E4%B8%AD%E7%9A%84%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">C# 中的多线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E5%8F%B0-%E5%90%8E%E5%8F%B0%E7%BA%BF%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">前台&#x2F;后台线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E5%8F%B0%E7%BA%BF%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">前台线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0%E7%BA%BF%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">后台线程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E7%BA%A7"><span class="nav-number">3.</span> <span class="nav-text">优先级</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">实现多线程的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Thread"><span class="nav-number">4.1.</span> <span class="nav-text">Thread</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E5%8F%82"><span class="nav-number">4.1.1.</span> <span class="nav-text">传参</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%91%BD%E5%90%8D"><span class="nav-number">4.1.2.</span> <span class="nav-text">线程命名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E5%8F%B0-%E5%90%8E%E5%8F%B0%E7%BA%BF%E7%A8%8B-1"><span class="nav-number">4.1.3.</span> <span class="nav-text">前台&#x2F;后台线程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ThreadPool"><span class="nav-number">4.2.</span> <span class="nav-text">ThreadPool</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E5%85%A5%E4%BB%BB%E5%8A%A1"><span class="nav-number">4.2.1.</span> <span class="nav-text">加入任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E9%99%90%E5%88%B6"><span class="nav-number">4.2.2.</span> <span class="nav-text">线程池的限制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%95%B0%E9%87%8F"><span class="nav-number">4.2.3.</span> <span class="nav-text">线程数量</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E7%BA%BF%E7%A8%8B%E6%95%B0%E9%87%8F"><span class="nav-number">4.2.3.1.</span> <span class="nav-text">最大线程数量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E7%BA%BF%E7%A8%8B%E6%95%B0%E9%87%8F"><span class="nav-number">4.2.3.2.</span> <span class="nav-text">最小线程数量</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Parallel"><span class="nav-number">4.3.</span> <span class="nav-text">Parallel</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Parallel-For"><span class="nav-number">4.3.1.</span> <span class="nav-text">Parallel.For</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Parallel-ForEach"><span class="nav-number">4.3.2.</span> <span class="nav-text">Parallel.ForEach</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Parallel-Invoke"><span class="nav-number">4.3.3.</span> <span class="nav-text">Parallel.Invoke</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E7%89%88%E6%9C%AC"><span class="nav-number">4.3.4.</span> <span class="nav-text">异步版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%AD%E6%96%AD%E6%89%A7%E8%A1%8C"><span class="nav-number">4.3.5.</span> <span class="nav-text">中断执行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">4.3.6.</span> <span class="nav-text">线程初始化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Task"><span class="nav-number">4.4.</span> <span class="nav-text">Task</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8%E4%BB%BB%E5%8A%A1"><span class="nav-number">4.4.1.</span> <span class="nav-text">启动任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E7%9A%84%E5%B1%82%E6%AC%A1"><span class="nav-number">4.4.2.</span> <span class="nav-text">任务的层次</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%95%BF%E4%BB%BB%E5%8A%A1"><span class="nav-number">4.4.3.</span> <span class="nav-text">长任务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E6%8E%A7%E5%88%B6"><span class="nav-number">4.4.4.</span> <span class="nav-text">任务控制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#task-Wait"><span class="nav-number">4.4.4.1.</span> <span class="nav-text">task.Wait</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Task-WaitAll"><span class="nav-number">4.4.4.2.</span> <span class="nav-text">Task.WaitAll</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Task-WatiAny"><span class="nav-number">4.4.4.3.</span> <span class="nav-text">Task.WatiAny</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#task-ContinueWith"><span class="nav-number">4.4.4.4.</span> <span class="nav-text">task.ContinueWith</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#task-RunSynchronously"><span class="nav-number">4.4.4.5.</span> <span class="nav-text">task.RunSynchronously</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E5%8F%96%E6%B6%88"><span class="nav-number">4.4.5.</span> <span class="nav-text">任务取消</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BackgroundWorker"><span class="nav-number">4.5.</span> <span class="nav-text">BackgroundWorker</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="nav-number">5.</span> <span class="nav-text">线程同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E9%94%81"><span class="nav-number">5.1.</span> <span class="nav-text">线程锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Mutex"><span class="nav-number">5.1.1.</span> <span class="nav-text">Mutex</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SpinLock"><span class="nav-number">5.1.2.</span> <span class="nav-text">SpinLock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Monitor"><span class="nav-number">5.1.3.</span> <span class="nav-text">Monitor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#lock"><span class="nav-number">5.1.4.</span> <span class="nav-text">lock</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">5.2.</span> <span class="nav-text">事件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AutoResetEvent"><span class="nav-number">5.2.1.</span> <span class="nav-text">AutoResetEvent</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ManualResetEvent"><span class="nav-number">5.2.2.</span> <span class="nav-text">ManualResetEvent</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E9%87%8F"><span class="nav-number">5.3.</span> <span class="nav-text">信号量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="nav-number">6.</span> <span class="nav-text">定时器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%86%E6%9E%B6%E7%9B%B8%E5%85%B3%E7%9A%84%E5%AE%9A%E6%97%B6%E5%99%A8"><span class="nav-number">6.1.</span> <span class="nav-text">框架相关的定时器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#System-Threading-Timer"><span class="nav-number">6.2.</span> <span class="nav-text">System.Threading.Timer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#System-Timers-Timer"><span class="nav-number">6.3.</span> <span class="nav-text">System.Timers.Timer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AutoReset"><span class="nav-number">6.3.1.</span> <span class="nav-text">AutoReset</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SynchronizingObject"><span class="nav-number">6.3.2.</span> <span class="nav-text">SynchronizingObject</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hal.wang"
+      src="/imgs/avatar.jpg">
+  <p class="site-author-name" itemprop="name">hal.wang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9oYWwud2FuZw==" title="主页 → https:&#x2F;&#x2F;hal.wang"><i class="fa fa-user fa-fw"></i>主页</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5n" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hal-wang"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/imgs/qr/weixin.jpg" title="微信 → &#x2F;imgs&#x2F;qr&#x2F;weixin.jpg" rel="noopener me"><i class="fab fa-weixin fa-fw"></i>微信</a>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93cGEucXEuY29tL21zZ3JkP3Y9MyZ1aW49NzkwMjY0MDI3JnNpdGU9cXEmbWVudT15ZXM=" title="QQ → https:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;790264027&amp;site&#x3D;qq&amp;menu&#x3D;yes"><i class="fab fa-qq fa-fw"></i>QQ</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmhpQGhhbC53YW5n" title="Email → mailto:hi@hal.wang"><i class="fa fa-envelope fa-fw"></i>Email</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml" rel="noopener me"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LzQuMC8="><img src="https://lib.baomitu.com/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.hal.wang/3189c6ac/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/imgs/avatar.jpg">
+      <meta itemprop="name" content="hal.wang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="C# 多线程总结 | H">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C# 多线程总结<span class="exturl post-edit-link" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5nL2Jsb2cvZWRpdC9tYWluL3NvdXJjZS9fcG9zdHMvQy3lpJrnur/nqIvmgLvnu5MubWQ=" title="编辑"><i class="fa fa-pen-nib"></i></span>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-05-07 10:48:04" itemprop="dateCreated datePublished" datetime="2024-05-07T10:48:04+00:00">2024-05-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">记录</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>18k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>16 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>内容概要</p>
+<ul>
+<li>前台线程&#x2F;后台线程</li>
+<li>线程优先级</li>
+<li>实现多线程的方法 Thread &#x2F; ThreadPool &#x2F; Parallel &#x2F; Task &#x2F; BackgroundWorker</li>
+<li>线程同步，线程锁</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="C-中的多线程"><a href="#C-中的多线程" class="headerlink" title="C# 中的多线程"></a>C# 中的多线程</h2><p>在操作系统中创建进程 <code>Process</code> 比较耗资源，因此 CLI 引入了 <code>AppDomain</code></p>
+<p>AppDomain 并不存在于操作系统，只存在于 .NET CLI 中，并且不能脱离于 Process</p>
+<p>一个 Process 中可以有多个 AppDomain，从而可以使用 AppDomain 隔离同一进程下的资源</p>
+<p>多个 AppDomain 之间不能互相访问代码。在程序层面，一个 AppDomain 相当于一个独立的程序</p>
+<p>每个 AppDomain 下可以拥有多个 Thread</p>
+<p>在多线程程序开发中，一般使用的都是 Thread 或其封装类</p>
+<h2 id="前台-后台线程"><a href="#前台-后台线程" class="headerlink" title="前台&#x2F;后台线程"></a>前台&#x2F;后台线程</h2><p>线程按功能分为两类</p>
+<ul>
+<li>前台线程</li>
+<li>后台线程</li>
+</ul>
+<h3 id="前台线程"><a href="#前台线程" class="headerlink" title="前台线程"></a>前台线程</h3><p>前台线程一般用来处理输入输出、响应事件、处理消息</p>
+<p>UI 线程属于前台线程</p>
+<p>如果前台线程都已经结束，那么这个程序就不再运行。反之只要有前台线程在运行，程序就在运行</p>
+<p>如果程序退出后，因为异常而没有退出干净，在任务管理器中仍然能看到，就是因为存在没有结束的前台线程</p>
+<h3 id="后台线程"><a href="#后台线程" class="headerlink" title="后台线程"></a>后台线程</h3><p>后台线程一般用于处理耗时的任务，不会造成界面卡顿</p>
+<p>程序退出时，所有后台线程会被强制关闭。因此退出程序可以不用手动停止后台线程。</p>
+<h2 id="优先级"><a href="#优先级" class="headerlink" title="优先级"></a>优先级</h2><p>在多线程并发环境中，多线程的执行顺序是随机不可预测的</p>
+<p>线程开始后，只是被放在线程池中等待 CPU 调度</p>
+<p>优先级越高的线程， CPU 分配给该线程的时间片就更多</p>
+<p>因此优先级高并不代表肯定先执行，只是先执行的机会更大，先执行结束的可能性也更大</p>
+<h2 id="实现多线程的方法"><a href="#实现多线程的方法" class="headerlink" title="实现多线程的方法"></a>实现多线程的方法</h2><p>实现多线程最基础的方法是用 Thread，除此之外还有几种抽象出来的类也可以实现多线程</p>
+<ul>
+<li>Thread 线程</li>
+<li>ThreadPool 线程池</li>
+<li>Parallel</li>
+<li>Task</li>
+<li>BackgroundWorker</li>
+</ul>
+<h3 id="Thread"><a href="#Thread" class="headerlink" title="Thread"></a>Thread</h3><p>使用多线程最基础的类</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> thread = <span class="keyword">new</span> Thread(()=&gt;&#123;</span><br><span class="line">  <span class="comment">// DO</span></span><br><span class="line">&#125;);</span><br><span class="line">thread.Start();</span><br></pre></td></tr></table></figure>
+
+<h4 id="传参"><a href="#传参" class="headerlink" title="传参"></a>传参</h4><p><code>Start</code> 函数也可以传参</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> thread = <span class="keyword">new</span> Thread((obj)=&gt;&#123;</span><br><span class="line">  <span class="comment">// DO</span></span><br><span class="line">&#125;);</span><br><span class="line">thread.Start(<span class="string">&quot;Thread&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="线程命名"><a href="#线程命名" class="headerlink" title="线程命名"></a>线程命名</h4><p>Thread 有 Name 属性，赋值后有利于代码调试</p>
+<p>Name 只能赋值一次</p>
+<h4 id="前台-后台线程-1"><a href="#前台-后台线程-1" class="headerlink" title="前台&#x2F;后台线程"></a>前台&#x2F;后台线程</h4><p>Thread 类默认创建为前台线程，可通过 IsBackground 属性，设置或获取该线程属于前台线程还是后台线程</p>
+<h3 id="ThreadPool"><a href="#ThreadPool" class="headerlink" title="ThreadPool"></a>ThreadPool</h3><p><code>ThreadPool</code>（线程池）维护了多个线程，用于执行小任务，防止频繁创建线程</p>
+<p>在线程池中的线程执行完后不会自动移除，而是处于挂起的状态，如果再次向线程池发出请求，那么挂起的线程会被激活，不用创建新的线程就可以执行任务，可以节约创建和销毁线程的开销</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.Diagnostics;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="built_in">int</span> count = <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> watch = <span class="keyword">new</span> Stopwatch();</span><br><span class="line">    watch.Start();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; count; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">new</span> Thread(() =&gt; &#123; &#125;).Start();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    watch.Stop();</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;Thread 创建 <span class="subst">&#123;count&#125;</span> 个线程需要花费时间 (Ticks)：<span class="subst">&#123;watch.ElapsedTicks&#125;</span>&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> watch = <span class="keyword">new</span> Stopwatch();</span><br><span class="line">    watch.Start();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; count; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        ThreadPool.QueueUserWorkItem(<span class="keyword">new</span> WaitCallback((obj) =&gt; &#123; &#125;));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    watch.Stop();</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;ThreadPool 创建 <span class="subst">&#123;count&#125;</span> 个线程需要花费时间 (Ticks)：<span class="subst">&#123;watch.ElapsedTicks&#125;</span>&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Thread 创建 1000 个线程需要花费时间 (Ticks)：744179</span><br><span class="line">ThreadPool 创建 1000 个线程需要花费时间 (Ticks)：814</span><br></pre></td></tr></table></figure>
+
+<p>可以看出 ThreadPool 创建线程消耗的时间是非常小的</p>
+<h4 id="加入任务"><a href="#加入任务" class="headerlink" title="加入任务"></a>加入任务</h4><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">QueueUserWorkItem</span>(<span class="params">WaitCallback callBack</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">QueueUserWorkItem</span>(<span class="params">WaitCallback callBack, <span class="built_in">object</span>? state</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">QueueUserWorkItem</span>&lt;<span class="title">TState</span>&gt;(<span class="params">Action&lt;TState&gt; callBack, TState state, <span class="built_in">bool</span> preferLocal</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="线程池的限制"><a href="#线程池的限制" class="headerlink" title="线程池的限制"></a>线程池的限制</h4><ul>
+<li>线程池中的线程均为后台线程</li>
+<li>不能设置优先级和名称</li>
+<li>更适合执行时间短的任务，不应该阻塞线程池中的线程</li>
+<li>最大允许 2048 个工作线程</li>
+</ul>
+<h4 id="线程数量"><a href="#线程数量" class="headerlink" title="线程数量"></a>线程数量</h4><p>线程池有最大线程数量和最小线程数量</p>
+<h5 id="最大线程数量"><a href="#最大线程数量" class="headerlink" title="最大线程数量"></a>最大线程数量</h5><p>如果线程的数量超出最大数量，会移除之前的线程</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">SetMaxThreads</span>(<span class="params"><span class="built_in">int</span> workerThreads, <span class="built_in">int</span> completionPortThreads</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>workerThreads 线程池中辅助线程的最大数目</li>
+<li>completionPortThreads 线程池中异步 I&#x2F;O 线程的最大数目</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">WriteCount</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    ThreadPool.GetMaxThreads(<span class="keyword">out</span> <span class="keyword">var</span> workerThreads, <span class="keyword">out</span> <span class="keyword">var</span> completionPortThreads);</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;线程池中辅助线程的最大数为：<span class="subst">&#123;workerThreads&#125;</span>；线程池中异步I/O线程的最大数为：<span class="subst">&#123;completionPortThreads&#125;</span>&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Console.Write(<span class="string">&quot;设置前，&quot;</span>);</span><br><span class="line">WriteCount();</span><br><span class="line"><span class="keyword">if</span> (ThreadPool.SetMaxThreads(<span class="number">30000</span>, <span class="number">500</span>))</span><br><span class="line">&#123;</span><br><span class="line">    ThreadPool.QueueUserWorkItem(<span class="keyword">new</span> WaitCallback((obj) =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;执行线程池&quot;</span>);</span><br><span class="line">    &#125;));</span><br><span class="line"></span><br><span class="line">    Console.Write(<span class="string">&quot;设置后，&quot;</span>);</span><br><span class="line">    WriteCount();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;没有设置&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Console.ReadLine();</span><br></pre></td></tr></table></figure>
+
+<h5 id="最小线程数量"><a href="#最小线程数量" class="headerlink" title="最小线程数量"></a>最小线程数量</h5><p>线程池维持的最小的可用线程数，便于队列任务可以立即启动</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">SetMinThreads</span>(<span class="params"><span class="built_in">int</span> workerThreads, <span class="built_in">int</span> completionPortThreads</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>workerThreads 当前由线程池维护的空闲辅助线程的最小数目</li>
+<li>completionPortThreads 当前由线程池维护的空闲异步 I&#x2F;O 线程的最小数目</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">WriteCount</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    ThreadPool.GetMinThreads(<span class="keyword">out</span> <span class="keyword">var</span> minWorker, <span class="keyword">out</span> <span class="keyword">var</span> minCompletionPort);</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;线程池维护的空闲辅助线程的最小数目为：<span class="subst">&#123;minWorker&#125;</span>；线程池维护的空闲异步 I/O 线程的最小数目为：<span class="subst">&#123;minCompletionPort&#125;</span>&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Console.Write(<span class="string">&quot;设置前，&quot;</span>);</span><br><span class="line">WriteCount();</span><br><span class="line"><span class="keyword">if</span> (ThreadPool.SetMinThreads(<span class="number">10</span>, <span class="number">2</span>))</span><br><span class="line">&#123;</span><br><span class="line">    Console.Write(<span class="string">&quot;设置后，&quot;</span>);</span><br><span class="line">    WriteCount();</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;没有设置&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Console.ReadLine();</span><br></pre></td></tr></table></figure>
+
+<h3 id="Parallel"><a href="#Parallel" class="headerlink" title="Parallel"></a>Parallel</h3><p><code>Parallel</code> 类位于 <code>System.Threading.Task</code> 命名空间中，命名空间与 <code>Task</code> 相同</p>
+<p>Parallel 是对 Thread 和 ThreadPool 的封装和抽象</p>
+<p>Parallel 提供下面几个函数</p>
+<ul>
+<li>For</li>
+<li>ForAsync</li>
+<li>ForEach</li>
+<li>ForEachAsync</li>
+<li>Invoke</li>
+</ul>
+<h4 id="Parallel-For"><a href="#Parallel-For" class="headerlink" title="Parallel.For"></a>Parallel.For</h4><p>类似于 for 循环，可以并行迭代</p>
+<p>以最简单的重载函数为例</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ParallelLoopResult <span class="title">For</span>(<span class="params"><span class="built_in">int</span> fromInclusive, <span class="built_in">int</span> toExclusive, Action&lt;<span class="built_in">int</span>&gt; body</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>前两个参数定义了循环的开始和结束</p>
+<p>第三个参数是任务函数体，函数的参数是循环迭代的次数</p>
+<p>还有一些重载版本，在重载版本中支持中断和线程初始化，后面会有介绍</p>
+<h4 id="Parallel-ForEach"><a href="#Parallel-ForEach" class="headerlink" title="Parallel.ForEach"></a>Parallel.ForEach</h4><p>用异步的方式遍历 <code>IEnumerable</code> 集合，不确定遍历顺序</p>
+<p>以最简单的重载函数为例</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ParallelLoopResult <span class="title">ForEach</span>&lt;<span class="title">TSource</span>&gt;(<span class="params">IEnumerable&lt;TSource&gt; source, Action&lt;TSource&gt; body</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>第一个参数是 <code>IEnumerable&lt;T&gt;</code> 列表，第二个参数是一个 Action 委托，每个元素会执行一次委托</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span>[] data = [<span class="string">&quot;1&quot;</span>, <span class="string">&quot;2&quot;</span>, <span class="string">&quot;3&quot;</span>, <span class="string">&quot;4&quot;</span>, <span class="string">&quot;5&quot;</span>, <span class="string">&quot;6&quot;</span>, <span class="string">&quot;7&quot;</span>, <span class="string">&quot;8&quot;</span>, <span class="string">&quot;9&quot;</span>, <span class="string">&quot;10&quot;</span>, <span class="string">&quot;11&quot;</span>, <span class="string">&quot;12&quot;</span>, <span class="string">&quot;13&quot;</span>];</span><br><span class="line">Parallel.ForEach(data, (s) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(s);</span><br><span class="line">&#125;);</span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<p>还有一些重载版本，在重载版本中支持中断和线程初始化，后面会有介绍</p>
+<h4 id="Parallel-Invoke"><a href="#Parallel-Invoke" class="headerlink" title="Parallel.Invoke"></a>Parallel.Invoke</h4><p>支持执行不同的方法，类似 <code>Task.WhenAll</code></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Invoke</span>(<span class="params"><span class="keyword">params</span> Action[] actions</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Foo</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Foo&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Bar</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Bar&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Parallel.Invoke(Foo, Bar);</span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<p>参数是一个 Action 委托数组</p>
+<h4 id="异步版本"><a href="#异步版本" class="headerlink" title="异步版本"></a>异步版本</h4><ul>
+<li>ForAsync</li>
+<li>ForEachAsync</li>
+</ul>
+<p>用法类似，只是返回 <code>Task</code>，可以等待执行结束</p>
+<h4 id="中断执行"><a href="#中断执行" class="headerlink" title="中断执行"></a>中断执行</h4><p>回调函数的重载版本，有的支持参数 <code>ParallelLoopState</code></p>
+<p>该对象有函数 <code>Break()</code> 和 <code>Stop</code>，可以中断任务的执行</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ParallelLoopResult <span class="title">For</span>(<span class="params"><span class="built_in">int</span> fromInclusive, <span class="built_in">int</span> toExclusive, Action&lt;<span class="built_in">int</span>, ParallelLoopState&gt; body</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = Parallel.For(<span class="number">0</span>, <span class="number">100</span>, (i, state) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;i:<span class="subst">&#123;i&#125;</span>, thread id: <span class="subst">&#123;Thread.CurrentThread.ManagedThreadId&#125;</span>&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (i &gt; <span class="number">5</span>) state.Break();</span><br><span class="line">    Thread.Sleep(<span class="number">10</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="string">$&quot;IsCompleted: <span class="subst">&#123;result.IsCompleted&#125;</span>&quot;</span>);</span><br><span class="line">Console.WriteLine(<span class="string">$&quot;LowestBreakIteration: <span class="subst">&#123;result.LowestBreakIteration&#125;</span>&quot;</span>);</span><br><span class="line"></span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">i:24, thread id: 12</span><br><span class="line">i:0, thread id: 1</span><br><span class="line">i:54, thread id: 17</span><br><span class="line">i:60, thread id: 18</span><br><span class="line">i:48, thread id: 16</span><br><span class="line">i:18, thread id: 11</span><br><span class="line">i:30, thread id: 13</span><br><span class="line">i:72, thread id: 20</span><br><span class="line">i:42, thread id: 15</span><br><span class="line">i:36, thread id: 14</span><br><span class="line">i:6, thread id: 5</span><br><span class="line">i:12, thread id: 8</span><br><span class="line">i:66, thread id: 19</span><br><span class="line">i:78, thread id: 21</span><br><span class="line">i:84, thread id: 22</span><br><span class="line">i:96, thread id: 24</span><br><span class="line">i:90, thread id: 23</span><br><span class="line">i:3, thread id: 11</span><br><span class="line">i:1, thread id: 1</span><br><span class="line">i:4, thread id: 11</span><br><span class="line">i:2, thread id: 1</span><br><span class="line">i:5, thread id: 11</span><br><span class="line">IsCompleted: False</span><br><span class="line">LowestBreakIteration: 6</span><br></pre></td></tr></table></figure>
+
+<h4 id="线程初始化"><a href="#线程初始化" class="headerlink" title="线程初始化"></a>线程初始化</h4><p>Parallel 下的模板函数重载版本，可以对每个线程进行初始化，如</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ParallelLoopResult <span class="title">For</span>&lt;<span class="title">TLocal</span>&gt;(<span class="params"><span class="built_in">int</span> fromInclusive, <span class="built_in">int</span> toExclusive, Func&lt;TLocal&gt; localInit, Func&lt;<span class="built_in">int</span>, ParallelLoopState, TLocal, TLocal&gt; body, Action&lt;TLocal&gt; localFinally</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ParallelLoopResult <span class="title">ForEach</span>&lt;<span class="title">TSource</span>, <span class="title">TLocal</span>&gt;(<span class="params">IEnumerable&lt;TSource&gt; source, Func&lt;TLocal&gt; localInit, Func&lt;TSource, ParallelLoopState, TLocal, TLocal&gt; body, Action&lt;TLocal&gt; localFinally</span>)</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>localInit <code>localInit</code> 参数是一个 <code>Func</code> 委托，该委托会返回一个模板类型的值，回调的函数体可以通过参数获取到这个值。每个线程都会执行一次 <code>localInit</code> 委托，因此 <code>localInit</code> 可能会执行多次，也可能是 1 次</p>
+</li>
+<li><p>localFinally <code>localFinally</code> 参数是一个 <code>Action</code> 委托，该委托会在每个线程完成后执行</p>
+</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Parallel.For(</span><br><span class="line">    <span class="number">0</span>,</span><br><span class="line">    <span class="number">10</span>,</span><br><span class="line">    () =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$&quot;init thread <span class="subst">&#123;Environment.CurrentManagedThreadId&#125;</span>,\t task <span class="subst">&#123;Task.CurrentId&#125;</span>&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">$&quot;t<span class="subst">&#123;Environment.CurrentManagedThreadId&#125;</span>&quot;</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    (i, pls, str) =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">&quot;body i &#123;0&#125; \t str &#123;1&#125; \t thread &#123;2&#125; \t task &#123;3&#125;&quot;</span>, i, str, Environment.CurrentManagedThreadId, Task.CurrentId);</span><br><span class="line">        Thread.Sleep(<span class="number">10</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">$&quot;i \t<span class="subst">&#123;i&#125;</span>&quot;</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    (str) =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(<span class="string">$&quot;finally\t <span class="subst">&#123;str&#125;</span>&quot;</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">init thread 17,  task 15</span><br><span class="line">init thread 16,  task 14</span><br><span class="line">init thread 8,   task 8</span><br><span class="line">init thread 15,  task 13</span><br><span class="line">init thread 13,  task 11</span><br><span class="line">init thread 1,   task 6</span><br><span class="line">init thread 5,   task 7</span><br><span class="line">body i 1         str t5          thread 5        task 7</span><br><span class="line">init thread 14,  task 12</span><br><span class="line">body i 6         str t14         thread 14       task 12</span><br><span class="line">body i 9         str t17         thread 17       task 15</span><br><span class="line">body i 8         str t16         thread 16       task 14</span><br><span class="line">init thread 12,  task 10</span><br><span class="line">body i 4         str t12         thread 12       task 10</span><br><span class="line">body i 7         str t15         thread 15       task 13</span><br><span class="line">body i 5         str t13         thread 13       task 11</span><br><span class="line">body i 0         str t1          thread 1        task 6</span><br><span class="line">init thread 11,  task 9</span><br><span class="line">body i 3         str t11         thread 11       task 9</span><br><span class="line">body i 2         str t8          thread 8        task 8</span><br><span class="line">finally  i      5</span><br><span class="line">finally  i      6</span><br><span class="line">finally  i      0</span><br><span class="line">finally  i      4</span><br><span class="line">finally  i      7</span><br><span class="line">finally  i      3</span><br><span class="line">finally  i      8</span><br><span class="line">finally  i      9</span><br><span class="line">finally  i      2</span><br><span class="line">finally  i      1</span><br></pre></td></tr></table></figure>
+
+<h3 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h3><p><code>Task</code> 提供的多线程更加灵活</p>
+<ul>
+<li>支持并行任务</li>
+<li>支持连续任务，即上一个任务结束后再决定是否执行下一个任务</li>
+<li>支持任务嵌套，一个任务中可以再开启多个任务</li>
+<li>可以获取任务的返回值</li>
+<li>任务基于线程，最终执行是需要线程来执行的</li>
+<li>任务和线程不是一对一关系，一个线程可能有多个任务</li>
+<li>相比于线程，任务的开销更小，控制更精确</li>
+</ul>
+<h4 id="启动任务"><a href="#启动任务" class="headerlink" title="启动任务"></a>启动任务</h4><p>有多种方式启动一个任务</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">_ = Task.Run(() =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Foo&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> task = <span class="keyword">new</span> Task(() =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Foo&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line">task.Start();</span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tf = <span class="keyword">new</span> TaskFactory();</span><br><span class="line"><span class="keyword">var</span> task = tf.StartNew(() =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Foo&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">_ = Task.Factory.StartNew(() =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Foo&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<p>上述方法也都支持给任务传参</p>
+<h4 id="任务的层次"><a href="#任务的层次" class="headerlink" title="任务的层次"></a>任务的层次</h4><p>在任务的内部，也可以创建多个子任务</p>
+<p>父任务被取消时，子任务也会被取消</p>
+<p>如果在任务内想创建父级任务，在创建任务时，为 <code>TaskCreationOptions</code> 赋值为 <code>TaskCreationOptions.DenyChildAttach</code></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> task = <span class="keyword">new</span> Task(() =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Foo&quot;</span>);</span><br><span class="line">&#125;, TaskCreationOptions.DenyChildAttach);</span><br><span class="line">task.Start();</span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<h4 id="长任务"><a href="#长任务" class="headerlink" title="长任务"></a>长任务</h4><p>默认 Task 更适合短时间运行的任务，如果要创建长时间运行的任务，应该使用 <code>TaskCreationOptions.LongRunning</code></p>
+<p>这样就不再使用线程池中的线程，会告诉任务管理器创建一个新的线程</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> task = <span class="keyword">new</span> Task(() =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Foo&quot;</span>);</span><br><span class="line">&#125;, TaskCreationOptions.LongRunning);</span><br><span class="line">task.Start();</span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<h4 id="任务控制"><a href="#任务控制" class="headerlink" title="任务控制"></a>任务控制</h4><h5 id="task-Wait"><a href="#task-Wait" class="headerlink" title="task.Wait"></a>task.Wait</h5><p>调用函数 <code>Task.Wait</code> 可以等待任务执行完毕，即 <code>Task</code> 的状态变为 <code>Completed</code></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Wait</span>()</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Wait</span>(<span class="params">CancellationToken cancellationToken</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">Wait</span>(<span class="params"><span class="built_in">int</span> millisecondsTimeout</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">Wait</span>(<span class="params"><span class="built_in">int</span> millisecondsTimeout, CancellationToken cancellationToken</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">Wait</span>(<span class="params">TimeSpan timeout</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">bool</span> <span class="title">Wait</span>(<span class="params">TimeSpan timeout, CancellationToken cancellationToken</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Task-WaitAll"><a href="#Task-WaitAll" class="headerlink" title="Task.WaitAll"></a>Task.WaitAll</h5><p>等待所有任务执行完毕，参数接收多个 Task 对象</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">WaitAll</span>(<span class="params"><span class="keyword">params</span> Task[] tasks</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">WaitAll</span>(<span class="params">Task[] tasks, <span class="built_in">int</span> millisecondsTimeout, CancellationToken cancellationToken</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">WaitAll</span>(<span class="params">Task[] tasks, CancellationToken cancellationToken</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">WaitAll</span>(<span class="params">Task[] tasks, TimeSpan timeout</span>)</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">WaitAll</span>(<span class="params">Task[] tasks, <span class="built_in">int</span> millisecondsTimeout</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<h5 id="Task-WatiAny"><a href="#Task-WatiAny" class="headerlink" title="Task.WatiAny"></a>Task.WatiAny</h5><p>类似 <code>Task.WaitAll</code>，但只需要任一任务完成，就不再等待</p>
+<h5 id="task-ContinueWith"><a href="#task-ContinueWith" class="headerlink" title="task.ContinueWith"></a>task.ContinueWith</h5><p>任务完成后自动执行下一个 Task，实现链式执行</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Task task1 = Task.Run(() =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Current Task id = &#123;0&#125;&quot;</span>, Task.CurrentId);</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;执行任务1\r\n&quot;</span>);</span><br><span class="line">    Thread.Sleep(<span class="number">10</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Task task2 = task1.ContinueWith((t) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Last Task id = &#123;0&#125;&quot;</span>, t.Id);</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Current Task id = &#123;0&#125;&quot;</span>, Task.CurrentId);</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;执行任务2\r\n&quot;</span>);</span><br><span class="line">    Thread.Sleep(<span class="number">10</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Task task3 = task2.ContinueWith((t) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Last Task id = &#123;0&#125;&quot;</span>, t.Id);</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Current Task id = &#123;0&#125;&quot;</span>, Task.CurrentId);</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;执行任务3\r\n&quot;</span>);</span><br><span class="line">&#125;, TaskContinuationOptions.OnlyOnRanToCompletion);</span><br><span class="line"></span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Current Task id = 9</span><br><span class="line">执行任务1</span><br><span class="line"></span><br><span class="line">Last Task id = 9</span><br><span class="line">Current Task id = 10</span><br><span class="line">执行任务2</span><br><span class="line"></span><br><span class="line">Last Task id = 10</span><br><span class="line">Current Task id = 11</span><br><span class="line">执行任务3</span><br></pre></td></tr></table></figure>
+
+<h5 id="task-RunSynchronously"><a href="#task-RunSynchronously" class="headerlink" title="task.RunSynchronously"></a>task.RunSynchronously</h5><p>在当前线程上执行任务</p>
+<p>如果当前线程是 UI 线程，这个操作会造成界面卡顿</p>
+<h4 id="任务取消"><a href="#任务取消" class="headerlink" title="任务取消"></a>任务取消</h4><p>启动任务时传入 Token，在任务中的各个适当位置判断 Tokan 状态并退出任务</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tokenSource = <span class="keyword">new</span> CancellationTokenSource();</span><br><span class="line"><span class="keyword">var</span> token = tokenSource.Token;</span><br><span class="line"><span class="keyword">var</span> task = Task.Run(() =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        Console.WriteLine(i);</span><br><span class="line">        System.Threading.Thread.Sleep(<span class="number">1000</span>);</span><br><span class="line">        <span class="keyword">if</span> (token.IsCancellationRequested)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">&quot;Abort mission success!&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;, token);</span><br><span class="line">token.Register(() =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">&quot;Canceled&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line">Console.WriteLine(<span class="string">&quot;Press enter to cancel task...&quot;</span>);</span><br><span class="line">Console.ReadKey();</span><br><span class="line">tokenSource.Cancel();</span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Press enter to cancel task...</span><br><span class="line">0</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">Canceled</span><br><span class="line">Abort mission success!</span><br></pre></td></tr></table></figure>
+
+<h3 id="BackgroundWorker"><a href="#BackgroundWorker" class="headerlink" title="BackgroundWorker"></a>BackgroundWorker</h3><p><code>BackgroundWorker</code> 实现多线程运算更安全、更简单</p>
+<ul>
+<li>提供几种事件，可以在任务的各个阶段触发</li>
+<li>提供了 <code>CancleAsync</code> 方法，方便取消任务</li>
+<li>能后台异步操作的同时，也能通知 UI 线程进度</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> System.ComponentModel;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> worker = <span class="keyword">new</span> BackgroundWorker()</span><br><span class="line">&#123;</span><br><span class="line">    WorkerSupportsCancellation = <span class="literal">true</span>,</span><br><span class="line">    WorkerReportsProgress = <span class="literal">true</span>,</span><br><span class="line">&#125;;</span><br><span class="line">worker.DoWork += Worker_DoWork;</span><br><span class="line">worker.ProgressChanged += Worker_ProgressChanged;</span><br><span class="line">worker.RunWorkerCompleted += Worker_RunWorkerCompleted;</span><br><span class="line">worker.RunWorkerAsync();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Worker_RunWorkerCompleted</span>(<span class="params"><span class="built_in">object</span>? sender, RunWorkerCompletedEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;RunWorkerCompleted, Cancelled: <span class="subst">&#123;e.Cancelled&#125;</span>&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Worker_ProgressChanged</span>(<span class="params"><span class="built_in">object</span>? sender, ProgressChangedEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;ProgressChanged, ProgressPercentage:<span class="subst">&#123;e.ProgressPercentage&#125;</span>&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Worker_DoWork</span>(<span class="params"><span class="built_in">object</span>? sender, DoWorkEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> times = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (!worker.CancellationPending)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (times &gt;= <span class="number">6</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            worker.CancelAsync();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        worker.ReportProgress(times);</span><br><span class="line">        Console.WriteLine(<span class="string">$&quot;DoWork <span class="subst">&#123;times++&#125;</span>&quot;</span>);</span><br><span class="line">        Thread.Sleep(<span class="number">100</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Console.ReadKey();</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">DoWork 1</span><br><span class="line">ProgressChanged, ProgressPercentage:1</span><br><span class="line">DoWork 2</span><br><span class="line">ProgressChanged, ProgressPercentage:2</span><br><span class="line">DoWork 3</span><br><span class="line">ProgressChanged, ProgressPercentage:3</span><br><span class="line">DoWork 4</span><br><span class="line">ProgressChanged, ProgressPercentage:4</span><br><span class="line">DoWork 5</span><br><span class="line">ProgressChanged, ProgressPercentage:5</span><br><span class="line">DoWork 6</span><br><span class="line">ProgressChanged, ProgressPercentage:6</span><br><span class="line">RunWorkerCompleted, Cancelled: False</span><br></pre></td></tr></table></figure>
+
+<h2 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h2><p>多个线程的执行顺序是不可预测的，但有时候需要多个线程访问共享的数据和资源，这个时候就需要使用一些方法来达到线程同步</p>
+<h3 id="线程锁"><a href="#线程锁" class="headerlink" title="线程锁"></a>线程锁</h3><ul>
+<li>Mutex 互斥锁</li>
+<li>SpinLock 自旋锁</li>
+<li>Monitor</li>
+<li>lock</li>
+</ul>
+<h4 id="Mutex"><a href="#Mutex" class="headerlink" title="Mutex"></a>Mutex</h4><p>互斥锁，可以用于共享资源每次只能被一个线程访问的情况</p>
+<p>Mutex 消耗的资源较大，不适合频繁操作</p>
+<p>Mutex 可以跨进程，是系统级的。比如可以用 Mutex 实现一个程序不能多次打开</p>
+<p>如果锁已被其他线程获取，第二次获取的线程将挂起，直到第一个线程释放互斥锁</p>
+<ul>
+<li>WaitOne() 阻止线程，直至收到信号，参数可以指定超时时间</li>
+<li>ReleaseMutex() 释放一次锁（其他线程即获取锁）</li>
+<li>OpenExisting() 获取指定命名的互斥锁</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mutex = <span class="keyword">new</span> Mutex();</span><br><span class="line"><span class="built_in">bool</span> executed = <span class="literal">false</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Execute</span>(<span class="params"><span class="built_in">int</span> num</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (mutex.WaitOne())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (!executed)</span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(<span class="string">$&quot;<span class="subst">&#123;num&#125;</span>：已执行&quot;</span>);</span><br><span class="line">                executed = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                Console.WriteLine(<span class="string">$&quot;<span class="subst">&#123;num&#125;</span>：跳过执行&quot;</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">finally</span></span><br><span class="line">        &#123;</span><br><span class="line">            mutex.ReleaseMutex();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">    _ = Task.Factory.StartNew(obj =&gt; &#123; Execute((<span class="built_in">int</span>)obj!); &#125;, i);</span><br><span class="line">&#125;</span><br><span class="line">Console.ReadLine();</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">2：已执行</span><br><span class="line">3：跳过执行</span><br><span class="line">4：跳过执行</span><br><span class="line">1：跳过执行</span><br><span class="line">5：跳过执行</span><br><span class="line">7：跳过执行</span><br><span class="line">8：跳过执行</span><br><span class="line">9：跳过执行</span><br><span class="line">6：跳过执行</span><br></pre></td></tr></table></figure>
+
+<h4 id="SpinLock"><a href="#SpinLock" class="headerlink" title="SpinLock"></a>SpinLock</h4><p>当一个线程获取锁对象时，如果锁已经被其他线程获取，那么这个线程就会循环等待（自旋），并且不断的获取锁，直至获取到锁</p>
+<p>因此自旋锁不会让线程处于等待状态，有助于避免阻塞</p>
+<p>一般用于短时间锁定的场景，如果有大量阻塞，旋转过多会影响性能</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> spinLock = <span class="keyword">new</span> SpinLock();</span><br><span class="line"><span class="built_in">bool</span> executed = <span class="literal">false</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Execute</span>(<span class="params"><span class="built_in">int</span> num</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">bool</span> lockTaken = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">try</span></span><br><span class="line">    &#123;</span><br><span class="line">        spinLock.Enter(<span class="keyword">ref</span> lockTaken);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!executed)</span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">$&quot;<span class="subst">&#123;num&#125;</span>：已执行&quot;</span>);</span><br><span class="line">            executed = <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            Console.WriteLine(<span class="string">$&quot;<span class="subst">&#123;num&#125;</span>：跳过执行&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">finally</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (lockTaken)</span><br><span class="line">        &#123;</span><br><span class="line">            spinLock.Exit();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">    _ = Task.Factory.StartNew(obj =&gt; &#123; Execute((<span class="built_in">int</span>)obj!); &#125;, i);</span><br><span class="line">&#125;</span><br><span class="line">Console.ReadLine();</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">2：已执行</span><br><span class="line">3：跳过执行</span><br><span class="line">1：跳过执行</span><br><span class="line">4：跳过执行</span><br><span class="line">7：跳过执行</span><br><span class="line">5：跳过执行</span><br><span class="line">6：跳过执行</span><br><span class="line">8：跳过执行</span><br><span class="line">9：跳过执行</span><br></pre></td></tr></table></figure>
+
+<h4 id="Monitor"><a href="#Monitor" class="headerlink" title="Monitor"></a>Monitor</h4><p>Monitor 是一种轻量级的互斥锁，能确保同一时刻只有一个线程执行代码块</p>
+<p>Monitor.Enter 方法锁定对象<br>Monitor.Exit 方法释放对象<br>Monitor.TryEnter 可以指定获取对象锁的最长时间，能避免出现死锁</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">object</span>();</span><br><span class="line">Monitor.Enter(obj);</span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span></span><br><span class="line">&#123;</span><br><span class="line">    Monitor.Exit(obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="lock"><a href="#lock" class="headerlink" title="lock"></a>lock</h4><p>lock 的本质就是 Monitor 实现的，因此在 lock 块中可以使用 Monitor 的所有方法</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">object</span>();</span><br><span class="line"><span class="keyword">lock</span>(obj)&#123;</span><br><span class="line">  <span class="comment">// TODO</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>等同于</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> <span class="built_in">object</span>();</span><br><span class="line">Monitor.Enter(obj);</span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// TODO</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span></span><br><span class="line">&#123;</span><br><span class="line">    Monitor.Exit(obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><p>有两种可以实现线程同步的事件</p>
+<ul>
+<li>AutoResetEvent</li>
+<li>ManualResetEvent</li>
+</ul>
+<p>可以控制是否阻塞线程</p>
+<ul>
+<li>WaitOne() 阻塞当前线程，直到收到释放信号，可以传参指定超时时长，避免死锁</li>
+<li>Set() 释放阻塞</li>
+<li>Reset() 将状态改为非终止状态，即阻塞所有的 WaitOne</li>
+</ul>
+<h4 id="AutoResetEvent"><a href="#AutoResetEvent" class="headerlink" title="AutoResetEvent"></a>AutoResetEvent</h4><p>AutoResetEvent 收到 Set 只会有一个线程的 WaitOne 被处理，其他线程继续等待</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> resetEvent = <span class="keyword">new</span> AutoResetEvent(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Execute</span>(<span class="params"><span class="built_in">int</span> num</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;<span class="subst">&#123;num&#125;</span> 等待&quot;</span>);</span><br><span class="line">    resetEvent.WaitOne();</span><br><span class="line"></span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;<span class="subst">&#123;num&#125;</span> 执行&quot;</span>);</span><br><span class="line"></span><br><span class="line">    Thread.Sleep(<span class="number">1000</span>);</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;<span class="subst">&#123;num&#125;</span> 结束&quot;</span>);</span><br><span class="line">    resetEvent.Set();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">    _ = Task.Factory.StartNew(obj =&gt; &#123; Execute((<span class="built_in">int</span>)obj!); &#125;, i);</span><br><span class="line">    Thread.Sleep(<span class="number">50</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">resetEvent.Set();</span><br><span class="line">Thread.Sleep(<span class="number">7000</span>);</span><br><span class="line">resetEvent.WaitOne();</span><br><span class="line">_ = Task.Factory.StartNew(obj =&gt; &#123; Execute((<span class="built_in">int</span>)obj!); &#125;, <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">Thread.Sleep(<span class="number">1000</span>);</span><br><span class="line">resetEvent.Set();</span><br><span class="line">resetEvent.WaitOne();</span><br><span class="line">Console.WriteLine(<span class="string">$&quot;结束&quot;</span>);</span><br><span class="line"></span><br><span class="line">Console.ReadLine();</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1 等待</span><br><span class="line">2 等待</span><br><span class="line">3 等待</span><br><span class="line">4 等待</span><br><span class="line">2 执行</span><br><span class="line">2 结束</span><br><span class="line">4 执行</span><br><span class="line">4 结束</span><br><span class="line">3 执行</span><br><span class="line">3 结束</span><br><span class="line">1 执行</span><br><span class="line">1 结束</span><br><span class="line">10 等待</span><br><span class="line">10 执行</span><br><span class="line">10 结束</span><br><span class="line">结束</span><br></pre></td></tr></table></figure>
+
+<h4 id="ManualResetEvent"><a href="#ManualResetEvent" class="headerlink" title="ManualResetEvent"></a>ManualResetEvent</h4><p>ManualResetEvent 收到 Set 会处理所有线程的 WaitOne，而且新进入的 WaitOne 也不再等待</p>
+<p>除非调用了 <code>Reset</code> 重置信号，才会将 Set 产生的影响消除</p>
+<p>如果将前面示例代码的 AutoResetEvent 类换成 ManualResetEvent</p>
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">1 等待</span><br><span class="line">2 等待</span><br><span class="line">3 等待</span><br><span class="line">4 等待</span><br><span class="line">4 执行</span><br><span class="line">3 执行</span><br><span class="line">2 执行</span><br><span class="line">1 执行</span><br><span class="line">3 结束</span><br><span class="line">2 结束</span><br><span class="line">1 结束</span><br><span class="line">4 结束</span><br><span class="line">10 等待</span><br><span class="line">10 执行</span><br><span class="line">10 结束</span><br><span class="line">结束</span><br></pre></td></tr></table></figure>
+
+<h3 id="信号量"><a href="#信号量" class="headerlink" title="信号量"></a>信号量</h3><ul>
+<li>Semaphore 可以是系统范围信号量，也可以是本地信号量，限制可同时访问某一资源或资源池的线程数</li>
+<li>SemaphoreSlim 更轻量、速度更快，用于单个进程内的等待，是 Semaphore 的轻量替代</li>
+</ul>
+<p>构造函数的参数 <code>initialCount</code> 表示同时允许多少个 Wait() 不等待</p>
+<ul>
+<li>Release() 退出信号量</li>
+<li>WaitOne() 阻塞线程，直到收到信号</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> semaphore = <span class="keyword">new</span> SemaphoreSlim(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Execute</span>(<span class="params"><span class="built_in">int</span> num</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;<span class="subst">&#123;num&#125;</span>等待&quot;</span>);</span><br><span class="line">    semaphore.Wait();</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;<span class="subst">&#123;num&#125;</span>执行&quot;</span>);</span><br><span class="line">    Thread.Sleep(<span class="number">100</span>);</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;<span class="subst">&#123;num&#125;</span>结束&quot;</span>);</span><br><span class="line">    semaphore.Release();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">1</span>; i &lt; <span class="number">6</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">    _ = Task.Factory.StartNew(obj =&gt; &#123; Execute((<span class="built_in">int</span>)obj!); &#125;, i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Console.ReadLine();</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">4等待</span><br><span class="line">1等待</span><br><span class="line">3等待</span><br><span class="line">2等待</span><br><span class="line">5等待</span><br><span class="line">4执行</span><br><span class="line">2执行</span><br><span class="line">5执行</span><br><span class="line">5结束</span><br><span class="line">4结束</span><br><span class="line">2结束</span><br><span class="line">1执行</span><br><span class="line">3执行</span><br><span class="line">1结束</span><br><span class="line">3结束</span><br></pre></td></tr></table></figure>
+
+<h2 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h2><p>在 C# 中有多种定时器，常见通用的两种为</p>
+<ul>
+<li>System.Threading.Timer 线程计时器</li>
+<li>System.Timers.Timer 服务器计时器</li>
+</ul>
+<p>还有和框架相关的，如</p>
+<table>
+<thead>
+<tr>
+<th>框架</th>
+<th>类和命名空间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WPF</td>
+<td>System.Windows.Threading.DispatcherTimer</td>
+</tr>
+<tr>
+<td>WinForm</td>
+<td>System.Windows.Forms.Timer</td>
+</tr>
+<tr>
+<td>ASP.NET</td>
+<td>System.Web.UI.Timer</td>
+</tr>
+</tbody></table>
+<h3 id="框架相关的定时器"><a href="#框架相关的定时器" class="headerlink" title="框架相关的定时器"></a>框架相关的定时器</h3><p>都是单线程的，并且在 UI 线程中执行，因此可以操作 UI 控件</p>
+<p>一般仅做一些简单的和 UI 交互的定时操作，耗时操作会导致 UI 卡顿</p>
+<h3 id="System-Threading-Timer"><a href="#System-Threading-Timer" class="headerlink" title="System.Threading.Timer"></a>System.Threading.Timer</h3><p>线程计时器是轻量计时器，基于线程池实现，工作在后台线程</p>
+<p>如果前一个执行还未结束，会新开个线程执行新任务</p>
+<p>不是线程安全的</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> System.Threading.Timer((obj) =&gt;</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;当前线程：<span class="subst">&#123;Environment.CurrentManagedThreadId&#125;</span>&quot;</span>);</span><br><span class="line">    Thread.Sleep(<span class="number">20</span>);</span><br><span class="line">&#125;, <span class="literal">null</span>, <span class="number">10</span>, <span class="number">10</span>);</span><br><span class="line">Console.ReadLine();</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">当前线程：11</span><br><span class="line">当前线程：5</span><br><span class="line">当前线程：10</span><br><span class="line">当前线程：11</span><br><span class="line">当前线程：10</span><br><span class="line">当前线程：5</span><br><span class="line">当前线程：10</span><br><span class="line">当前线程：5</span><br><span class="line">当前线程：10</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="System-Timers-Timer"><a href="#System-Timers-Timer" class="headerlink" title="System.Timers.Timer"></a>System.Timers.Timer</h3><p>服务器计时器是针对服务器的服务程序，不过一般程序都可以使用</p>
+<p>对多线程环境下有更多优化</p>
+<p>如果前一个执行还未结束，与 <code>System.Threading.Timer</code> 相同，会新开个线程执行新任务</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> timer = <span class="keyword">new</span> System.Timers.Timer(<span class="number">10</span>);</span><br><span class="line">timer.Elapsed += Timer_Elapsed;</span><br><span class="line">timer.Start();</span><br><span class="line">Console.ReadLine();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Timer_Elapsed</span>(<span class="params"><span class="built_in">object</span>? sender, System.Timers.ElapsedEventArgs e</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;当前线程：<span class="subst">&#123;Environment.CurrentManagedThreadId&#125;</span>&quot;</span>);</span><br><span class="line">    Thread.Sleep(<span class="number">20</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>输出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">当前线程：5</span><br><span class="line">当前线程：11</span><br><span class="line">当前线程：10</span><br><span class="line">当前线程：11</span><br><span class="line">当前线程：5</span><br><span class="line">当前线程：11</span><br><span class="line">当前线程：5</span><br><span class="line">当前线程：11</span><br><span class="line">当前线程：5</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h4 id="AutoReset"><a href="#AutoReset" class="headerlink" title="AutoReset"></a>AutoReset</h4><p><code>AutoReset</code> 属性默认为 false，如果设为 true，那么执行一次 <code>Elapsed</code> 后就不再执行了</p>
+<h4 id="SynchronizingObject"><a href="#SynchronizingObject" class="headerlink" title="SynchronizingObject"></a>SynchronizingObject</h4><p><code>SynchronizingObject</code> 属性可以指定同步上下文</p>
+<p>比如指定为 UI 控件，则回调会在 UI 线程中执行</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/imgs/qr/wxpay_sm.jpg" alt="hal.wang 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/imgs/qr/alipay_sm.jpg" alt="hal.wang 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/c4cce22d/" rel="prev" title="Blazor 集成 UnoCSS">
+                  <i class="fa fa-angle-left"></i> Blazor 集成 UnoCSS
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/7c21479a/" rel="next" title="成为 TypeScript 高手 - 快来做体操">
+                  成为 TypeScript 高手 - 快来做体操 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5taWl0Lmdvdi5jbg==">京ICP备19029465号-5 </span>
+      <img src="http://www.beian.gov.cn/img/new/gongan.png" alt=""><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5tcHMuZ292LmNuLyMvcXVlcnkvd2ViU2VhcmNoP2NvZGU9MzQxMjI2MDIwMDAyOTk=">皖公网安备 34122602000299号 </span>
+  </div>
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hal-wang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">192k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:54</span>
+  </span>
+</div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

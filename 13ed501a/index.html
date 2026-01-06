@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/imgs/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/imgs/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/imgs/avatar.jpg">
+  <link rel="mask-icon" href="/imgs/avatar.jpg" color="#222">
+  <meta name="google-site-verification" content="rYpHgEMR6BLENOrvxg5n431yWs2HNmyfp14UbZ5Xgbw">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.loli.net/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Inconsolata:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://lib.baomitu.com/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://lib.baomitu.com/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.hal.wang","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="uniapp 上传文件至腾讯云对象存储 cos，折腾了两天，终于搞定了，赶紧记下来。。。激动！！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="uniapp 上传文件至 COS">
+<meta property="og:url" content="https://blog.hal.wang/13ed501a/index.html">
+<meta property="og:site_name" content="H">
+<meta property="og:description" content="uniapp 上传文件至腾讯云对象存储 cos，折腾了两天，终于搞定了，赶紧记下来。。。激动！！">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-24T23:48:22.000Z">
+<meta property="article:modified_time" content="2026-01-06T13:24:08.074Z">
+<meta property="article:author" content="hal.wang">
+<meta property="article:tag" content="C#">
+<meta property="article:tag" content="UWP">
+<meta property="article:tag" content="uniapp">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.hal.wang/13ed501a/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.hal.wang/13ed501a/","path":"13ed501a/","title":"uniapp 上传文件至 COS"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>uniapp 上传文件至 COS | H</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js" defer></script>
+  <script async src="https://hm.baidu.com/hm.js?c70051d9b6ed3cbc101f3a64ae4c98c2"></script>
+
+
+
+
+
+
+
+  
+  <script src="https://lib.baomitu.com/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://lib.baomitu.com/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+  <script src="https://lib.baomitu.com/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://lib.baomitu.com/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://lib.baomitu.com/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="H" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">H</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">精通多种语言 Hello World</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">43</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-cubes fa-fw"></i>分类<span class="badge">2</span></a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%A7%8B%E5%85%A5%E5%9D%91"><span class="nav-number">1.</span> <span class="nav-text">开始入坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B6%8A%E9%99%B7%E8%B6%8A%E6%B7%B1"><span class="nav-number">2.</span> <span class="nav-text">越陷越深</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%BE%E8%BD%AE%E5%AD%90"><span class="nav-number">3.</span> <span class="nav-text">找轮子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%80%A0%E8%BD%AE%E5%AD%90"><span class="nav-number">4.</span> <span class="nav-text">造轮子</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hal.wang"
+      src="/imgs/avatar.jpg">
+  <p class="site-author-name" itemprop="name">hal.wang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9oYWwud2FuZw==" title="主页 → https:&#x2F;&#x2F;hal.wang"><i class="fa fa-user fa-fw"></i>主页</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5n" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hal-wang"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/imgs/qr/weixin.jpg" title="微信 → &#x2F;imgs&#x2F;qr&#x2F;weixin.jpg" rel="noopener me"><i class="fab fa-weixin fa-fw"></i>微信</a>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93cGEucXEuY29tL21zZ3JkP3Y9MyZ1aW49NzkwMjY0MDI3JnNpdGU9cXEmbWVudT15ZXM=" title="QQ → https:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;790264027&amp;site&#x3D;qq&amp;menu&#x3D;yes"><i class="fab fa-qq fa-fw"></i>QQ</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmhpQGhhbC53YW5n" title="Email → mailto:hi@hal.wang"><i class="fa fa-envelope fa-fw"></i>Email</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml" rel="noopener me"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LzQuMC8="><img src="https://lib.baomitu.com/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.hal.wang/13ed501a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/imgs/avatar.jpg">
+      <meta itemprop="name" content="hal.wang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="uniapp 上传文件至 COS | H">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          uniapp 上传文件至 COS<span class="exturl post-edit-link" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5nL2Jsb2cvZWRpdC9tYWluL3NvdXJjZS9fcG9zdHMvdW5pYXBwLeS4iuS8oOaWh+S7tuiHsy1DT1MubWQ=" title="编辑"><i class="fa fa-pen-nib"></i></span>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-08-24 23:48:22" itemprop="dateCreated datePublished" datetime="2020-08-24T23:48:22+00:00">2020-08-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">记录</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>uniapp 上传文件至腾讯云对象存储 cos，折腾了两天，终于搞定了，赶紧记下来。。。激动！！</p>
+<span id="more"></span>
+
+<h2 id="开始入坑"><a href="#开始入坑" class="headerlink" title="开始入坑"></a>开始入坑</h2><p>由于以前 C#上传文件至 COS 的方式都是预签名，这种比较安全，但 COS 的预签名只支持 PUT 方式。</p>
+<p>写 uniapp 时，也是这样做，然而，uniapp 的 <code>uni.uploadFile</code> 接口只有 POST 方式。</p>
+<p>于是用<code>uni.request(OBJECT)</code>，<code>body</code>为<code>ArrayBuffer</code>，在 H5 和微信小程序测没问题。至此，本以为万事大吉。。。</p>
+<p>等这方面功能写差不多了，用安卓上传文件（本人比较懒，安卓真机不经常测），发现上传的文件打不开，于是在对象存储控制台下载文件，发现文件内容只有文本“{}”。</p>
+<p>然后开始了漫长的调试找 bug。。。终于，在 uniapp 官网看到令人无比绝望的话“App（自定义组件编译模式）不支持 ArrayBuffer 类型”。</p>
+<h2 id="越陷越深"><a href="#越陷越深" class="headerlink" title="越陷越深"></a>越陷越深</h2><p>为了适配 APP 端，只好放弃<code>uni.request(OBJECT)</code>，好像只能用<code>uni.uploadFile</code>+<code>POST</code>以表单方式上传，那就用吧。。。</p>
+<p>但是并不好用啊，把 API 得到的预签名的参数放到 formData 中，仍然不行，按 uniapp 官网的用法，总是报错。</p>
+<p>各种查文档，苦于 uniapp 和 COS 教程和解决方案都不多，只能看官方文档。</p>
+<p>在 COS 文档看到<code>POST Object</code>的签名方式和预签名方式不同。。。另外也看到这部分：<em>3. 构造“策略”（Policy）</em>才知道，预签名的参数在这种方式中完全没用啊。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;expiration&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2019-08-30T09:38:12.414Z&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;conditions&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span> <span class="attr">&quot;acl&quot;</span><span class="punctuation">:</span> <span class="string">&quot;default&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span> <span class="attr">&quot;bucket&quot;</span><span class="punctuation">:</span> <span class="string">&quot;examplebucket-1250000000&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">[</span> <span class="string">&quot;starts-with&quot;</span><span class="punctuation">,</span> <span class="string">&quot;$key&quot;</span><span class="punctuation">,</span> <span class="string">&quot;folder/subfolder/&quot;</span> <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">[</span> <span class="string">&quot;starts-with&quot;</span><span class="punctuation">,</span> <span class="string">&quot;$Content-Type&quot;</span><span class="punctuation">,</span> <span class="string">&quot;image/&quot;</span> <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">[</span> <span class="string">&quot;starts-with&quot;</span><span class="punctuation">,</span> <span class="string">&quot;$success_action_redirect&quot;</span><span class="punctuation">,</span> <span class="string">&quot;https://my.website/&quot;</span> <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">[</span> <span class="string">&quot;eq&quot;</span><span class="punctuation">,</span> <span class="string">&quot;$x-cos-server-side-encryption&quot;</span><span class="punctuation">,</span> <span class="string">&quot;AES256&quot;</span> <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span> <span class="attr">&quot;q-sign-algorithm&quot;</span><span class="punctuation">:</span> <span class="string">&quot;sha1&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span> <span class="attr">&quot;q-ak&quot;</span><span class="punctuation">:</span> <span class="string">&quot;AKIDQjz3ltompVjBni5LitkWHFlFpwkn9U5q&quot;</span> <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span> <span class="attr">&quot;q-sign-time&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1567150692;1567157892&quot;</span> <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="找轮子"><a href="#找轮子" class="headerlink" title="找轮子"></a>找轮子</h2><p>那就重新写计算签名的 API 吧。</p>
+<p>一开始，想找现成的，查看.net 平台下 COS 的 sdk <code>qcloud-sdk-dotnet</code>，但并没有现成的计算<code>PostObject</code>的接口。</p>
+<p>于是就开始翻源码，一顿操作下来，发现在<code>qcloud-sdk-dotnet</code>中并没有计算<code>Policy</code>，用法是头部传认证参数<code>Authorization</code>，摘部分源码：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// cacluate md5</span></span><br><span class="line"><span class="keyword">if</span> (CheckNeedMd5(request, cosRequest.IsNeedMD5) &amp;&amp; request.Body != <span class="literal">null</span>)</span><br><span class="line">&#123;</span><br><span class="line">    request.AddHeader(CosRequestHeaderKey.CONTENT_MD5, request.Body.GetMD5());</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// content type header</span></span><br><span class="line"><span class="keyword">if</span>(request.Body != <span class="literal">null</span> &amp;&amp; request.Body.ContentType != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">        !request.Headers.ContainsKey(CosRequestHeaderKey.CONTENT_TYPE)) &#123;</span><br><span class="line">    request.AddHeader(CosRequestHeaderKey.CONTENT_TYPE, request.Body.ContentType);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//cacluate sign, and add it.</span></span><br><span class="line"><span class="keyword">if</span> (requestUrlWithSign == <span class="literal">null</span>)</span><br><span class="line">&#123;</span><br><span class="line">    CheckSign(cosRequest.GetSignSourceProvider(), request);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>被坑怕了，这咋和文档不一样勒！没敢直接用。</p>
+<p>再找 uniapp 插件市场，不得不说，uniapp 插件市场还是不错的。</p>
+<p>在插件市场发现了个<code>腾讯云对象存储（COS）插件</code>，看了下这个源码，用法是使用<code>uniCloud</code>计算<code>PostObject</code>。</p>
+<p>再继续看<code>uniCloud</code>使用的腾讯云函数<code>tencentcloud-uniapp-plugin-scf-template</code>，找到了计算<code>PostObject</code>的 JS 实现方式。摘部分源码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成签名信息</span></span><br><span class="line"><span class="keyword">const</span> currentDate = <span class="keyword">new</span> <span class="title class_">Date</span>();</span><br><span class="line"><span class="keyword">const</span> expirationDate = <span class="keyword">new</span> <span class="title class_">Date</span>(currentDate.<span class="title function_">getTime</span>() + expires * <span class="number">1000</span>);</span><br><span class="line"><span class="keyword">const</span> keyTime = <span class="string">`<span class="subst">$&#123;<span class="built_in">Math</span>.floor(currentDate.getTime() / <span class="number">1000</span>)&#125;</span>;<span class="subst">$&#123;<span class="built_in">Math</span>.floor(expirationDate.getTime() / <span class="number">1000</span>)&#125;</span>`</span>;</span><br><span class="line"><span class="keyword">const</span> policy = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123;</span><br><span class="line">  <span class="attr">expiration</span>: expirationDate.<span class="title function_">toISOString</span>(),</span><br><span class="line">  <span class="attr">conditions</span>: [</span><br><span class="line">    &#123; <span class="string">&#x27;q-sign-algorithm&#x27;</span>: <span class="string">&#x27;sha1&#x27;</span> &#125;,</span><br><span class="line">    &#123; <span class="string">&#x27;q-ak&#x27;</span>: secretId &#125;,</span><br><span class="line">    &#123; <span class="string">&#x27;q-sign-time&#x27;</span>: keyTime &#125;,</span><br><span class="line">  ],</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">const</span> signKey = crypto.<span class="title function_">createHmac</span>(<span class="string">&#x27;sha1&#x27;</span>, secretKey).<span class="title function_">update</span>(keyTime).<span class="title function_">digest</span>(<span class="string">&#x27;hex&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> stringToSign = crypto.<span class="title function_">createHash</span>(<span class="string">&#x27;sha1&#x27;</span>).<span class="title function_">update</span>(policy).<span class="title function_">digest</span>(<span class="string">&#x27;hex&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> signature = crypto.<span class="title function_">createHmac</span>(<span class="string">&#x27;sha1&#x27;</span>, signKey).<span class="title function_">update</span>(stringToSign).<span class="title function_">digest</span>(<span class="string">&#x27;hex&#x27;</span>);</span><br><span class="line"><span class="keyword">return</span> &#123;</span><br><span class="line">  <span class="attr">host</span>: <span class="string">`https://<span class="subst">$&#123;bucket&#125;</span>.cos.<span class="subst">$&#123;region&#125;</span>.myqcloud.com`</span>,</span><br><span class="line">  <span class="attr">signAlgorithm</span>: <span class="string">&#x27;sha1&#x27;</span>,</span><br><span class="line">  <span class="attr">ak</span>: secretId,</span><br><span class="line">  keyTime,</span><br><span class="line">  signature,</span><br><span class="line">  <span class="attr">policy</span>: <span class="title class_">Buffer</span>.<span class="title function_">from</span>(policy).<span class="title function_">toString</span>(<span class="string">&#x27;base64&#x27;</span>),</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="造轮子"><a href="#造轮子" class="headerlink" title="造轮子"></a>造轮子</h2><p>虽然我也使用腾讯云函数，而且在某个 APP 内就是使用云函数，在启动之初获取一些参数，比如服务器维护，防止 WebAPI 临时不能使用，提示用户服务器维护信息。</p>
+<p>但是，云函数对我只是备选功能，对于一般功能，都用 WebAPI。</p>
+<p>照着<code>PostObject</code>的 JS 实现方式，写个 C#版的。直接展示最终结果吧：</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> PostObject <span class="title">GetPostObject</span>(<span class="params"><span class="built_in">string</span> key</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">var</span> currentDate = DateTimeOffset.UtcNow;</span><br><span class="line">    <span class="keyword">var</span> expirationDate = currentDate.AddSeconds(<span class="number">60</span>);</span><br><span class="line">    <span class="keyword">var</span> keyTime = <span class="string">$&quot;<span class="subst">&#123;currentDate.ToUnixTimeSeconds()&#125;</span>;<span class="subst">&#123;expirationDate.ToUnixTimeSeconds()&#125;</span>&quot;</span>;</span><br><span class="line">    <span class="keyword">var</span> policy = <span class="keyword">new</span> Policy()</span><br><span class="line">    &#123;</span><br><span class="line">        Expiration = expirationDate.ToString(<span class="string">&quot;yyyy-MM-ddTHH:mm:ssZ&quot;</span>),</span><br><span class="line">        Conditions = <span class="keyword">new</span> List&lt;<span class="built_in">object</span>&gt;()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">new</span> &#123; q___sign___algorithm = <span class="string">&quot;sha1&quot;</span> &#125;,</span><br><span class="line">            <span class="keyword">new</span> &#123; q___ak = _secretId &#125;,</span><br><span class="line">            <span class="keyword">new</span> &#123; q___sign___time = keyTime &#125;,</span><br><span class="line">            <span class="keyword">new</span> &#123; bucket = Bucket &#125;,</span><br><span class="line">            <span class="keyword">new</span> &#123; key = Folder + <span class="string">&quot;/&quot;</span> + key &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">var</span> policyStr = JsonConvert.SerializeObject(policy, <span class="keyword">new</span> JsonSerializerSettings</span><br><span class="line">    &#123;</span><br><span class="line">        ContractResolver = <span class="keyword">new</span> Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver(),</span><br><span class="line">    &#125;);</span><br><span class="line">    policyStr = policyStr.Replace(<span class="string">&quot;___&quot;</span>, <span class="string">&quot;-&quot;</span>);</span><br><span class="line">    <span class="keyword">var</span> signKey = GetHamcSha1ToHexString(Encoding.UTF8.GetBytes(_secretKey), Encoding.UTF8.GetBytes(keyTime));</span><br><span class="line">    <span class="keyword">var</span> stringToSign = GetSha1ToHexString(Encoding.UTF8.GetBytes(policyStr));</span><br><span class="line">    <span class="keyword">var</span> signature = GetHamcSha1ToHexString(Encoding.UTF8.GetBytes(signKey), Encoding.UTF8.GetBytes(stringToSign));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> PostObject()</span><br><span class="line">    &#123;</span><br><span class="line">        Key = Folder + <span class="string">&quot;/&quot;</span> + key,</span><br><span class="line">        Ak = _secretId,</span><br><span class="line">        Host = <span class="string">$&quot;https://<span class="subst">&#123;Bucket&#125;</span>.cos.<span class="subst">&#123;_region&#125;</span>.myqcloud.com&quot;</span>,</span><br><span class="line">        SignAlgorithm = <span class="string">&quot;sha1&quot;</span>,</span><br><span class="line">        KeyTime = keyTime,</span><br><span class="line">        Signature = signature,</span><br><span class="line">        Policy = Convert.ToBase64String(Encoding.UTF8.GetBytes(policyStr))</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数 <code>GetHamcSha1ToHexString</code></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="built_in">string</span> <span class="title">GetHamcSha1ToHexString</span>(<span class="params"><span class="built_in">byte</span>[] key, <span class="built_in">byte</span>[] content</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    HMACSHA1 hmacSha1 = <span class="keyword">new</span> HMACSHA1(key);</span><br><span class="line">    <span class="built_in">byte</span>[] result = hmacSha1.ComputeHash(content);</span><br><span class="line">    hmacSha1.Clear();</span><br><span class="line">    <span class="keyword">return</span> result.ToX2();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>函数 <code>GetSha1ToHexString</code></p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="built_in">string</span> <span class="title">GetSha1ToHexString</span>(<span class="params"><span class="built_in">byte</span>[] content</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    SHA1 sha1 = <span class="keyword">new</span> SHA1CryptoServiceProvider();</span><br><span class="line">    <span class="built_in">byte</span>[] result = sha1.ComputeHash(content);</span><br><span class="line">    sha1.Clear();</span><br><span class="line">    <span class="keyword">return</span> result.ToX2();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>扩展函数<code>ToX2</code>是<code>HTools</code>中<code>DataExtend</code>类的扩展函数</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">ToX2</span>(<span class="params"><span class="keyword">this</span> <span class="built_in">byte</span>[] data</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; data.Length; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        sb.Append(data[i].ToString(<span class="string">&quot;x2&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> sb.ToString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Policy 类</p>
+<figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Policy</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="built_in">string</span> Expiration &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">    <span class="keyword">public</span> List&lt;<span class="built_in">object</span>&gt; Conditions &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中，_secretId，Bucket 是 COS 配置参数，Folder 是 COS 文件夹路径。</p>
+<p>至于为什么会出现<code>q___sign___algorithm</code>,<code>q___ak</code>这种三个下划线，是因为在 C#中没法以减号<code>-</code>命名，于是先用三个下划线，再替换为减号。</p>
+<p>虽然看起来蛮简单，但是写的过程充满恐惧，一点小问题都会怀疑“此路不通”。也可能是因为 COS 的错误提示不太清楚吧。</p>
+<p>写的过程有两个坑：</p>
+<ol>
+<li><code>Conditions</code>是数组，一开始我用的 <code>Dictionary&lt;string,string&gt;</code>，转的不对，COS 只提示 <em>Condition you provide in policy is not well-formated</em> 。</li>
+<li>对象转 JSON 字符串，属性名必须转小写。COS 仍然只提示 <em>Condition you provide in policy is not well-formated</em> ，找了很久这个问题才发现。</li>
+</ol>
+<p><strong>又可以愉快的玩耍 uniapp 了</strong></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/imgs/qr/wxpay_sm.jpg" alt="hal.wang 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/imgs/qr/alipay_sm.jpg" alt="hal.wang 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+              <a href="/tags/UWP/" rel="tag"># UWP</a>
+              <a href="/tags/uniapp/" rel="tag"># uniapp</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/754bb81e/" rel="prev" title="npm 使用总结">
+                  <i class="fa fa-angle-left"></i> npm 使用总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/da876015/" rel="next" title="Sqless 制作笔记">
+                  Sqless 制作笔记 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5taWl0Lmdvdi5jbg==">京ICP备19029465号-5 </span>
+      <img src="http://www.beian.gov.cn/img/new/gongan.png" alt=""><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5tcHMuZ292LmNuLyMvcXVlcnkvd2ViU2VhcmNoP2NvZGU9MzQxMjI2MDIwMDAyOTk=">皖公网安备 34122602000299号 </span>
+  </div>
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hal-wang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">192k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:54</span>
+  </span>
+</div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

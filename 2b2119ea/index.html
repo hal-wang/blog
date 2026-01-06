@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/imgs/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/imgs/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/imgs/avatar.jpg">
+  <link rel="mask-icon" href="/imgs/avatar.jpg" color="#222">
+  <meta name="google-site-verification" content="rYpHgEMR6BLENOrvxg5n431yWs2HNmyfp14UbZ5Xgbw">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.loli.net/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Inconsolata:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://lib.baomitu.com/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://lib.baomitu.com/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.hal.wang","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="prettier 与 eslint 有些默认规则冲突，需要一些配置。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="vue + prettier + eslint">
+<meta property="og:url" content="https://blog.hal.wang/2b2119ea/index.html">
+<meta property="og:site_name" content="H">
+<meta property="og:description" content="prettier 与 eslint 有些默认规则冲突，需要一些配置。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-09-13T15:26:48.000Z">
+<meta property="article:modified_time" content="2026-01-06T13:24:08.074Z">
+<meta property="article:author" content="hal.wang">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="prettier">
+<meta property="article:tag" content="eslint">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.hal.wang/2b2119ea/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.hal.wang/2b2119ea/","path":"2b2119ea/","title":"vue + prettier + eslint"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>vue + prettier + eslint | H</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js" defer></script>
+  <script async src="https://hm.baidu.com/hm.js?c70051d9b6ed3cbc101f3a64ae4c98c2"></script>
+
+
+
+
+
+
+
+  
+  <script src="https://lib.baomitu.com/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://lib.baomitu.com/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+  <script src="https://lib.baomitu.com/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://lib.baomitu.com/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://lib.baomitu.com/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="H" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">H</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">精通多种语言 Hello World</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">43</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-cubes fa-fw"></i>分类<span class="badge">2</span></a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#vscode-%E8%AE%BE%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">vscode 设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B9%E7%9B%AE%E8%AE%BE%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">项目设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E8%B5%96"><span class="nav-number">2.1.</span> <span class="nav-text">依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eslint"><span class="nav-number">2.2.</span> <span class="nav-text">eslint</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prettierrc"><span class="nav-number">2.3.</span> <span class="nav-text">prettierrc</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hal.wang"
+      src="/imgs/avatar.jpg">
+  <p class="site-author-name" itemprop="name">hal.wang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9oYWwud2FuZw==" title="主页 → https:&#x2F;&#x2F;hal.wang"><i class="fa fa-user fa-fw"></i>主页</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5n" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hal-wang"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/imgs/qr/weixin.jpg" title="微信 → &#x2F;imgs&#x2F;qr&#x2F;weixin.jpg" rel="noopener me"><i class="fab fa-weixin fa-fw"></i>微信</a>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93cGEucXEuY29tL21zZ3JkP3Y9MyZ1aW49NzkwMjY0MDI3JnNpdGU9cXEmbWVudT15ZXM=" title="QQ → https:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;790264027&amp;site&#x3D;qq&amp;menu&#x3D;yes"><i class="fab fa-qq fa-fw"></i>QQ</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmhpQGhhbC53YW5n" title="Email → mailto:hi@hal.wang"><i class="fa fa-envelope fa-fw"></i>Email</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml" rel="noopener me"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LzQuMC8="><img src="https://lib.baomitu.com/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.hal.wang/2b2119ea/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/imgs/avatar.jpg">
+      <meta itemprop="name" content="hal.wang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="vue + prettier + eslint | H">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          vue + prettier + eslint<span class="exturl post-edit-link" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5nL2Jsb2cvZWRpdC9tYWluL3NvdXJjZS9fcG9zdHMvdnVlLXByZXR0aWVyLWVzbGludC5tZA==" title="编辑"><i class="fa fa-pen-nib"></i></span>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-09-13 15:26:48" itemprop="dateCreated datePublished" datetime="2020-09-13T15:26:48+00:00">2020-09-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">记录</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>prettier 与 eslint 有些默认规则冲突，需要一些配置。</p>
+<span id="more"></span>
+
+<h2 id="vscode-设置"><a href="#vscode-设置" class="headerlink" title="vscode 设置"></a>vscode 设置</h2><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;vetur.format.defaultFormatter.html&quot;</span><span class="punctuation">:</span> <span class="string">&quot;prettier&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;vetur.format.defaultFormatter.ts&quot;</span><span class="punctuation">:</span> <span class="string">&quot;prettier&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;vetur.format.defaultFormatter.css&quot;</span><span class="punctuation">:</span> <span class="string">&quot;prettier&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;vetur.format.defaultFormatter.js&quot;</span><span class="punctuation">:</span> <span class="string">&quot;prettier&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;[vue]&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;editor.defaultFormatter&quot;</span><span class="punctuation">:</span> <span class="string">&quot;octref.vetur&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="项目设置"><a href="#项目设置" class="headerlink" title="项目设置"></a>项目设置</h2><h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><ul>
+<li>babel-eslint</li>
+<li>eslint</li>
+<li>eslint-plugin-vue</li>
+<li>prettier</li>
+<li>eslint-plugin-prettier</li>
+</ul>
+<h3 id="eslint"><a href="#eslint" class="headerlink" title="eslint"></a>eslint</h3><p>在<code>.eslintrc.js</code>文件中</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">root</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">parserOptions</span>: &#123;</span><br><span class="line">    <span class="attr">parser</span>: <span class="string">&#x27;babel-eslint&#x27;</span>,</span><br><span class="line">    <span class="attr">sourceType</span>: <span class="string">&#x27;module&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">env</span>: &#123;</span><br><span class="line">    <span class="attr">browser</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">node</span>: <span class="literal">true</span>,</span><br><span class="line">    <span class="attr">es6</span>: <span class="literal">true</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">extends</span>: [<span class="string">&#x27;plugin:vue/recommended&#x27;</span>, <span class="string">&#x27;eslint:recommended&#x27;</span>],</span><br><span class="line"></span><br><span class="line">  <span class="comment">// add your custom rules here</span></span><br><span class="line">  <span class="comment">// it is base on https://github.com/vuejs/eslint-config-vue</span></span><br><span class="line">  <span class="attr">rules</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;vue/max-attributes-per-line&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">singleline</span>: <span class="number">10</span>,</span><br><span class="line">        <span class="attr">multiline</span>: &#123;</span><br><span class="line">          <span class="attr">max</span>: <span class="number">1</span>,</span><br><span class="line">          <span class="attr">allowFirstLine</span>: <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;vue/singleline-html-element-content-newline&#x27;</span>: <span class="string">&#x27;off&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;vue/multiline-html-element-content-newline&#x27;</span>: <span class="string">&#x27;off&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;vue/name-property-casing&#x27;</span>: [<span class="string">&#x27;error&#x27;</span>, <span class="string">&#x27;PascalCase&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;vue/no-v-html&#x27;</span>: <span class="string">&#x27;off&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;accessor-pairs&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;arrow-spacing&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">before</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">after</span>: <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;block-spacing&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;always&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;brace-style&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      <span class="string">&#x27;1tbs&#x27;</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">allowSingleLine</span>: <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">camelcase</span>: [</span><br><span class="line">      <span class="number">0</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">properties</span>: <span class="string">&#x27;always&#x27;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;comma-dangle&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;never&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;comma-spacing&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">before</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">after</span>: <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;comma-style&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;last&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;constructor-super&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">curly</span>: [<span class="number">2</span>, <span class="string">&#x27;multi-line&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;dot-location&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;property&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;eol-last&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="attr">eqeqeq</span>: [<span class="string">&#x27;error&#x27;</span>, <span class="string">&#x27;always&#x27;</span>, &#123; <span class="attr">null</span>: <span class="string">&#x27;ignore&#x27;</span> &#125;],</span><br><span class="line">    <span class="string">&#x27;generator-star-spacing&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">before</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">after</span>: <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;handle-callback-err&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;^(err|error)$&#x27;</span>],</span><br><span class="line">    <span class="attr">indent</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="title class_">SwitchCase</span>: <span class="number">1</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;jsx-quotes&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;prefer-single&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;key-spacing&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">beforeColon</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">afterColon</span>: <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;keyword-spacing&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">before</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">after</span>: <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;new-cap&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">newIsCap</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">capIsNew</span>: <span class="literal">false</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;new-parens&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-array-constructor&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-caller&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-console&#x27;</span>: <span class="string">&#x27;off&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;no-class-assign&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-cond-assign&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-const-assign&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-control-regex&#x27;</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;no-delete-var&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-dupe-args&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-dupe-class-members&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-dupe-keys&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-duplicate-case&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-empty-character-class&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-empty-pattern&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-eval&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-ex-assign&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-extend-native&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-extra-bind&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-extra-boolean-cast&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-extra-parens&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;functions&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;no-fallthrough&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-floating-decimal&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-func-assign&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-implied-eval&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-inner-declarations&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;functions&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;no-invalid-regexp&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-irregular-whitespace&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-iterator&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-label-var&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-labels&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">allowLoop</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">allowSwitch</span>: <span class="literal">false</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;no-lone-blocks&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-mixed-spaces-and-tabs&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-multi-spaces&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-multi-str&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-multiple-empty-lines&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">max</span>: <span class="number">1</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;no-native-reassign&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-negated-in-lhs&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-new-object&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-new-require&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-new-symbol&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-new-wrappers&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-obj-calls&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-octal&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-octal-escape&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-path-concat&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-proto&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-redeclare&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-regex-spaces&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-return-assign&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;except-parens&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;no-self-assign&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-self-compare&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-sequences&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-shadow-restricted-names&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-spaced-func&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-sparse-arrays&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-this-before-super&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-throw-literal&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-trailing-spaces&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-undef&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-undef-init&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-unexpected-multiline&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-unmodified-loop-condition&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-unneeded-ternary&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">defaultAssignment</span>: <span class="literal">false</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;no-unreachable&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-unsafe-finally&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-unused-vars&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">vars</span>: <span class="string">&#x27;all&#x27;</span>,</span><br><span class="line">        <span class="attr">args</span>: <span class="string">&#x27;none&#x27;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;no-useless-call&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-useless-computed-key&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-useless-constructor&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-useless-escape&#x27;</span>: <span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;no-whitespace-before-property&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-with&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;one-var&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">initialized</span>: <span class="string">&#x27;never&#x27;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;operator-linebreak&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      <span class="string">&#x27;after&#x27;</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">overrides</span>: &#123;</span><br><span class="line">          <span class="string">&#x27;?&#x27;</span>: <span class="string">&#x27;before&#x27;</span>,</span><br><span class="line">          <span class="string">&#x27;:&#x27;</span>: <span class="string">&#x27;before&#x27;</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;padded-blocks&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;never&#x27;</span>],</span><br><span class="line">    <span class="attr">quotes</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      <span class="string">&#x27;single&#x27;</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">avoidEscape</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">allowTemplateLiterals</span>: <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">semi</span>: [<span class="number">2</span>, <span class="string">&#x27;never&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;semi-spacing&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">before</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="attr">after</span>: <span class="literal">true</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;space-before-blocks&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;always&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;space-before-function-paren&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;never&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;space-in-parens&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;never&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;space-infix-ops&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;space-unary-ops&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">words</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">nonwords</span>: <span class="literal">false</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;spaced-comment&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      <span class="string">&#x27;always&#x27;</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">markers</span>: [<span class="string">&#x27;global&#x27;</span>, <span class="string">&#x27;globals&#x27;</span>, <span class="string">&#x27;eslint&#x27;</span>, <span class="string">&#x27;eslint-disable&#x27;</span>, <span class="string">&#x27;*package&#x27;</span>, <span class="string">&#x27;!&#x27;</span>, <span class="string">&#x27;,&#x27;</span>]</span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;template-curly-spacing&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;never&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;use-isnan&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;valid-typeof&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;wrap-iife&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;any&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;yield-star-spacing&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;both&#x27;</span>],</span><br><span class="line">    <span class="attr">yoda</span>: [<span class="number">2</span>, <span class="string">&#x27;never&#x27;</span>],</span><br><span class="line">    <span class="string">&#x27;prefer-const&#x27;</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;no-debugger&#x27;</span>: process.<span class="property">env</span>.<span class="property">NODE_ENV</span> === <span class="string">&#x27;production&#x27;</span> ? <span class="number">2</span> : <span class="number">0</span>,</span><br><span class="line">    <span class="string">&#x27;object-curly-spacing&#x27;</span>: [</span><br><span class="line">      <span class="number">2</span>,</span><br><span class="line">      <span class="string">&#x27;always&#x27;</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">objectsInObjects</span>: <span class="literal">false</span></span><br><span class="line">      &#125;</span><br><span class="line">    ],</span><br><span class="line">    <span class="string">&#x27;array-bracket-spacing&#x27;</span>: [<span class="number">2</span>, <span class="string">&#x27;never&#x27;</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="prettierrc"><a href="#prettierrc" class="headerlink" title="prettierrc"></a>prettierrc</h3><p>在<code>.prettierrc</code>文件中</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;bracketSpacing&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;printWidth&quot;</span><span class="punctuation">:</span> <span class="number">160</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;semi&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;singleQuote&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;trailingComma&quot;</span><span class="punctuation">:</span> <span class="string">&quot;none&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;arrowParens&quot;</span><span class="punctuation">:</span> <span class="string">&quot;avoid&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/imgs/qr/wxpay_sm.jpg" alt="hal.wang 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/imgs/qr/alipay_sm.jpg" alt="hal.wang 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Vue/" rel="tag"># Vue</a>
+              <a href="/tags/prettier/" rel="tag"># prettier</a>
+              <a href="/tags/eslint/" rel="tag"># eslint</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/caf85fee/" rel="prev" title="vscode 开发 uniapp">
+                  <i class="fa fa-angle-left"></i> vscode 开发 uniapp
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/e91e088f/" rel="next" title="Dart 学习笔记">
+                  Dart 学习笔记 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5taWl0Lmdvdi5jbg==">京ICP备19029465号-5 </span>
+      <img src="http://www.beian.gov.cn/img/new/gongan.png" alt=""><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5tcHMuZ292LmNuLyMvcXVlcnkvd2ViU2VhcmNoP2NvZGU9MzQxMjI2MDIwMDAyOTk=">皖公网安备 34122602000299号 </span>
+  </div>
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hal-wang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">192k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:54</span>
+  </span>
+</div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

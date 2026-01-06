@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/imgs/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/imgs/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/imgs/avatar.jpg">
+  <link rel="mask-icon" href="/imgs/avatar.jpg" color="#222">
+  <meta name="google-site-verification" content="rYpHgEMR6BLENOrvxg5n431yWs2HNmyfp14UbZ5Xgbw">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.loli.net/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Inconsolata:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://lib.baomitu.com/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://lib.baomitu.com/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.hal.wang","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="cloudbase-access 源码：https:&#x2F;&#x2F;github.com&#x2F;hal-wang&#x2F;cloudbase-accesscloudbase-access npm：https:&#x2F;&#x2F;www.npmjs.com&#x2F;package&#x2F;@hal-wang&#x2F;cloudbase-access Serverless 的开发模式一直在演进，各个云服务商也有自己的产品，其中代表性的就是云函数，也就是使用 Node">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cloudbase-access 开发笔记">
+<meta property="og:url" content="https://blog.hal.wang/2d5e04ac/index.html">
+<meta property="og:site_name" content="H">
+<meta property="og:description" content="cloudbase-access 源码：https:&#x2F;&#x2F;github.com&#x2F;hal-wang&#x2F;cloudbase-accesscloudbase-access npm：https:&#x2F;&#x2F;www.npmjs.com&#x2F;package&#x2F;@hal-wang&#x2F;cloudbase-access Serverless 的开发模式一直在演进，各个云服务商也有自己的产品，其中代表性的就是云函数，也就是使用 Node">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-10T09:17:37.000Z">
+<meta property="article:modified_time" content="2026-01-06T13:24:08.074Z">
+<meta property="article:author" content="hal.wang">
+<meta property="article:tag" content="JS">
+<meta property="article:tag" content="TS">
+<meta property="article:tag" content="NodeJS">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.hal.wang/2d5e04ac/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.hal.wang/2d5e04ac/","path":"2d5e04ac/","title":"cloudbase-access 开发笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>cloudbase-access 开发笔记 | H</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js" defer></script>
+  <script async src="https://hm.baidu.com/hm.js?c70051d9b6ed3cbc101f3a64ae4c98c2"></script>
+
+
+
+
+
+
+
+  
+  <script src="https://lib.baomitu.com/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://lib.baomitu.com/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+  <script src="https://lib.baomitu.com/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://lib.baomitu.com/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://lib.baomitu.com/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="H" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">H</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">精通多种语言 Hello World</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">43</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-cubes fa-fw"></i>分类<span class="badge">2</span></a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6%8B%A9-CloudBase"><span class="nav-number">1.</span> <span class="nav-text">为什么选择 CloudBase</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%91%E5%87%BD%E6%95%B0%E7%97%9B%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">云函数痛点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cloudbase-access-%E5%89%8D%E8%BA%AB"><span class="nav-number">3.</span> <span class="nav-text">cloudbase-access 前身</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E7%89%88-cloudbase-access"><span class="nav-number">4.</span> <span class="nav-text">初版 cloudbase-access</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%9A%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">做法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E5%8F%82"><span class="nav-number">4.2.</span> <span class="nav-text">传参</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%B9%E7%94%A8-ts"><span class="nav-number">5.</span> <span class="nav-text">改用 ts</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">6.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="nav-number">7.</span> <span class="nav-text">中间件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%B1%BB%E5%88%AB"><span class="nav-number">7.1.</span> <span class="nav-text">中间件类别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E7%B1%BB"><span class="nav-number">7.2.</span> <span class="nav-text">基类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E9%AA%8C%E8%AF%81"><span class="nav-number">7.3.</span> <span class="nav-text">权限验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%81%E8%A3%85-Action"><span class="nav-number">8.</span> <span class="nav-text">封装 Action</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="nav-number">9.</span> <span class="nav-text">单元测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Demo"><span class="nav-number">10.</span> <span class="nav-text">Demo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cba-map"><span class="nav-number">11.</span> <span class="nav-text">cba-map</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90-map"><span class="nav-number">11.1.</span> <span class="nav-text">生成 map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B9%E8%BF%9B%E8%B7%AF%E7%94%B1%E5%8C%B9%E9%85%8D"><span class="nav-number">11.2.</span> <span class="nav-text">改进路由匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%B0%E5%9D%80%E5%8C%85%E5%90%AB%E6%9F%A5%E8%AF%A2"><span class="nav-number">11.2.1.</span> <span class="nav-text">地址包含查询</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8C%BA%E5%88%86-httpMethod"><span class="nav-number">11.2.2.</span> <span class="nav-text">区分 httpMethod</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Demo-%E6%94%B9%E8%BF%9B"><span class="nav-number">12.</span> <span class="nav-text">Demo 改进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ipare"><span class="nav-number">13.</span> <span class="nav-text">ipare</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hal.wang"
+      src="/imgs/avatar.jpg">
+  <p class="site-author-name" itemprop="name">hal.wang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9oYWwud2FuZw==" title="主页 → https:&#x2F;&#x2F;hal.wang"><i class="fa fa-user fa-fw"></i>主页</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5n" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hal-wang"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/imgs/qr/weixin.jpg" title="微信 → &#x2F;imgs&#x2F;qr&#x2F;weixin.jpg" rel="noopener me"><i class="fab fa-weixin fa-fw"></i>微信</a>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93cGEucXEuY29tL21zZ3JkP3Y9MyZ1aW49NzkwMjY0MDI3JnNpdGU9cXEmbWVudT15ZXM=" title="QQ → https:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;790264027&amp;site&#x3D;qq&amp;menu&#x3D;yes"><i class="fab fa-qq fa-fw"></i>QQ</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmhpQGhhbC53YW5n" title="Email → mailto:hi@hal.wang"><i class="fa fa-envelope fa-fw"></i>Email</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml" rel="noopener me"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LzQuMC8="><img src="https://lib.baomitu.com/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.hal.wang/2d5e04ac/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/imgs/avatar.jpg">
+      <meta itemprop="name" content="hal.wang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="cloudbase-access 开发笔记 | H">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          cloudbase-access 开发笔记<span class="exturl post-edit-link" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5nL2Jsb2cvZWRpdC9tYWluL3NvdXJjZS9fcG9zdHMvY2xvdWRiYXNlLWFjY2Vzcy3lvIDlj5HnrJTorrAubWQ=" title="编辑"><i class="fa fa-pen-nib"></i></span>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-11-10 09:17:37" itemprop="dateCreated datePublished" datetime="2020-11-10T09:17:37+00:00">2020-11-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%B0%E5%BD%95/" itemprop="url" rel="index"><span itemprop="name">记录</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>cloudbase-access 源码：<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5nL2Nsb3VkYmFzZS1hY2Nlc3M=">https://github.com/hal-wang/cloudbase-access<i class="fa fa-external-link-alt"></i></span><br>cloudbase-access npm：<span class="exturl" data-url="aHR0cHM6Ly93d3cubnBtanMuY29tL3BhY2thZ2UvQGhhbC13YW5nL2Nsb3VkYmFzZS1hY2Nlc3M=">https://www.npmjs.com/package/@hal-wang/cloudbase-access<i class="fa fa-external-link-alt"></i></span></p>
+<p>Serverless 的开发模式一直在演进，各个云服务商也有自己的产品，其中代表性的就是云函数，也就是使用 NodeJS 写的 API。云函数比较轻量，不需要服务器即可实现运算。我最喜欢的是腾讯云 <span class="exturl" data-url="aHR0cHM6Ly93d3cuY2xvdWRiYXNlLm5ldC8=">CloudBase<i class="fa fa-external-link-alt"></i></span> 中的云函数，虽然腾讯云也有独立的云函数，但与其他云服务商的云函数都差不多，没什么特点。</p>
+<span id="more"></span>
+
+<h2 id="为什么选择-CloudBase"><a href="#为什么选择-CloudBase" class="headerlink" title="为什么选择 CloudBase"></a>为什么选择 CloudBase</h2><p>CloudBase 中的云函数与其他云函数写法相同，使用 HTTP 调用的用法也类似，但它相比于独立的云函数，有以下优点：</p>
+<ol>
+<li>在 CloudBase 中有个数据库，根据用法猜测这个数据库是基于 <code>MongoDB</code> 的，但是用法又改了一些。这个数据库不需要单独购买，属于 CloudBase 环境中的一环，因此在云函数中调用十分方便。</li>
+<li>VSCode 插件成熟，在 VSCode 中写 CloudBase 云函数还是很惬意的。</li>
+</ol>
+<p>当然我觉得 CloudBase 也有要改进的地方，其中一个最重要的，就是对象存储无法生成上传连接。也就是说，想用 CloudBase 的对象存储，必须遵循 CloudBase 的权限规则。但是，对于一个想自己管理用户的后台来说，这是不现实的。因此目前最好还是把文件放在独立的对象存储中吧，免得被绑死了。</p>
+<h2 id="云函数痛点"><a href="#云函数痛点" class="headerlink" title="云函数痛点"></a>云函数痛点</h2><p>云函数是微服务框架，在各个云服务商的云函数文档中，对于云函数的介绍或者示例，都是一个云函数实现一个简单的功能。这样做是也是为了实现微服务体系，达到轻量级服务。但是各个云函数彼此解耦，在写函数时，一些通用方法必然要写多份，这就造成了代码复用率很低，可能同样的代码要出现在几个云函数中。</p>
+<p>当然也有对此的解决方案：</p>
+<ol>
+<li><p>写单独通用云函数，通过云函数调用方式。这种方式会造成云函数调用频率过高，而且效率无法保证，也不能享受到代码智能提示。最重要的，还是太麻烦，写个新通用功能可能要折腾好几个步骤。</p>
+</li>
+<li><p>把通用功能打包发布至 npm，再在需要的云函数中 install。这种也十分麻烦，每次更改都需要 npm publish，各云函数需要 npm update。</p>
+</li>
+</ol>
+<p>因此解决方案只是妥协，并没有解决实质问题。</p>
+<h2 id="cloudbase-access-前身"><a href="#cloudbase-access-前身" class="headerlink" title="cloudbase-access 前身"></a>cloudbase-access 前身</h2><p>苦于以上痛点，我想到了在一个云函数中实现多个功能，通过传入不同参数来分辨，这种不通用的方法，也算是临时解决了我的问题。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// https://***/api</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;path&quot;</span><span class="punctuation">:</span><span class="string">&quot;user/login&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;data&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;account&quot;</span><span class="punctuation">:</span><span class="string">&quot;123&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span><span class="string">&quot;abcdef&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>但对代码有强迫症的我，看着这蹩脚的写法，越看越难受。后来偶然发现云函数调用的环境 <code>event</code> ，有个<code>path</code>字段，可以获取到访问路径，如调用 <code>https://***/api/user/login</code>，path 字段值为 <code>/user/login</code>，既然能获取到访问路径，就好办多了，开始重构！</p>
+<h2 id="初版-cloudbase-access"><a href="#初版-cloudbase-access" class="headerlink" title="初版 cloudbase-access"></a>初版 <span class="exturl" data-url="aHR0cHM6Ly93d3cubnBtanMuY29tL3BhY2thZ2UvQGhhbC13YW5nL2Nsb3VkYmFzZS1hY2Nlc3M=">cloudbase-access<i class="fa fa-external-link-alt"></i></span></h2><p>现有 API 已经使用了之前蹩脚的做法，重构的工程量稍大，因此就想着写个 npm 包，这也是我第一次尝试发布 npm 包。</p>
+<p>把原来的 API 和路由有关的部分提出来，新写了个项目 <span class="exturl" data-url="aHR0cHM6Ly93d3cubnBtanMuY29tL3BhY2thZ2UvQGhhbC13YW5nL2Nsb3VkYmFzZS1hY2Nlc3M=">cloudbase-access<i class="fa fa-external-link-alt"></i></span>，目的是写出通用的 MVC API 框架。</p>
+<h3 id="做法"><a href="#做法" class="headerlink" title="做法"></a>做法</h3><p>根据环境<code>event</code>中的<code>path</code>字段值，来访问位于<code>controller</code>中的<code>action</code>，这个 action 是个 js 文件，基本功能是在这个文件中实现。这种做法其实是参考了 asp.net mvc 的思想。</p>
+<h3 id="传参"><a href="#传参" class="headerlink" title="传参"></a>传参</h3><p>重构之后，前面的传参就改成了下面这种：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// https://***/api/user/login</span></span><br><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;account&quot;</span><span class="punctuation">:</span><span class="string">&quot;123&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;password&quot;</span><span class="punctuation">:</span><span class="string">&quot;abcdef&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>现在就简单通用多了。</p>
+<h2 id="改用-ts"><a href="#改用-ts" class="headerlink" title="改用 ts"></a>改用 ts</h2><p>NodeJS 写 API 有一个很严重的问题，就是弱类型语言很容易带来错误，比如以下典型错误：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> + <span class="string">&quot;0&quot;</span> = <span class="string">&quot;10&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>在强类型语言种，我可以明确知道变量类型，但是在弱类型语言中，为了保证数据类型的正确性就得手动验证变量类型，必须验证接口参数的数据类型，因为你不知道是谁调用了这个接口。虽然手动验证也可以，但工作量太大，也容易出错。</p>
+<p>目前对于 JS 类型检查，主要是<code>Flow</code>和<code>TS</code>，但 TS 目前以压倒性优势胜出。此外，作为 npm 包，应该使用 ts 来写，这样其他 ts 也好调用。</p>
+<p>在<code>2020.10.29</code>改用了 TS，初次转 TS 只是把原先的功能使用 TS 实现，并没有更改逻辑和结构。</p>
+<p>这次改 TS 的过程，也让我发现了一些现有的很多不足：</p>
+<ol>
+<li>返回值封装不完善</li>
+<li>路由功能简单，扩展性弱</li>
+<li>权限验证功能简单，扩展性弱</li>
+<li>action 没有封装，写法容易出错</li>
+<li>没有单元测试</li>
+<li>没有 Demo</li>
+</ol>
+<p>后续改进，一个一个解决。</p>
+<h2 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h2><p>云函数返回的 HTTP 网关，必须符合特定格式，因此在 cloudbase-access 中封装了返回结构。</p>
+<p>此前使用 JS，没有过多的封装，返回值也只是个 JSON 对象，有一些内置函数，可以生成返回的对象，但是使用起来总是不方便：需要先加引用再使用，而且没有智能提示。</p>
+<p>以前的 JS 返回结构：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// base.js</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="keyword">function</span> (<span class="params">statusCode, body, headers</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">isBase64</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="attr">statusCode</span>: statusCode,</span><br><span class="line">    <span class="attr">headers</span>: <span class="title class_">Object</span>.<span class="title function_">assign</span>(</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;Access-Control-Allow-Origin&#x27;</span>: <span class="string">&#x27;*&#x27;</span></span><br><span class="line">      &#125;,</span><br><span class="line">      headers || &#123;&#125;</span><br><span class="line">    ),</span><br><span class="line">    <span class="attr">body</span>: body</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ok.js</span></span><br><span class="line"><span class="keyword">const</span> base = <span class="built_in">require</span>(<span class="string">&#x27;./base&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="keyword">function</span> (<span class="params">body, headers</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">base</span>(<span class="number">200</span>, body, headers)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>改用 ts 后封装了返回值 <code>HttpResult</code>，该类有个 get 属性 <code>result</code>，可以获得最终结果，并且加了通用返回头部、返回结果验证等功能。</p>
+<p>现在的 TS 返回结果：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> <span class="title class_">HttpResult</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="attr">statusCode</span>: <span class="built_in">number</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="attr">body</span>?: <span class="built_in">unknown</span>,</span></span><br><span class="line"><span class="params">    <span class="keyword">public</span> <span class="keyword">readonly</span> <span class="attr">headers</span>?: <span class="title class_">Record</span>&lt;<span class="built_in">string</span>, <span class="built_in">unknown</span>&gt;</span></span><br><span class="line"><span class="params">  </span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> <span class="title function_">result</span>(): <span class="title class_">Record</span>&lt;<span class="built_in">string</span>, <span class="built_in">unknown</span>&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> &lt;<span class="title class_">Record</span>&lt;<span class="built_in">string</span>, <span class="built_in">unknown</span>&gt;&gt;&#123;</span><br><span class="line">      <span class="attr">isBase64</span>: <span class="literal">false</span>,</span><br><span class="line">      <span class="attr">statusCode</span>: <span class="variable language_">this</span>.<span class="property">statusCode</span>,</span><br><span class="line">      <span class="attr">headers</span>: <span class="title class_">Object</span>.<span class="title function_">assign</span>(<span class="title class_">HttpResult</span>.<span class="property">baseHeaders</span>, <span class="variable language_">this</span>.<span class="property">headers</span>),</span><br><span class="line">      <span class="attr">body</span>: <span class="variable language_">this</span>.<span class="property">body</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> <span class="title function_">isSuccess</span>(): <span class="built_in">boolean</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">statusCode</span> &gt;= <span class="number">200</span> &amp;&amp; <span class="variable language_">this</span>.<span class="property">statusCode</span> &lt; <span class="number">300</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">readonly</span> baseHeaders = &lt;<span class="title class_">Record</span>&lt;<span class="built_in">string</span>, <span class="built_in">unknown</span>&gt;&gt;&#123;</span><br><span class="line">    <span class="string">&quot;Content-Type&quot;</span>: <span class="string">&quot;application/json&quot;</span>,</span><br><span class="line">    <span class="string">&quot;Access-Control-Allow-Origin&quot;</span>: <span class="string">&quot;*&quot;</span>,</span><br><span class="line">    <span class="string">&quot;nodejs-api&quot;</span>: <span class="string">&quot;cloudbase-access&quot;</span>,</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">static</span> base = <span class="keyword">function</span> (<span class="params"></span></span><br><span class="line"><span class="params">    <span class="attr">statusCode</span>: <span class="built_in">number</span>,</span></span><br><span class="line"><span class="params">    <span class="attr">body</span>?: <span class="built_in">unknown</span>,</span></span><br><span class="line"><span class="params">    <span class="attr">headers</span>?: <span class="title class_">Record</span>&lt;<span class="built_in">string</span>, <span class="built_in">unknown</span>&gt;</span></span><br><span class="line"><span class="params">  </span>): <span class="title class_">HttpResult</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">HttpResult</span>(statusCode, body, headers);</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">static</span> ok = <span class="keyword">function</span> (<span class="params"><span class="attr">body</span>?: <span class="built_in">unknown</span></span>): <span class="title class_">HttpResult</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">HttpResult</span>(<span class="number">200</span>, body);</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="comment">// more</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h2><p>此前路由功能过于简单，只能通过路径调用对应 <code>action</code>，而且封装的也不够完善，只用了函数封装，没有使用类，扩展性也弱。</p>
+<p>现在给路由加个新功能 <code>中间件</code> ，这样能极大的提高路由功能。</p>
+<h3 id="中间件类别"><a href="#中间件类别" class="headerlink" title="中间件类别"></a>中间件类别</h3><p>中间件分为了几种，分别在云函数不同的生命周期调用。类别使用枚举声明：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="keyword">enum</span> <span class="title class_">MiddlewareType</span> &#123;</span><br><span class="line">  <span class="title class_">BeforeStart</span> = <span class="number">1</span>, <span class="comment">// the action object is not inited</span></span><br><span class="line">  <span class="title class_">BeforeAction</span>, <span class="comment">// exec before action doing, the action object is inited</span></span><br><span class="line">  <span class="title class_">BeforeEnd</span>, <span class="comment">// exec after action doing</span></span><br><span class="line">  <span class="title class_">BeforeSuccessEnd</span>, <span class="comment">// exec after action doing, if the result is succeeded</span></span><br><span class="line">  <span class="title class_">BeforeErrEnd</span>, <span class="comment">// exec after action doing, if the result is error</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="基类"><a href="#基类" class="headerlink" title="基类"></a>基类</h3><p>中间件有个基类，所有中间件都从此基类派生，并且实现 <code>do</code> 方法。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Middleware</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"><span class="keyword">public</span> <span class="keyword">readonly</span> <span class="attr">type</span>: <span class="title class_">MiddlewareType</span></span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**will be set before doing */</span></span><br><span class="line">  <span class="attr">requestParams</span>: <span class="title class_">RequestParams</span> = <span class="title class_">RequestParams</span>.<span class="property">empty</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** if success, return null */</span></span><br><span class="line">  <span class="keyword">abstract</span> <span class="keyword">async</span> <span class="title function_">do</span>(): <span class="title class_">Promise</span>&lt;<span class="title class_">HttpResult</span> | <span class="literal">null</span>&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="权限验证"><a href="#权限验证" class="headerlink" title="权限验证"></a>权限验证</h3><p>现在权限验证也转而使用中间件，定义个新类<code>Authority</code>并继承<code>Middleware</code>，实际使用中，权限验证需要继承此类。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Authority</span> <span class="keyword">extends</span> <span class="title class_ inherited__">Middleware</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">super</span>(<span class="title class_">MiddlewareType</span>.<span class="property">BeforeAction</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**will be set before doing*/</span></span><br><span class="line">  <span class="keyword">public</span> <span class="attr">roles</span>: <span class="title class_">Array</span>&lt;<span class="built_in">string</span>&gt; = <span class="keyword">new</span> <span class="title class_">Array</span>&lt;<span class="built_in">string</span>&gt;();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>与其他中间件一样，需要实现 <code>do</code> 方法，比如权限验证不通过时，<code>do</code> 方法返回</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="title class_">HttpResult</span>.<span class="title function_">forbidden</span>(<span class="string">&quot;登陆失败&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="封装-Action"><a href="#封装-Action" class="headerlink" title="封装 Action"></a>封装 Action</h2><p>使用 JS 时，并没有对 Action 封装，只是约定 Action 文件返回一个特定的结构，但是约定容易出错，不如限制。</p>
+<p>现在定义了个类<code>Action</code>，所有 action 都应从此类派生，并实现 <code>do</code> 方法，返回 <code>HttpResult</code></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Action</span> &#123;</span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params"><span class="keyword">public</span> <span class="keyword">readonly</span> <span class="attr">roles</span>: <span class="title class_">Array</span>&lt;<span class="built_in">string</span>&gt; = <span class="keyword">new</span> <span class="title class_">Array</span>&lt;<span class="built_in">string</span>&gt;()</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">protected</span> <span class="keyword">readonly</span> base = <span class="title class_">HttpResult</span>.<span class="property">base</span>;</span><br><span class="line">  <span class="keyword">protected</span> <span class="keyword">readonly</span> ok = <span class="title class_">HttpResult</span>.<span class="property">ok</span>;</span><br><span class="line">  <span class="keyword">protected</span> <span class="keyword">readonly</span> accepted = <span class="title class_">HttpResult</span>.<span class="property">accepted</span>;</span><br><span class="line">  <span class="keyword">protected</span> <span class="keyword">readonly</span> noContent = <span class="title class_">HttpResult</span>.<span class="property">noContent</span>;</span><br><span class="line">  <span class="keyword">protected</span> <span class="keyword">readonly</span> partialContent = <span class="title class_">HttpResult</span>.<span class="property">partialContent</span>;</span><br><span class="line">  <span class="keyword">protected</span> <span class="keyword">readonly</span> badRequest = <span class="title class_">HttpResult</span>.<span class="property">badRequest</span>;</span><br><span class="line">  <span class="keyword">protected</span> <span class="keyword">readonly</span> forbidden = <span class="title class_">HttpResult</span>.<span class="property">forbidden</span>;</span><br><span class="line">  <span class="keyword">protected</span> <span class="keyword">readonly</span> notFound = <span class="title class_">HttpResult</span>.<span class="property">notFound</span>;</span><br><span class="line">  <span class="keyword">protected</span> <span class="keyword">readonly</span> errRequest = <span class="title class_">HttpResult</span>.<span class="property">errRequest</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/** will be set before doing */</span></span><br><span class="line">  <span class="attr">requestParams</span>: <span class="title class_">RequestParams</span> = <span class="title class_">RequestParams</span>.<span class="property">empty</span>;</span><br><span class="line">  <span class="comment">/** will be set before doing */</span></span><br><span class="line">  <span class="attr">middlewares</span>: <span class="title class_">Array</span>&lt;<span class="title class_">Middleware</span>&gt; = <span class="keyword">new</span> <span class="title class_">Array</span>&lt;<span class="title class_">Middleware</span>&gt;();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">abstract</span> <span class="keyword">async</span> <span class="title function_">do</span>(): <span class="title class_">Promise</span>&lt;<span class="title class_">HttpResult</span>&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>构造函数传入的是身份验证规则，如</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">[</span><span class="string">&quot;login&quot;</span><span class="punctuation">]</span></span><br><span class="line"></span><br><span class="line"><span class="punctuation">[</span><span class="string">&quot;admin&quot;</span><span class="punctuation">,</span> <span class="string">&quot;root&quot;</span><span class="punctuation">]</span></span><br></pre></td></tr></table></figure>
+
+<p>可在实现 <code>Authority</code> 时，在 <code>do</code> 函数中根据身份角色判断当前用户能否访问该 API。</p>
+<p>在 Action 中，内置了一些 HttpResult 静态函数以方便调用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 action do方法中</span></span><br><span class="line"><span class="keyword">return</span> <span class="variable language_">this</span>.<span class="title function_">noContent</span>()</span><br></pre></td></tr></table></figure>
+
+<p>根据 Action 类，action 写法就不容易出错了。</p>
+<h2 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h2><p>写单元测试是每个程序员必备的技能和习惯！</p>
+<p>以前我也不喜欢写单元测试，总觉得没必要专门写代码测试，甚至有些单元测试还有重复代码。</p>
+<p>但是尝试用了单元测试之后，嗯~ 真香！</p>
+<p>每写个功能，就写一个或多个单元测试，不仅可以测试代码有没有问题，还能梳理一遍代码逻辑。</p>
+<p>我认为最重要的一点，就是后续增改功能时，跑一边单元测试全绿，就不怕新的增改影响旧功能，能让代码维护起来更顺畅。</p>
+<p>对比了 TS 主流单元测试框架 <code>Mocha</code>和<code>Jest</code>，虽然<code>Mocha</code>在 JS 中更流行，但<code>Jest</code>对 ts 更友好，因此选用了 <code>Jest</code> 作为 cloudbase-access 的单元测试框架。</p>
+<p>比如测试路由能否正确访问到 loginAuth action，并且能够执行成功。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_">test</span>(<span class="string">&quot;router test login access&quot;</span>, <span class="keyword">async</span> <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> router = <span class="keyword">new</span> <span class="title class_">Router</span>(</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">headers</span>: &#123;</span><br><span class="line">        <span class="attr">account</span>: <span class="variable language_">global</span>.<span class="property">users</span>[<span class="number">0</span>].<span class="property">account</span>,</span><br><span class="line">        <span class="attr">password</span>: <span class="variable language_">global</span>.<span class="property">users</span>[<span class="number">0</span>].<span class="property">password</span>,</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">path</span>: <span class="string">&quot;/actions/loginAuth&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">Auth</span>(),</span><br><span class="line">    <span class="string">&quot;test&quot;</span></span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> result = (<span class="keyword">await</span> router.<span class="title function_">do</span>()).<span class="property">result</span>;</span><br><span class="line">  <span class="title function_">expect</span>(result.<span class="property">statusCode</span>).<span class="title function_">toBe</span>(<span class="number">200</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>本想着如果别人用 cloudbase-access 只要参考单元测试即可，但我把现有代码迁移到 cloudbase-access 时，发现可能会有一些细节我没注意到，但是又阻挡别人使用，所以只有单元测试可能不够，就着手写个 Demo。</p>
+<p>之前是单独项目，后面又整合至源码中了。</p>
+<p>这个 Demo 也使用 TS 写的，模仿真实使用环境，是一个简单的 todo API。</p>
+<h2 id="cba-map"><a href="#cba-map" class="headerlink" title="cba-map"></a>cba-map</h2><p>考虑到增加更多 RESTFul 的路由适配，如 <code>get /user/:id</code> 的方式，在此前是没有的，因为路由仅仅是简单的文件路径匹配。</p>
+<h3 id="生成-map"><a href="#生成-map" class="headerlink" title="生成 map"></a>生成 map</h3><p>在 <code>2020-12-25</code> 着手改进路由匹配。于是加了个 <code>cba-map</code> 脚本，在 API 发布前，找到所有 Action 并生成文件地址的 map。</p>
+<p>新写一个 <code>MapCreater</code> 类，用于找到所有 <code>Action</code> 并获取 <code>map</code>。</p>
+<p>由于有些开发者可能在发布前不使用 <code>cba-map</code> 脚本，因此在调用 API 时，如果包括 cba-map.json 文件，就从文件中获取 map，否则将在运行阶段获取 map。</p>
+<p>经过测试，使用 <code>cba-map</code> 匹配路由的方式速度更快。</p>
+<h3 id="改进路由匹配"><a href="#改进路由匹配" class="headerlink" title="改进路由匹配"></a>改进路由匹配</h3><p>在有了所有 Action 地址后，路由匹配就变得简单起来，为了适配 RESTFul，需要满足以下功能：</p>
+<h4 id="地址包含查询"><a href="#地址包含查询" class="headerlink" title="地址包含查询"></a>地址包含查询</h4><p>如 <code>get user/:userId/todo/:todoId</code> 等访问路径，不但要正确匹配路由，还要得到对应的查询参数。</p>
+<p>但在文件系统的命名中，是不允许有 <code>:</code> 存在的，因此在 <code>cba</code> 中使用 <code>^</code> 代替。</p>
+<h4 id="区分-httpMethod"><a href="#区分-httpMethod" class="headerlink" title="区分 httpMethod"></a>区分 <code>httpMethod</code></h4><p>由于云函数是允许任意方式访问的，并且操作与 <code>httpMethod</code> (<code>get/post/put/patch/delete</code>) 完全无关。</p>
+<p>在创建 <code>Action</code> 文件时，以 <code>httpMethod</code> 命名，以此来区分 <code>httpMethod</code> 并匹配。</p>
+<h2 id="Demo-改进"><a href="#Demo-改进" class="headerlink" title="Demo 改进"></a>Demo 改进</h2><p>在 <code>2021-01-11</code> 收到 <code>cloudbase-framework</code> 团队的优秀案例邀请，去看了一下其他优秀案例，都有 <code>一键部署</code>，并且都有一个完整的 demo 或成品。</p>
+<p>看一下自己写的及其简陋的 demo，不好意思放上去，于是改进一下之前的简单 demo，写个包含前后端的 <code>todo list</code> 小网站 <code>cba-todo</code>。</p>
+<p>在写 api 时，参考了 github api，尽力写个符合 RESTFul 规范的 API。</p>
+<p>API 写差不多时，才开始写网站。网站是使用 Vue + ts 写的，只有两个页面，比较简单。</p>
+<p>根据 <code>cloudbase-framework</code> 文档，编辑 <code>cloudbaserc.json</code>，完美支持一键部署，测试一键部署一切良好，感叹腾讯云 <code>cloudbase</code> 一键部署这一方面做的非常完善。</p>
+<h2 id="ipare"><a href="#ipare" class="headerlink" title="ipare"></a>ipare</h2><p>后改为更通用化、模块化的 <span class="exturl" data-url="aHR0cHM6Ly9pcGFyZS5vcmcv">ipare<i class="fa fa-external-link-alt"></i></span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/imgs/qr/wxpay_sm.jpg" alt="hal.wang 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/imgs/qr/alipay_sm.jpg" alt="hal.wang 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/JS/" rel="tag"># JS</a>
+              <a href="/tags/TS/" rel="tag"># TS</a>
+              <a href="/tags/NodeJS/" rel="tag"># NodeJS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/1534da57/" rel="prev" title="C# 命名规范">
+                  <i class="fa fa-angle-left"></i> C# 命名规范
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/7781afc/" rel="next" title="Linux 配置记录">
+                  Linux 配置记录 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5taWl0Lmdvdi5jbg==">京ICP备19029465号-5 </span>
+      <img src="http://www.beian.gov.cn/img/new/gongan.png" alt=""><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5tcHMuZ292LmNuLyMvcXVlcnkvd2ViU2VhcmNoP2NvZGU9MzQxMjI2MDIwMDAyOTk=">皖公网安备 34122602000299号 </span>
+  </div>
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hal-wang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">192k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:54</span>
+  </span>
+</div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

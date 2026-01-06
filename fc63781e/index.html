@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/imgs/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/imgs/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/imgs/avatar.jpg">
+  <link rel="mask-icon" href="/imgs/avatar.jpg" color="#222">
+  <meta name="google-site-verification" content="rYpHgEMR6BLENOrvxg5n431yWs2HNmyfp14UbZ5Xgbw">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.loli.net/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Inconsolata:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://lib.baomitu.com/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://lib.baomitu.com/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.hal.wang","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="阅读《重构:改善既有代码的设计》第二版，学到很多思想和技能，特此记录 书中演示代码主要以 JavaScript 为主">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《重构:改善既有代码的设计》读书笔记">
+<meta property="og:url" content="https://blog.hal.wang/fc63781e/index.html">
+<meta property="og:site_name" content="H">
+<meta property="og:description" content="阅读《重构:改善既有代码的设计》第二版，学到很多思想和技能，特此记录 书中演示代码主要以 JavaScript 为主">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-23T20:44:27.000Z">
+<meta property="article:modified_time" content="2026-01-06T13:24:08.074Z">
+<meta property="article:author" content="hal.wang">
+<meta property="article:tag" content="规范">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.hal.wang/fc63781e/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.hal.wang/fc63781e/","path":"fc63781e/","title":"《重构:改善既有代码的设计》读书笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>《重构:改善既有代码的设计》读书笔记 | H</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js" defer></script>
+  <script async src="https://hm.baidu.com/hm.js?c70051d9b6ed3cbc101f3a64ae4c98c2"></script>
+
+
+
+
+
+
+
+  
+  <script src="https://lib.baomitu.com/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://lib.baomitu.com/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+  <script src="https://lib.baomitu.com/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://lib.baomitu.com/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://lib.baomitu.com/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="H" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">H</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">精通多种语言 Hello World</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">43</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-cubes fa-fw"></i>分类<span class="badge">2</span></a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%95%E6%97%B6%E9%87%8D%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">何时重构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A5%9E%E7%A7%98%E5%91%BD%E5%90%8D%EF%BC%88Mysterious-Name%EF%BC%89"><span class="nav-number">1.1.</span> <span class="nav-text">神秘命名（Mysterious Name）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%A4%8D%E4%BB%A3%E7%A0%81%EF%BC%88Duplicated-Code%EF%BC%89"><span class="nav-number">1.2.</span> <span class="nav-text">重复代码（Duplicated Code）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E9%95%BF%E5%87%BD%E6%95%B0%EF%BC%88Long-Function%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">过长函数（Long Function）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E9%95%BF%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8%EF%BC%88Long-Parameter-List%EF%BC%89"><span class="nav-number">1.4.</span> <span class="nav-text">过长参数列表（Long Parameter List）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E6%95%B0%E6%8D%AE%EF%BC%88Global-Data%EF%BC%89"><span class="nav-number">1.5.</span> <span class="nav-text">全局数据（Global Data）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%8F%98%E6%95%B0%E6%8D%AE%EF%BC%88Mutable-Data%EF%BC%89"><span class="nav-number">1.6.</span> <span class="nav-text">可变数据（Mutable Data）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E6%95%A3%E5%BC%8F%E5%8F%98%E5%8C%96%EF%BC%88Divergent-Change%EF%BC%89"><span class="nav-number">1.7.</span> <span class="nav-text">发散式变化（Divergent Change）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%B0%E5%BC%B9%E5%BC%8F%E4%BF%AE%E6%94%B9%EF%BC%88Shotgun-Surgery%EF%BC%89"><span class="nav-number">1.8.</span> <span class="nav-text">霰弹式修改（Shotgun Surgery）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%9D%E6%81%8B%E6%83%85%E7%BB%93%EF%BC%88Feature-Envy%EF%BC%89"><span class="nav-number">1.9.</span> <span class="nav-text">依恋情结（Feature Envy）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B3%A5%E5%9B%A2%EF%BC%88Data-Clumps%EF%BC%89"><span class="nav-number">1.10.</span> <span class="nav-text">数据泥团（Data Clumps）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B%E5%81%8F%E6%89%A7%EF%BC%88Primitive-Obsession%EF%BC%89"><span class="nav-number">1.11.</span> <span class="nav-text">基本类型偏执（Primitive Obsession）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E5%A4%8D%E7%9A%84-switch%EF%BC%88Repeated-Switches%EF%BC%89"><span class="nav-number">1.12.</span> <span class="nav-text">重复的 switch（Repeated Switches）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5%EF%BC%88Loops%EF%BC%89"><span class="nav-number">1.13.</span> <span class="nav-text">循环语句（Loops）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%97%E8%B5%98%E7%9A%84%E5%85%83%E7%B4%A0%EF%BC%88Lasy-Element%EF%BC%89"><span class="nav-number">1.14.</span> <span class="nav-text">冗赘的元素（Lasy Element）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%B8%E5%A4%B8%E5%85%B6%E8%B0%88%E7%9A%84%E9%80%9A%E7%94%A8%E6%80%A7%EF%BC%88Speculative-Generality%EF%BC%89"><span class="nav-number">1.15.</span> <span class="nav-text">夸夸其谈的通用性（Speculative Generality）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%B4%E6%97%B6%E5%AD%97%E6%AE%B5%EF%BC%88Temporary-Field%EF%BC%89"><span class="nav-number">1.16.</span> <span class="nav-text">临时字段（Temporary Field）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E9%95%BF%E7%9A%84%E6%B6%88%E6%81%AF%E9%93%BE%EF%BC%88Message-Chains%EF%BC%89"><span class="nav-number">1.17.</span> <span class="nav-text">过长的消息链（Message Chains）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E9%97%B4%E4%BA%BA%EF%BC%88Middle-Man%EF%BC%89"><span class="nav-number">1.18.</span> <span class="nav-text">中间人（Middle Man）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%B9%95%E4%BA%A4%E6%98%93%EF%BC%88Insider-Trading%EF%BC%89"><span class="nav-number">1.19.</span> <span class="nav-text">内幕交易（Insider Trading）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%87%E5%A4%A7%E7%9A%84%E7%B1%BB%EF%BC%88Large-Class%EF%BC%89"><span class="nav-number">1.20.</span> <span class="nav-text">过大的类（Large Class）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%9B%B2%E5%90%8C%E5%B7%A5%E7%9A%84%E7%B1%BB%EF%BC%88Alternative-Classes-with-Different-Interfaces%EF%BC%89"><span class="nav-number">1.21.</span> <span class="nav-text">异曲同工的类（Alternative Classes with Different Interfaces）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%AF%E6%95%B0%E6%8D%AE%E7%B1%BB%EF%BC%88Data-Class%EF%BC%89"><span class="nav-number">1.22.</span> <span class="nav-text">纯数据类（Data Class）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A2%AB%E6%8B%92%E7%BB%9D%E7%9A%84%E9%81%97%E8%B5%A0%EF%BC%88Refused-Bequest%EF%BC%89"><span class="nav-number">1.23.</span> <span class="nav-text">被拒绝的遗赠（Refused Bequest）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A%EF%BC%88Comments%EF%BC%89"><span class="nav-number">1.24.</span> <span class="nav-text">注释（Comments）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E6%9E%84%E6%89%8B%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">重构手法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E7%82%BC%E5%87%BD%E6%95%B0%EF%BC%88Extract-Function%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">提炼函数（Extract Function）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0%EF%BC%88Inline-Function%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">内联函数（Inline Function）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E7%82%BC%E5%8F%98%E9%87%8F%EF%BC%88Extract-Variable%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">提炼变量（Extract Variable）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E8%81%94%E5%8F%98%E9%87%8F%EF%BC%88Inline-Variable%EF%BC%89"><span class="nav-number">2.4.</span> <span class="nav-text">内联变量（Inline Variable）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B9%E5%8F%98%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E%EF%BC%88Change-Function-Declaration%EF%BC%89"><span class="nav-number">2.5.</span> <span class="nav-text">改变函数声明（Change Function Declaration）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E5%8F%98%E9%87%8F%EF%BC%88Encapsulate-Variable%EF%BC%89"><span class="nav-number">2.6.</span> <span class="nav-text">封装变量（Encapsulate Variable）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F%E6%94%B9%E5%90%8D%EF%BC%88Rename-Variable%EF%BC%89"><span class="nav-number">2.7.</span> <span class="nav-text">变量改名（Rename Variable）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%85%A5%E5%8F%82%E6%95%B0%E5%AF%B9%E8%B1%A1%EF%BC%88Introduce-Parameter-Object%EF%BC%89"><span class="nav-number">2.8.</span> <span class="nav-text">引入参数对象（Introduce Parameter Object）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%BB%84%E5%90%88%E6%88%90%E7%B1%BB%EF%BC%88Combine-Functions-into-Class%EF%BC%89"><span class="nav-number">2.9.</span> <span class="nav-text">函数组合成类（Combine Functions into Class）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%BB%84%E5%90%88%E6%88%90%E5%8F%98%E6%8D%A2%EF%BC%88Combine-Functions-into-Transform%EF%BC%89"><span class="nav-number">2.10.</span> <span class="nav-text">函数组合成变换（Combine Functions into Transform）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%86%E5%88%86%E9%98%B6%E6%AE%B5%EF%BC%88Split-Phase%EF%BC%89"><span class="nav-number">2.11.</span> <span class="nav-text">拆分阶段（Split Phase）</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hal.wang"
+      src="/imgs/avatar.jpg">
+  <p class="site-author-name" itemprop="name">hal.wang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9oYWwud2FuZw==" title="主页 → https:&#x2F;&#x2F;hal.wang"><i class="fa fa-user fa-fw"></i>主页</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5n" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hal-wang"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/imgs/qr/weixin.jpg" title="微信 → &#x2F;imgs&#x2F;qr&#x2F;weixin.jpg" rel="noopener me"><i class="fab fa-weixin fa-fw"></i>微信</a>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93cGEucXEuY29tL21zZ3JkP3Y9MyZ1aW49NzkwMjY0MDI3JnNpdGU9cXEmbWVudT15ZXM=" title="QQ → https:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;790264027&amp;site&#x3D;qq&amp;menu&#x3D;yes"><i class="fab fa-qq fa-fw"></i>QQ</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmhpQGhhbC53YW5n" title="Email → mailto:hi@hal.wang"><i class="fa fa-envelope fa-fw"></i>Email</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml" rel="noopener me"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LzQuMC8="><img src="https://lib.baomitu.com/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.hal.wang/fc63781e/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/imgs/avatar.jpg">
+      <meta itemprop="name" content="hal.wang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="《重构:改善既有代码的设计》读书笔记 | H">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          《重构:改善既有代码的设计》读书笔记<span class="exturl post-edit-link" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5nL2Jsb2cvZWRpdC9tYWluL3NvdXJjZS9fcG9zdHMv44CK6YeN5p6ELeaUueWWhOaXouacieS7o+eggeeahOiuvuiuoeOAi+ivu+S5pueslOiusC5tZA==" title="编辑"><i class="fa fa-pen-nib"></i></span>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-23 20:44:27" itemprop="dateCreated datePublished" datetime="2023-07-23T20:44:27+00:00">2023-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%80%9F%E6%9F%A5/" itemprop="url" rel="index"><span itemprop="name">速查</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>阅读《重构:改善既有代码的设计》第二版，学到很多思想和技能，特此记录</p>
+<p>书中演示代码主要以 JavaScript 为主</p>
+<span id="more"></span>
+
+<h2 id="何时重构"><a href="#何时重构" class="headerlink" title="何时重构"></a>何时重构</h2><p>书中提到一些代码的坏味道</p>
+<h3 id="神秘命名（Mysterious-Name）"><a href="#神秘命名（Mysterious-Name）" class="headerlink" title="神秘命名（Mysterious Name）"></a>神秘命名（Mysterious Name）</h3><p>命名是编程中最难的两件事之一。正因为如此，修改命名可能是最常用的重构方法。如果你发现改名很难，那就说明代码设计有问题。当我们不能给一个模块，一个对象，一个函数，甚至一个变量找到合适名称的时候，往往说明我们对问题的理解还不够透彻，需要重新去挖掘问题的本质，对问题域进行重新分析和抽象。</p>
+<h3 id="重复代码（Duplicated-Code）"><a href="#重复代码（Duplicated-Code）" class="headerlink" title="重复代码（Duplicated Code）"></a>重复代码（Duplicated Code）</h3><p>同一类的两个函数含有相同的表达式，就应该提炼。</p>
+<h3 id="过长函数（Long-Function）"><a href="#过长函数（Long-Function）" class="headerlink" title="过长函数（Long Function）"></a>过长函数（Long Function）</h3><p>活得最长，最好的程序，其中函数一般都很短。如果你觉得需要写注释，大部分情况就代表这个东西需要写进一个独立的函数里面，然后根据用途来命名比较好。条件表达式和循环往往也是提炼函数的信号。</p>
+<h3 id="过长参数列表（Long-Parameter-List）"><a href="#过长参数列表（Long-Parameter-List）" class="headerlink" title="过长参数列表（Long Parameter List）"></a>过长参数列表（Long Parameter List）</h3><p>使用类可以有效的缩短参数列表。如果多个函数有同样的几个参数，引入一个类就尤为有意义。</p>
+<h3 id="全局数据（Global-Data）"><a href="#全局数据（Global-Data）" class="headerlink" title="全局数据（Global Data）"></a>全局数据（Global Data）</h3><p>全局数据仍然是最刺鼻的坏味道之一。它的问题是，全局数据在任何地方都可以被修改。所以正确的做法是将全局数据封装起来，用函数将其包起来，这样就知道那些地方修改了它。有少量的全局数据或者无妨，但数量越多，处理难度就会指数上升。（良药与毒药的区别在于剂量）</p>
+<h3 id="可变数据（Mutable-Data）"><a href="#可变数据（Mutable-Data）" class="headerlink" title="可变数据（Mutable Data）"></a>可变数据（Mutable Data）</h3><p>核心是缩小作用域。可以通过封装变量来确保所有数据更新操作都通过很少几个函数来进行，使其更容易被监控。</p>
+<h3 id="发散式变化（Divergent-Change）"><a href="#发散式变化（Divergent-Change）" class="headerlink" title="发散式变化（Divergent Change）"></a>发散式变化（Divergent Change）</h3><p>发散式变化指某个模块因为不同的原因在不同的方向上发生变化。每次只关心一个上下文。找到引起发散式变化的原因，将它拆分出来。</p>
+<h3 id="霰弹式修改（Shotgun-Surgery）"><a href="#霰弹式修改（Shotgun-Surgery）" class="headerlink" title="霰弹式修改（Shotgun Surgery）"></a>霰弹式修改（Shotgun Surgery）</h3><p>在每次修改的时候，应该只修改一处，而不是到处的修改。因为一个需求，需要修改 3 处代码，那么这就需要思考，这 3 处代码是否应该抽离出来。一个常用的策略就是使用内联（inline）重构代码把本不该分散的逻辑拽回一处。</p>
+<h3 id="依恋情结（Feature-Envy）"><a href="#依恋情结（Feature-Envy）" class="headerlink" title="依恋情结（Feature Envy）"></a>依恋情结（Feature Envy）</h3><p>模块化，力求代码分出区域，最大化区域内部交互，最小化区域间交互。如果两个模块交互频繁，它们应该合并在一起。</p>
+<h3 id="数据泥团（Data-Clumps）"><a href="#数据泥团（Data-Clumps）" class="headerlink" title="数据泥团（Data Clumps）"></a>数据泥团（Data Clumps）</h3><p>如果在多个类中，出现了很多相同项的数据，你需要想想是否要通过将数据提炼成类，来抽离出一个独立对象。建议新建类而非简单的结构体。</p>
+<h3 id="基本类型偏执（Primitive-Obsession）"><a href="#基本类型偏执（Primitive-Obsession）" class="headerlink" title="基本类型偏执（Primitive Obsession）"></a>基本类型偏执（Primitive Obsession）</h3><p>很多程序员不愿意创建对自己的问题域有用的基本类型，如钱，坐标，范围等。比如有程序员用字符串来表示电话号码，实际上你应该抽象出来一个电话号码对象。</p>
+<h3 id="重复的-switch（Repeated-Switches）"><a href="#重复的-switch（Repeated-Switches）" class="headerlink" title="重复的 switch（Repeated Switches）"></a>重复的 switch（Repeated Switches）</h3><p>尽量使用多态而非 switch。</p>
+<h3 id="循环语句（Loops）"><a href="#循环语句（Loops）" class="headerlink" title="循环语句（Loops）"></a>循环语句（Loops）</h3><p>我们应该用管道操作(如 filter 和 map)来替代循环，这样能更快的看清被处理的元素和处理他们的动作。</p>
+<h3 id="冗赘的元素（Lasy-Element）"><a href="#冗赘的元素（Lasy-Element）" class="headerlink" title="冗赘的元素（Lasy Element）"></a>冗赘的元素（Lasy Element）</h3><p>能简单的代码，尽量简单。未来变复杂的时候，再去考虑它。</p>
+<h3 id="夸夸其谈的通用性（Speculative-Generality）"><a href="#夸夸其谈的通用性（Speculative-Generality）" class="headerlink" title="夸夸其谈的通用性（Speculative Generality）"></a>夸夸其谈的通用性（Speculative Generality）</h3><p>同上，能简单的代码，尽量简单。通用性？过早的优化是万恶之源</p>
+<h3 id="临时字段（Temporary-Field）"><a href="#临时字段（Temporary-Field）" class="headerlink" title="临时字段（Temporary Field）"></a>临时字段（Temporary Field）</h3><p>临时字段指内部某个字段仅为某种特定情况而设。临时的字段不应该存在。你需要给他们搬个新家，把所有和临时变量相关的代码搬至那里。</p>
+<h3 id="过长的消息链（Message-Chains）"><a href="#过长的消息链（Message-Chains）" class="headerlink" title="过长的消息链（Message Chains）"></a>过长的消息链（Message Chains）</h3><p>如果你看到用户向一个对象请求另一个对象，然后再向后者请求另一个对象，然后再请求另一个对象，这就是消息链。消息链意味着客户端会耦合消息链的查找过程。应该将查找过程独立出一个函数。</p>
+<h3 id="中间人（Middle-Man）"><a href="#中间人（Middle-Man）" class="headerlink" title="中间人（Middle Man）"></a>中间人（Middle Man）</h3><p>委托函数过多时，减少委托，移除中间人，让调用者直接访问目标类进行操作。</p>
+<h3 id="内幕交易（Insider-Trading）"><a href="#内幕交易（Insider-Trading）" class="headerlink" title="内幕交易（Insider Trading）"></a>内幕交易（Insider Trading）</h3><p>减少模块之间频繁的数据交换，并把这种交换放到明面上。</p>
+<h3 id="过大的类（Large-Class）"><a href="#过大的类（Large-Class）" class="headerlink" title="过大的类（Large Class）"></a>过大的类（Large Class）</h3><p>当一个类代码行数太多或者功能职责太多的时候，拆掉它。两种拆分方法：提取新类，当大类的部分行为可以分解为一个单独的组件，则可以使用提取类的方式拆分。提取子类，当大类的部分行为可以以不同的方式实现或在极少数情况下使用，则可以使用提取子类方式拆分。</p>
+<h3 id="异曲同工的类（Alternative-Classes-with-Different-Interfaces）"><a href="#异曲同工的类（Alternative-Classes-with-Different-Interfaces）" class="headerlink" title="异曲同工的类（Alternative Classes with Different Interfaces）"></a>异曲同工的类（Alternative Classes with Different Interfaces）</h3><p>两个类有着相同的功能，但方法名称不同。重命名方法，并去除掉不必要的重复代码。</p>
+<h3 id="纯数据类（Data-Class）"><a href="#纯数据类（Data-Class）" class="headerlink" title="纯数据类（Data Class）"></a>纯数据类（Data Class）</h3><p>纯数据类常常意味着行为被放在了错误的地方。处理数据的行为应该从客户端移至纯数据类中。</p>
+<h3 id="被拒绝的遗赠（Refused-Bequest）"><a href="#被拒绝的遗赠（Refused-Bequest）" class="headerlink" title="被拒绝的遗赠（Refused Bequest）"></a>被拒绝的遗赠（Refused Bequest）</h3><p>如果子类复用了父类的实现，就应该支持父类的接口。</p>
+<h3 id="注释（Comments）"><a href="#注释（Comments）" class="headerlink" title="注释（Comments）"></a>注释（Comments）</h3><p>注释是提示你，这个地方该重构啦。如果你觉得需要写注释的时候，请先重构，试着让所有注释都变得多余。</p>
+<h2 id="重构手法"><a href="#重构手法" class="headerlink" title="重构手法"></a>重构手法</h2><h3 id="提炼函数（Extract-Function）"><a href="#提炼函数（Extract-Function）" class="headerlink" title="提炼函数（Extract Function）"></a>提炼函数（Extract Function）</h3><p>将独立逻辑的一段代码，提炼为一个函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">printOwing</span>(<span class="params">invoice</span>) &#123;</span><br><span class="line">  <span class="title function_">printBanner</span>();</span><br><span class="line">  <span class="keyword">let</span> outstanding = <span class="title function_">calculateOutstanding</span>();</span><br><span class="line"></span><br><span class="line">  <span class="comment">//print details</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`name: <span class="subst">$&#123;invoice.customer&#125;</span>`</span>);</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`amount: <span class="subst">$&#123;outstanding&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">printOwing</span>(<span class="params">invoice</span>) &#123;</span><br><span class="line">  <span class="title function_">printBanner</span>();</span><br><span class="line">  <span class="keyword">let</span> outstanding = <span class="title function_">calculateOutstanding</span>();</span><br><span class="line">  <span class="title function_">printDetails</span>(outstanding);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">function</span> <span class="title function_">printDetails</span>(<span class="params">outstanding</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`name: <span class="subst">$&#123;invoice.customer&#125;</span>`</span>);</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`amount: <span class="subst">$&#123;outstanding&#125;</span>`</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>提炼函数的动机：<strong>将意图与实现分开</strong></p>
+<h3 id="内联函数（Inline-Function）"><a href="#内联函数（Inline-Function）" class="headerlink" title="内联函数（Inline Function）"></a>内联函数（Inline Function）</h3><p>将函数中的代码直接写在调用处</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">getRating</span>(<span class="params">driver</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title function_">moreThanFiveLateDeliveries</span>(driver) ? <span class="number">2</span> : <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">moreThanFiveLateDeliveries</span>(<span class="params">driver</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> driver.<span class="property">numberOfLateDeliveries</span> &gt; <span class="number">5</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">getRating</span>(<span class="params">driver</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> driver.<span class="property">numberOfLateDeliveries</span> &gt; <span class="number">5</span> ? <span class="number">2</span> : <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="提炼变量（Extract-Variable）"><a href="#提炼变量（Extract-Variable）" class="headerlink" title="提炼变量（Extract Variable）"></a>提炼变量（Extract Variable）</h3><p>分解复杂表达式，用局部变量分解表达式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> (</span><br><span class="line">  order.<span class="property">quantity</span> * order.<span class="property">itemPrice</span> -</span><br><span class="line">  <span class="title class_">Math</span>.<span class="title function_">max</span>(<span class="number">0</span>, order.<span class="property">quantity</span> - <span class="number">500</span>) * order.<span class="property">itemPrice</span> * <span class="number">0.05</span> +</span><br><span class="line">  <span class="title class_">Math</span>.<span class="title function_">min</span>(order.<span class="property">quantity</span> * order.<span class="property">itemPrice</span> * <span class="number">0.1</span>, <span class="number">100</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> basePrice = order.<span class="property">quantity</span> * order.<span class="property">itemPrice</span>;</span><br><span class="line"><span class="keyword">const</span> quantityDiscount =</span><br><span class="line">  <span class="title class_">Math</span>.<span class="title function_">max</span>(<span class="number">0</span>, order.<span class="property">quantity</span> - <span class="number">500</span>) * order.<span class="property">itemPrice</span> * <span class="number">0.05</span>;</span><br><span class="line"><span class="keyword">const</span> shipping = <span class="title class_">Math</span>.<span class="title function_">min</span>(basePrice * <span class="number">0.1</span>, <span class="number">100</span>);</span><br><span class="line"><span class="keyword">return</span> basePrice - quantityDiscount + shipping;</span><br></pre></td></tr></table></figure>
+
+<h3 id="内联变量（Inline-Variable）"><a href="#内联变量（Inline-Variable）" class="headerlink" title="内联变量（Inline Variable）"></a>内联变量（Inline Variable）</h3><p>消除表现力不好的变量</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> basePrice = anOrder.<span class="property">basePrice</span>;</span><br><span class="line"><span class="keyword">return</span> basePrice &gt; <span class="number">1000</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> anOrder.<span class="property">basePrice</span> &gt; <span class="number">1000</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="改变函数声明（Change-Function-Declaration）"><a href="#改变函数声明（Change-Function-Declaration）" class="headerlink" title="改变函数声明（Change Function Declaration）"></a>改变函数声明（Change Function Declaration）</h3><p>函数改名，函数名应表达其作用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">circum</span>(<span class="params">radius</span>) &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">circumference</span>(<span class="params">radius</span>) &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="封装变量（Encapsulate-Variable）"><a href="#封装变量（Encapsulate-Variable）" class="headerlink" title="封装变量（Encapsulate Variable）"></a>封装变量（Encapsulate Variable）</h3><p>避免直接修改全局数据，以函数形式封装对该数据的访问</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> defaultOwner = &#123; <span class="attr">firstName</span>: <span class="string">&quot;Martin&quot;</span>, <span class="attr">lastName</span>: <span class="string">&quot;Fowler&quot;</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> defaultOwnerData = &#123; <span class="attr">firstName</span>: <span class="string">&quot;Martin&quot;</span>, <span class="attr">lastName</span>: <span class="string">&quot;Fowler&quot;</span> &#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">defaultOwner</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> defaultOwnerData;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">function</span> <span class="title function_">setDefaultOwner</span>(<span class="params">arg</span>) &#123;</span><br><span class="line">  defaultOwnerData = arg;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="变量改名（Rename-Variable）"><a href="#变量改名（Rename-Variable）" class="headerlink" title="变量改名（Rename Variable）"></a>变量改名（Rename Variable）</h3><p>将变量名改为易解释的名称</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = height * width;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> area = height * width;</span><br></pre></td></tr></table></figure>
+
+<h3 id="引入参数对象（Introduce-Parameter-Object）"><a href="#引入参数对象（Introduce-Parameter-Object）" class="headerlink" title="引入参数对象（Introduce Parameter Object）"></a>引入参数对象（Introduce Parameter Object）</h3><p>将一组参数，合并为一个对象进行传参</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">amountInvoiced</span>(<span class="params">startDate, endDate</span>) &#123;...&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">amountReceived</span>(<span class="params">startDate, endDate</span>) &#123;...&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">amountOverdue</span>(<span class="params">startDate, endDate</span>) &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">amountInvoiced</span>(<span class="params">aDateRange</span>) &#123;...&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">amountReceived</span>(<span class="params">aDateRange</span>) &#123;...&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">amountOverdue</span>(<span class="params">aDateRange</span>) &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数组合成类（Combine-Functions-into-Class）"><a href="#函数组合成类（Combine-Functions-into-Class）" class="headerlink" title="函数组合成类（Combine Functions into Class）"></a>函数组合成类（Combine Functions into Class）</h3><p>用面向对象的的方式，组合一组函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">base</span>(<span class="params">aReading</span>) &#123;...&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">taxableCharge</span>(<span class="params">aReading</span>) &#123;...&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">calculateBaseCharge</span>(<span class="params">aReading</span>) &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Reading</span> &#123;</span><br><span class="line">  <span class="title function_">base</span>(<span class="params"></span>) &#123;...&#125;</span><br><span class="line">  <span class="title function_">taxableCharge</span>(<span class="params"></span>) &#123;...&#125;</span><br><span class="line">  <span class="title function_">calculateBaseCharge</span>(<span class="params"></span>) &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数组合成变换（Combine-Functions-into-Transform）"><a href="#函数组合成变换（Combine-Functions-into-Transform）" class="headerlink" title="函数组合成变换（Combine Functions into Transform）"></a>函数组合成变换（Combine Functions into Transform）</h3><p>将一组函数组合为一个函数，返回结果组合成对象</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">base</span>(<span class="params">aReading</span>) &#123;...&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">taxableCharge</span>(<span class="params">aReading</span>) &#123;...&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">enrichReading</span>(<span class="params">argReading</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> aReading = _.<span class="title function_">cloneDeep</span>(argReading);</span><br><span class="line">  aReading.<span class="property">baseCharge</span> = <span class="title function_">base</span>(aReading);</span><br><span class="line">  aReading.<span class="property">taxableCharge</span> = <span class="title function_">taxableCharge</span>(aReading);</span><br><span class="line">  <span class="keyword">return</span> aReading;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="拆分阶段（Split-Phase）"><a href="#拆分阶段（Split-Phase）" class="headerlink" title="拆分阶段（Split Phase）"></a>拆分阶段（Split Phase）</h3><p>将一段代码，根据处理的事不同，拆分为多个函数</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> orderData = orderString.<span class="title function_">split</span>(<span class="regexp">/\s+/</span>);</span><br><span class="line"><span class="keyword">const</span> productPrice = priceList[orderData[<span class="number">0</span>].<span class="title function_">split</span>(<span class="string">&quot;-&quot;</span>)[<span class="number">1</span>]];</span><br><span class="line"><span class="keyword">const</span> orderPrice = <span class="built_in">parseInt</span>(orderData[<span class="number">1</span>]) * productPrice;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> orderRecord = <span class="title function_">parseOrder</span>(order);</span><br><span class="line"><span class="keyword">const</span> orderPrice = <span class="title function_">price</span>(orderRecord, priceList);</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">parseOrder</span>(<span class="params">aString</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> values = aString.<span class="title function_">split</span>(<span class="regexp">/\s+/</span>);</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">productID</span>: values[<span class="number">0</span>].<span class="title function_">split</span>(<span class="string">&quot;-&quot;</span>)[<span class="number">1</span>],</span><br><span class="line">    <span class="attr">quantity</span>: <span class="built_in">parseInt</span>(values[<span class="number">1</span>]),</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">function</span> <span class="title function_">price</span>(<span class="params">order, priceList</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> order.<span class="property">quantity</span> * priceList[order.<span class="property">productID</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/imgs/qr/wxpay_sm.jpg" alt="hal.wang 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/imgs/qr/alipay_sm.jpg" alt="hal.wang 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E8%A7%84%E8%8C%83/" rel="tag"># 规范</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/db715eae/" rel="prev" title="C# 各版本新特性">
+                  <i class="fa fa-angle-left"></i> C# 各版本新特性
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/f965c2da/" rel="next" title="使用 Let’s Encrypt 创建免费证书">
+                  使用 Let’s Encrypt 创建免费证书 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5taWl0Lmdvdi5jbg==">京ICP备19029465号-5 </span>
+      <img src="http://www.beian.gov.cn/img/new/gongan.png" alt=""><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5tcHMuZ292LmNuLyMvcXVlcnkvd2ViU2VhcmNoP2NvZGU9MzQxMjI2MDIwMDAyOTk=">皖公网安备 34122602000299号 </span>
+  </div>
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hal-wang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">192k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:54</span>
+  </span>
+</div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

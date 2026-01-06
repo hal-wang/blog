@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/imgs/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/imgs/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/imgs/avatar.jpg">
+  <link rel="mask-icon" href="/imgs/avatar.jpg" color="#222">
+  <meta name="google-site-verification" content="rYpHgEMR6BLENOrvxg5n431yWs2HNmyfp14UbZ5Xgbw">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.loli.net/css2?family=Lato:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Inconsolata:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap&subset=latin,latin-ext">
+
+<link rel="stylesheet" href="https://lib.baomitu.com/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://lib.baomitu.com/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.hal.wang","root":"/","images":"/images","scheme":"Gemini","darkmode":true,"version":"8.27.0","exturl":true,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"tomorrow-night"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":"default"},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":true,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":true,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="仅记录 C# 5 及以后版本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C# 各版本新特性">
+<meta property="og:url" content="https://blog.hal.wang/db715eae/index.html">
+<meta property="og:site_name" content="H">
+<meta property="og:description" content="仅记录 C# 5 及以后版本">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-08T15:57:13.000Z">
+<meta property="article:modified_time" content="2026-01-06T13:24:08.070Z">
+<meta property="article:author" content="hal.wang">
+<meta property="article:tag" content="C#">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.hal.wang/db715eae/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.hal.wang/db715eae/","path":"db715eae/","title":"C# 各版本新特性"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>C# 各版本新特性 | H</title>
+  
+
+  <script src="/js/third-party/analytics/baidu-analytics.js" defer></script>
+  <script async src="https://hm.baidu.com/hm.js?c70051d9b6ed3cbc101f3a64ae4c98c2"></script>
+
+
+
+
+
+
+
+  
+  <script src="https://lib.baomitu.com/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+  <script src="https://lib.baomitu.com/next-theme-pjax/0.6.0/pjax.min.js" integrity="sha256-vxLn1tSKWD4dqbMRyv940UYw4sXgMtYcK6reefzZrao=" crossorigin="anonymous" defer></script>
+  <script src="https://lib.baomitu.com/medium-zoom/1.1.0/medium-zoom.min.js" integrity="sha256-ZgMyDAIYDYGxbcpJcfUnYwNevG/xi9OHKaR/8GK+jWc=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/pjax.js" defer></script>
+
+  <script src="https://lib.baomitu.com/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://lib.baomitu.com/mermaid/11.10.1/mermaid.min.js","integrity":"sha256-BmQmdWDS8X2OTbrwELWK366LV6escyWhHHe0XCTU/Hk="}}</script>
+  <script src="/js/third-party/tags/mermaid.js" defer></script>
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"ams","js":{"url":"https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+<link rel="alternate" href="/atom.xml" title="H" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">H</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">精通多种语言 Hello World</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">43</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-cubes fa-fw"></i>分类<span class="badge">2</span></a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="fa fa-sitemap fa-fw"></i>站点地图</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#C-5"><span class="nav-number">1.</span> <span class="nav-text">C# 5</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5-async-await"><span class="nav-number">1.1.</span> <span class="nav-text">异步 async&#x2F;await</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E6%96%B9%E4%BF%A1%E6%81%AF%E7%89%B9%E5%BE%81"><span class="nav-number">1.2.</span> <span class="nav-text">调用方信息特征</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-6"><span class="nav-number">2.</span> <span class="nav-text">C# 6</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#using-%E9%9D%99%E6%80%81%E5%BC%95%E5%85%A5"><span class="nav-number">2.1.</span> <span class="nav-text">using 静态引入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#using-%E5%BC%95%E5%85%A5%E5%88%AB%E5%90%8D"><span class="nav-number">2.2.</span> <span class="nav-text">using 引入别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%B8%B8%E7%AD%9B%E9%80%89%E5%99%A8"><span class="nav-number">2.3.</span> <span class="nav-text">异常筛选器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%B1%9E%E6%80%A7%E5%88%9D%E5%A7%8B%E5%8C%96%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-number">2.4.</span> <span class="nav-text">自动属性初始化表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Expression-bodied-%E6%88%90%E5%91%98"><span class="nav-number">2.5.</span> <span class="nav-text">Expression-bodied 成员</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null-%E4%BC%A0%E6%92%AD%E5%99%A8"><span class="nav-number">2.6.</span> <span class="nav-text">null 传播器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%8F%92%E6%A7%BD"><span class="nav-number">2.7.</span> <span class="nav-text">字符串插槽</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nameof-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.8.</span> <span class="nav-text">nameof 运算符</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-7"><span class="nav-number">3.</span> <span class="nav-text">C# 7</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#out-%E5%8F%98%E9%87%8F"><span class="nav-number">3.1.</span> <span class="nav-text">out 变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%83%E7%BB%84"><span class="nav-number">3.2.</span> <span class="nav-text">元组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D"><span class="nav-number">3.3.</span> <span class="nav-text">模式匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%AC%E5%9C%B0%E5%87%BD%E6%95%B0"><span class="nav-number">3.4.</span> <span class="nav-text">本地函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%83%E5%85%83"><span class="nav-number">3.5.</span> <span class="nav-text">弃元</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E5%90%8D%E5%8F%82%E6%95%B0"><span class="nav-number">3.6.</span> <span class="nav-text">命名参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ref"><span class="nav-number">3.7.</span> <span class="nav-text">ref</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-8"><span class="nav-number">4.</span> <span class="nav-text">C# 8</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4%E6%8E%A5%E5%8F%A3%E6%96%B9%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">默认接口方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D-1"><span class="nav-number">4.2.</span> <span class="nav-text">模式匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.2.1.</span> <span class="nav-text">属性模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%83%E7%BB%84%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.2.2.</span> <span class="nav-text">元组模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%8D%E7%BD%AE%E6%A8%A1%E5%BC%8F"><span class="nav-number">4.2.3.</span> <span class="nav-text">位置模式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#using-%E6%96%B0%E7%89%88%E5%A3%B0%E6%98%8E"><span class="nav-number">4.3.</span> <span class="nav-text">using 新版声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E6%9C%AC%E5%9C%B0%E5%87%BD%E6%95%B0"><span class="nav-number">4.4.</span> <span class="nav-text">静态本地函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E5%A4%84%E7%BD%AE%E7%9A%84-ref-%E7%BB%93%E6%9E%84"><span class="nav-number">4.5.</span> <span class="nav-text">可处置的 ref 结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E7%A9%BA%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B"><span class="nav-number">4.6.</span> <span class="nav-text">可空引用类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E6%B5%81"><span class="nav-number">4.7.</span> <span class="nav-text">异步流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E6%AD%A5%E9%87%8A%E6%94%BE"><span class="nav-number">4.8.</span> <span class="nav-text">异步释放</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E5%92%8C%E8%8C%83%E5%9B%B4"><span class="nav-number">4.9.</span> <span class="nav-text">索引和范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null-%E5%90%88%E5%B9%B6%E8%B5%8B%E5%80%BC"><span class="nav-number">4.10.</span> <span class="nav-text">null 合并赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E6%8F%92%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%A2%9E%E5%BC%BA%E5%8A%9F%E8%83%BD"><span class="nav-number">4.11.</span> <span class="nav-text">内插字符串增强功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-9"><span class="nav-number">5.</span> <span class="nav-text">C# 9</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E7%B1%BB%E5%9E%8B"><span class="nav-number">5.1.</span> <span class="nav-text">记录类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E5%A3%B0%E6%98%8E"><span class="nav-number">5.1.1.</span> <span class="nav-text">简单声明</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E5%88%9D%E5%A7%8B%E5%8C%96%E8%AE%B0%E5%BD%95"><span class="nav-number">5.1.2.</span> <span class="nav-text">可初始化记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E8%AE%B0%E5%BD%95"><span class="nav-number">5.1.3.</span> <span class="nav-text">读写记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%80%BC%E7%9B%B8%E7%AD%89%E6%80%A7"><span class="nav-number">5.1.4.</span> <span class="nav-text">值相等性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%9E%E7%A0%B4%E5%9D%8F%E6%80%A7%E4%BF%AE%E6%94%B9"><span class="nav-number">5.1.5.</span> <span class="nav-text">非破坏性修改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ToString"><span class="nav-number">5.1.6.</span> <span class="nav-text">ToString</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%85%E9%99%90-init-%E7%9A%84%E8%B5%84%E6%BA%90%E5%BA%93"><span class="nav-number">5.2.</span> <span class="nav-text">仅限 init 的资源库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B6%E7%BA%A7%E8%AF%AD%E5%8F%A5"><span class="nav-number">5.3.</span> <span class="nav-text">顶级语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D%E5%A2%9E%E5%BC%BA%E5%8A%9F%E8%83%BD"><span class="nav-number">5.4.</span> <span class="nav-text">模式匹配增强功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E7%9C%81%E7%95%A5-new"><span class="nav-number">5.5.</span> <span class="nav-text">可省略 new</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0"><span class="nav-number">5.6.</span> <span class="nav-text">静态匿名函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95-GetEnumerator"><span class="nav-number">5.7.</span> <span class="nav-text">扩展 GetEnumerator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lambda-%E5%BC%83%E5%85%83%E5%8F%82%E6%95%B0"><span class="nav-number">5.8.</span> <span class="nav-text">lambda 弃元参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E9%83%A8%E6%96%B9%E6%B3%95"><span class="nav-number">5.9.</span> <span class="nav-text">分部方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-10"><span class="nav-number">6.</span> <span class="nav-text">C# 10</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-number">6.1.</span> <span class="nav-text">记录结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E5%8F%82%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">6.1.1.</span> <span class="nav-text">无参构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E5%8F%82%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">6.1.2.</span> <span class="nav-text">有参构造函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%B1%80-using"><span class="nav-number">6.2.</span> <span class="nav-text">全局 using</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%8C%83%E5%9B%B4%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4"><span class="nav-number">6.3.</span> <span class="nav-text">文件范围命名空间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E5%B1%9E%E6%80%A7%E6%A8%A1%E5%BC%8F"><span class="nav-number">6.4.</span> <span class="nav-text">扩展属性模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lambda-%E6%94%B9%E8%BF%9B"><span class="nav-number">6.5.</span> <span class="nav-text">lambda 改进</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%B9%E6%80%A7%E5%BA%94%E7%94%A8%E5%88%B0%E5%87%BD%E6%95%B0"><span class="nav-number">6.5.1.</span> <span class="nav-text">特性应用到函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%B9%E6%80%A7%E5%BA%94%E7%94%A8%E5%88%B0%E5%8F%82%E6%95%B0"><span class="nav-number">6.5.2.</span> <span class="nav-text">特性应用到参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%B9%E6%80%A7%E5%BA%94%E7%94%A8%E5%88%B0%E8%BF%94%E5%9B%9E%E5%80%BC"><span class="nav-number">6.5.3.</span> <span class="nav-text">特性应用到返回值</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E5%86%85%E6%8F%92%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">6.6.</span> <span class="nav-text">常量内插字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%B0%E5%BD%95%E7%B1%BB%E5%9E%8B%E5%8F%AF%E5%AF%86%E5%B0%81-ToString"><span class="nav-number">6.7.</span> <span class="nav-text">记录类型可密封 ToString</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-11"><span class="nav-number">7.</span> <span class="nav-text">C# 11</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%9B%E5%9E%8B%E7%89%B9%E6%80%A7"><span class="nav-number">7.1.</span> <span class="nav-text">泛型特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%86%85%E6%8F%92%E4%B8%AD%E5%85%81%E8%AE%B8%E6%8D%A2%E8%A1%8C"><span class="nav-number">7.2.</span> <span class="nav-text">字符串内插中允许换行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%97%E8%A1%A8%E7%9A%84%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D"><span class="nav-number">7.3.</span> <span class="nav-text">列表的模式匹配</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BC%83%E5%85%83-1"><span class="nav-number">7.3.1.</span> <span class="nav-text">弃元</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%96%E5%80%BC"><span class="nav-number">7.3.2.</span> <span class="nav-text">取值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%87%E7%89%87"><span class="nav-number">7.3.3.</span> <span class="nav-text">切片</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E5%A7%8B%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%96%87%E6%9C%AC"><span class="nav-number">7.4.</span> <span class="nav-text">原始字符串文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UTF-8-%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%AD%97%E9%9D%A2%E9%87%8F"><span class="nav-number">7.5.</span> <span class="nav-text">UTF-8 字符串字面量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BF%85%E9%A1%BB%E7%9A%84%E6%88%90%E5%91%98"><span class="nav-number">7.6.</span> <span class="nav-text">必须的成员</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%9C%AC%E5%9C%B0%E7%B1%BB%E5%9E%8B"><span class="nav-number">7.7.</span> <span class="nav-text">文件本地类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#C-12"><span class="nav-number">8.</span> <span class="nav-text">C# 12</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">8.1.</span> <span class="nav-text">主构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E5%90%88%E7%9A%84%E5%B1%95%E5%BC%80%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">8.2.</span> <span class="nav-text">集合的展开运算符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%BB%98%E8%AE%A4-Lambda-%E5%8F%82%E6%95%B0"><span class="nav-number">8.3.</span> <span class="nav-text">默认 Lambda 参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D"><span class="nav-number">8.4.</span> <span class="nav-text">类型别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E8%81%94%E6%95%B0%E7%BB%84"><span class="nav-number">8.5.</span> <span class="nav-text">内联数组</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hal.wang"
+      src="/imgs/avatar.jpg">
+  <p class="site-author-name" itemprop="name">hal.wang</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9oYWwud2FuZw==" title="主页 → https:&#x2F;&#x2F;hal.wang"><i class="fa fa-user fa-fw"></i>主页</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5n" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hal-wang"><i class="fab fa-github fa-fw"></i>GitHub</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/imgs/qr/weixin.jpg" title="微信 → &#x2F;imgs&#x2F;qr&#x2F;weixin.jpg" rel="noopener me"><i class="fab fa-weixin fa-fw"></i>微信</a>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="aHR0cHM6Ly93cGEucXEuY29tL21zZ3JkP3Y9MyZ1aW49NzkwMjY0MDI3JnNpdGU9cXEmbWVudT15ZXM=" title="QQ → https:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;790264027&amp;site&#x3D;qq&amp;menu&#x3D;yes"><i class="fab fa-qq fa-fw"></i>QQ</span>
+      </span>
+      <span class="links-of-author-item">
+        <span class="exturl" data-url="bWFpbHRvOmhpQGhhbC53YW5n" title="Email → mailto:hi@hal.wang"><i class="fa fa-envelope fa-fw"></i>Email</span>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml" rel="noopener me"><i class="fa fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <span class="exturl cc-opacity" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LzQuMC8="><img src="https://lib.baomitu.com/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by.svg" alt="Creative Commons"></span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.hal.wang/db715eae/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/imgs/avatar.jpg">
+      <meta itemprop="name" content="hal.wang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="H">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="C# 各版本新特性 | H">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          C# 各版本新特性<span class="exturl post-edit-link" data-url="aHR0cHM6Ly9naXRodWIuY29tL2hhbC13YW5nL2Jsb2cvZWRpdC9tYWluL3NvdXJjZS9fcG9zdHMvQy3lkITniYjmnKzmlrDnibnmgKcubWQ=" title="编辑"><i class="fa fa-pen-nib"></i></span>
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-08 15:57:13" itemprop="dateCreated datePublished" datetime="2023-07-08T15:57:13+00:00">2023-07-08</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%80%9F%E6%9F%A5/" itemprop="url" rel="index"><span itemprop="name">速查</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>仅记录 C# 5 及以后版本</p>
+<span id="more"></span>
+
+<h2 id="C-5"><a href="#C-5" class="headerlink" title="C# 5"></a>C# 5</h2><p>随 Visual Studio 2012 发布</p>
+<h3 id="异步-async-await"><a href="#异步-async-await" class="headerlink" title="异步 async&#x2F;await"></a>异步 async&#x2F;await</h3><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">async</span> Task <span class="title">Func</span>()</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">await</span> Task.Run(() =&gt; &#123;</span><br><span class="line"></span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="调用方信息特征"><a href="#调用方信息特征" class="headerlink" title="调用方信息特征"></a>调用方信息特征</h3><p>可以通过特性，在函数参数，取得调用方信息</p>
+<ul>
+<li>CallerMemberName 调用者函数名&#x2F;属性名等</li>
+<li>CallerFilePath 调用者文件地址</li>
+<li>CallerLineNumber 调用者代码行数</li>
+</ul>
+<h2 id="C-6"><a href="#C-6" class="headerlink" title="C# 6"></a>C# 6</h2><p>随 Visual Studio 2015 发布</p>
+<h3 id="using-静态引入"><a href="#using-静态引入" class="headerlink" title="using 静态引入"></a>using 静态引入</h3><p>可以 using 引入类的静态成员</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="keyword">static</span> <span class="keyword">namespace</span>.Class;</span><br></pre></td></tr></table></figure>
+
+<p>引入后可直接访问该类中的静态成员</p>
+<h3 id="using-引入别名"><a href="#using-引入别名" class="headerlink" title="using 引入别名"></a>using 引入别名</h3><p>可以给引入的命名空间取别名</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> name = <span class="keyword">namespace</span>.subnamespace;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj = name.Class();</span><br></pre></td></tr></table></figure>
+
+<h3 id="异常筛选器"><a href="#异常筛选器" class="headerlink" title="异常筛选器"></a>异常筛选器</h3><p>支持异常的条件过滤</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span> (Exception e) <span class="keyword">when</span> (e.Message.StartsWith(<span class="string">&quot;demo&quot;</span>))</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="自动属性初始化表达式"><a href="#自动属性初始化表达式" class="headerlink" title="自动属性初始化表达式"></a>自动属性初始化表达式</h3><p>为属性赋初始值</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">int</span> Id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125; = <span class="number">123</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Expression-bodied-成员"><a href="#Expression-bodied-成员" class="headerlink" title="Expression-bodied 成员"></a>Expression-bodied 成员</h3><p>用 Lambda 表达式定义类成员</p>
+<p>只读属性</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> DateTime Time =&gt; DateTime.Now;</span><br></pre></td></tr></table></figure>
+
+<p>get&#x2F;set 属性</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="built_in">string</span> Name</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">get</span> =&gt; name;</span><br><span class="line">  <span class="keyword">set</span> =&gt; name = <span class="keyword">value</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>无返回值方法</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Func</span>(<span class="params"><span class="built_in">int</span> id</span>)</span> =&gt; <span class="keyword">this</span>.Id = id;</span><br></pre></td></tr></table></figure>
+
+<p>有返回值方法</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">int</span> <span class="title">Func</span>(<span class="params"><span class="built_in">int</span> id</span>)</span> =&gt; id + <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>构造函数</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Location</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">Location</span>(<span class="params"><span class="built_in">string</span> name</span>)</span> =&gt; <span class="keyword">this</span>.Name = name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="null-传播器"><a href="#null-传播器" class="headerlink" title="null 传播器"></a>null 传播器</h3><p>运算符 <code>?.</code> 和 <code>?[]</code></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> title = user?.todos?[<span class="number">0</span>]?.title;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字符串插槽"><a href="#字符串插槽" class="headerlink" title="字符串插槽"></a>字符串插槽</h3><p>用 <code>$</code> 标识的字符串，其中 <code>&#123;&#125;</code> 内可写变量或表达式</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&quot;hal.wang&quot;</span>;</span><br><span class="line"><span class="keyword">var</span> text = <span class="string">$&quot;你好，<span class="subst">&#123;name&#125;</span>&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="nameof-运算符"><a href="#nameof-运算符" class="headerlink" title="nameof 运算符"></a>nameof 运算符</h3><p>获取变量的名称</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> user1 = <span class="keyword">new</span> User();</span><br><span class="line">Console.WriteLine(<span class="keyword">nameof</span>(user1)); <span class="comment">// user1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="C-7"><a href="#C-7" class="headerlink" title="C# 7"></a>C# 7</h2><p>随 Visual Studio 2017 发布</p>
+<h3 id="out-变量"><a href="#out-变量" class="headerlink" title="out 变量"></a>out 变量</h3><p>简化之前的 out 变量写法，可以不用单独定义变量</p>
+<p>以前的写法为</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> intput = <span class="string">&quot;123&quot;</span>;</span><br><span class="line"><span class="built_in">int</span> num;</span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">int</span>.TryParse(intput, <span class="keyword">out</span> num))&#123;</span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在的写法可以是</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> intput = <span class="string">&quot;123&quot;</span>;</span><br><span class="line"><span class="keyword">if</span>(<span class="built_in">int</span>.TryParse(intput, <span class="keyword">out</span> <span class="keyword">var</span> num))&#123;</span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h3><p>升级 Tuple 写法</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="built_in">double</span>, <span class="built_in">int</span>) t1 = (<span class="number">4.5</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> val1 = t1.Item1;</span><br><span class="line"><span class="keyword">var</span> val2 = t1.Item2;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="built_in">double</span> Sum, <span class="built_in">int</span> Count) t2 = (<span class="number">4.5</span>, <span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> val1 = t2.Sum;</span><br><span class="line"><span class="keyword">var</span> val2 = t2.Count;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> t3 = (Sum: <span class="number">4.5</span>, Count:<span class="number">3</span>);</span><br><span class="line"><span class="keyword">var</span> val1 = t3.Sum;</span><br><span class="line"><span class="keyword">var</span> val2 = t3.Count;</span><br></pre></td></tr></table></figure>
+
+<p>类型相同可赋值</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(<span class="built_in">double</span>, <span class="built_in">int</span>) t1 = (<span class="number">4.5</span>, <span class="number">3</span>);</span><br><span class="line">(sum, distance) = t1;</span><br></pre></td></tr></table></figure>
+
+<p>判断相等</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(<span class="built_in">int</span> a, <span class="built_in">byte</span> b) left = (<span class="number">5</span>, <span class="number">10</span>);</span><br><span class="line">(<span class="built_in">long</span> a, <span class="built_in">int</span> b) right = (<span class="number">5</span>, <span class="number">10</span>);</span><br><span class="line">Console.WriteLine(left == right); <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> left2 = (A: <span class="number">5</span>, B: <span class="number">10</span>);</span><br><span class="line"><span class="keyword">var</span> right2 = (B: <span class="number">10</span>, A: <span class="number">5</span>);</span><br><span class="line">Console.WriteLine(left2 == right2); <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="模式匹配"><a href="#模式匹配" class="headerlink" title="模式匹配"></a>模式匹配</h3><p>用 <code>is</code> 和 <code>is not</code> 判断变量类型，也可以判断 null</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> i = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">if</span> (i <span class="keyword">is</span> <span class="built_in">int</span> num)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>比较离散值（switch）</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Func</span>(<span class="params"><span class="built_in">string</span> command</span>)</span> =&gt; command <span class="keyword">switch</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;val1&quot;</span> =&gt; <span class="string">&quot;result1&quot;</span>,</span><br><span class="line">  <span class="string">&quot;val2&quot;</span> =&gt; <span class="string">&quot;result2&quot;</span>,</span><br><span class="line">  _ =&gt; <span class="keyword">throw</span> <span class="keyword">new</span> Exception()</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>关系模式（switch）</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Func</span>(<span class="params"><span class="built_in">int</span> num</span>)</span> =&gt; num <span class="keyword">switch</span></span><br><span class="line">&#123;</span><br><span class="line">  &lt;=<span class="number">5</span> =&gt; <span class="string">&quot;result1&quot;</span>,</span><br><span class="line">  (&gt;<span class="number">5</span> <span class="keyword">and</span> &lt;<span class="number">10</span>) =&gt; <span class="string">&quot;result2&quot;</span>,</span><br><span class="line">  <span class="number">11</span> =&gt; <span class="string">&quot;result3&quot;</span>,</span><br><span class="line">  &gt; <span class="number">11</span> =&gt; <span class="string">&quot;result4&quot;</span>,</span><br><span class="line">  _ =&gt; <span class="keyword">throw</span> <span class="keyword">new</span> Exception()</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="本地函数"><a href="#本地函数" class="headerlink" title="本地函数"></a>本地函数</h3><p>函数内部定义函数</p>
+<h3 id="弃元"><a href="#弃元" class="headerlink" title="弃元"></a>弃元</h3><p>用 <code>_</code> 命名的变量，可重复</p>
+<h3 id="命名参数"><a href="#命名参数" class="headerlink" title="命名参数"></a>命名参数</h3><p>默认参数可指定参数名传参</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Func</span>(<span class="params"><span class="built_in">int</span> arg1 = <span class="literal">null</span>, <span class="built_in">int</span> arg2 = <span class="literal">null</span></span>)</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Func(arg2: <span class="number">2</span>);</span><br><span class="line">Func(arg2: <span class="number">2</span>, arg1: <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h3><p>将值类型声明为引用类型</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span> number = <span class="number">6</span>;</span><br><span class="line"><span class="keyword">ref</span> <span class="built_in">int</span> n = <span class="keyword">ref</span> number;</span><br><span class="line">n = <span class="number">8</span>;</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="string">$&quot;number = <span class="subst">&#123;number&#125;</span>&quot;</span>); <span class="comment">// 8</span></span><br><span class="line">Console.WriteLine(<span class="string">$&quot;n = <span class="subst">&#123;n&#125;</span>&quot;</span>); <span class="comment">// 8</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="C-8"><a href="#C-8" class="headerlink" title="C# 8"></a>C# 8</h2><p>是专门面向 .net core 的第一个主要 C# 版本</p>
+<h3 id="默认接口方法"><a href="#默认接口方法" class="headerlink" title="默认接口方法"></a>默认接口方法</h3><p>可以不止是约束，也可以实现完整的方法</p>
+<h3 id="模式匹配-1"><a href="#模式匹配-1" class="headerlink" title="模式匹配"></a>模式匹配</h3><p>增强 switch 的模式匹配</p>
+<h4 id="属性模式"><a href="#属性模式" class="headerlink" title="属性模式"></a>属性模式</h4><p>可以匹配对象中的属性</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Cls</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="built_in">string</span> Prop &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125; = <span class="literal">null</span>!;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">string</span> <span class="title">Func</span>(<span class="params">Cls obj</span>)</span> =&gt; obj <span class="keyword">switch</span></span><br><span class="line">&#123;</span><br><span class="line">  &#123; Prop: <span class="string">&quot;val1&quot;</span> &#125; =&gt; <span class="string">&quot;result1&quot;</span>,</span><br><span class="line">  &#123; Prop: <span class="string">&quot;val2&quot;</span> &#125; =&gt; <span class="string">&quot;result2&quot;</span>,</span><br><span class="line">  &#123; Prop: <span class="string">&quot;val3&quot;</span> &#125; =&gt; <span class="string">&quot;result3&quot;</span>,</span><br><span class="line">  _ =&gt; <span class="string">&quot;result4&quot;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> v = Func(<span class="keyword">new</span> Cls()</span><br><span class="line">&#123;</span><br><span class="line">  Prop = <span class="string">&quot;val2&quot;</span></span><br><span class="line">&#125;);</span><br><span class="line">Console.WriteLine(v); <span class="comment">// result2</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="元组模式"><a href="#元组模式" class="headerlink" title="元组模式"></a>元组模式</h4><p>可以匹配元组</p>
+<h4 id="位置模式"><a href="#位置模式" class="headerlink" title="位置模式"></a>位置模式</h4><p>按属性位置取，组成元组，然后匹配</p>
+<h3 id="using-新版声明"><a href="#using-新版声明" class="headerlink" title="using 新版声明"></a>using 新版声明</h3><p>using 块如果范围为整个函数，可以省略大括号</p>
+<h3 id="静态本地函数"><a href="#静态本地函数" class="headerlink" title="静态本地函数"></a>静态本地函数</h3><p>本地函数可以声明为静态的</p>
+<h3 id="可处置的-ref-结构"><a href="#可处置的-ref-结构" class="headerlink" title="可处置的 ref 结构"></a>可处置的 ref 结构</h3><p>可以用 ref 声明 struct，表示此 struct 的实例对象都是引用类型</p>
+<h3 id="可空引用类型"><a href="#可空引用类型" class="headerlink" title="可空引用类型"></a>可空引用类型</h3><p>更灵活的可空特性</p>
+<p>通过 <code>?</code> 为字段、属性、方法参数、返回值等添加是否可为 null 的特性</p>
+<h3 id="异步流"><a href="#异步流" class="headerlink" title="异步流"></a>异步流</h3><p>可以返回异步版本的迭代器</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">async</span> IAsyncEnumerable&lt;<span class="built_in">int</span>&gt; <span class="title">GetList</span>()</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">await</span> Task.Delay(<span class="number">100</span>);</span><br><span class="line">    <span class="keyword">yield</span> <span class="keyword">return</span> i;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> <span class="keyword">foreach</span> (<span class="function"><span class="keyword">var</span> num <span class="keyword">in</span> <span class="title">GetList</span>())</span></span><br><span class="line">&#123;</span><br><span class="line">  Console.WriteLine(num); <span class="comment">// 0-99</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="异步释放"><a href="#异步释放" class="headerlink" title="异步释放"></a>异步释放</h3><p>增加 IDisposable 的异步版本 IDisposableAsync</p>
+<p>接口函数为 <code>DisposeAsync()</code></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Cls</span> : <span class="title">IAsyncDisposable</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">async</span> ValueTask <span class="title">DisposeAsync</span>()</span></span><br><span class="line">  &#123;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="索引和范围"><a href="#索引和范围" class="headerlink" title="索引和范围"></a>索引和范围</h3><p>可以指定数组范围</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> nums = <span class="keyword">new</span> <span class="built_in">int</span>[]&#123;</span><br><span class="line">  <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> nums2 = nums[^<span class="number">2</span>]; <span class="comment">// 倒数</span></span><br><span class="line"><span class="keyword">var</span> nums3 = nums[<span class="number">1.</span><span class="number">.3</span>];</span><br><span class="line"><span class="keyword">var</span> nums4 = nums[^<span class="number">2.</span>.^<span class="number">0</span>]; <span class="comment">// 倒数范围</span></span><br><span class="line"><span class="keyword">var</span> nums5 = nums[..];</span><br><span class="line"><span class="keyword">var</span> nums6 = nums[.<span class="number">.3</span>]; <span class="comment">// 前三个</span></span><br><span class="line"><span class="keyword">var</span> nums7 = nums[<span class="number">2.</span>.]; <span class="comment">// 第三个开始直到结尾</span></span><br></pre></td></tr></table></figure>
+
+<p>声明范围</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span>[] nums = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>];</span><br><span class="line">Range rg = <span class="number">3.</span><span class="number">.6</span>;</span><br><span class="line"><span class="built_in">int</span>[] vals = nums[rg];</span><br><span class="line">Console.WriteLine(<span class="built_in">string</span>.Join(<span class="string">&#x27;,&#x27;</span>, vals)); <span class="comment">// 4,5,6</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="null-合并赋值"><a href="#null-合并赋值" class="headerlink" title="null 合并赋值"></a>null 合并赋值</h3><p>语法 <code>??=</code></p>
+<p>如果左侧不为空，直接返回左侧</p>
+<p>如果左侧为空，则将右侧赋值给左侧，然后返回左侧</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// WPF 常用</span></span><br><span class="line"><span class="keyword">private</span> ICommand _okCommand = <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">public</span> ICommand OkCommand =&gt; _okCommand ??= <span class="keyword">new</span> DelegateCommand(() =&gt;</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="内插字符串增强功能"><a href="#内插字符串增强功能" class="headerlink" title="内插字符串增强功能"></a>内插字符串增强功能</h3><p>可以结合 <code>$</code> 和 <code>@</code> 声明字符串，结合二者功能，声明顺序不分先后</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> text = <span class="string">$@&quot;abc\de<span class="subst">&#123;<span class="number">12</span>&#125;</span>&quot;</span>;</span><br><span class="line">Console.WriteLine(text); <span class="comment">// abc\de12</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="C-9"><a href="#C-9" class="headerlink" title="C# 9"></a>C# 9</h2><p>随 .NET5 一起发布，是面向 .NET5 版本的任何程序集的默认语言版本</p>
+<h3 id="记录类型"><a href="#记录类型" class="headerlink" title="记录类型"></a>记录类型</h3><p>用 <code>record</code> 声明的类型</p>
+<p>是新的引用类型，相当于引用类型的 <code>struct</code></p>
+<p>与类的区别是，<code>record</code> 可以使用基于值的相等性</p>
+<h4 id="简单声明"><a href="#简单声明" class="headerlink" title="简单声明"></a>简单声明</h4><p>可以简单声明只读记录</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">record</span> <span class="title">Personal</span>(<span class="title">string</span> <span class="title">FirstName</span>, <span class="title">string</span> <span class="title">LastName</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Personal(<span class="string">&quot;n1&quot;</span>, <span class="string">&quot;n2&quot;</span>);</span><br><span class="line">Console.WriteLine(<span class="string">$&quot;FirstName = <span class="subst">&#123;person.FirstName&#125;</span>&quot;</span>);</span><br><span class="line">Console.WriteLine(<span class="string">$&quot;LastName = <span class="subst">&#123;person.LastName&#125;</span>&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="可初始化记录"><a href="#可初始化记录" class="headerlink" title="可初始化记录"></a>可初始化记录</h4><p>也可以用 <code>init</code> 声明可初始化的记录，只能在构造函数中或初始化类时赋值</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">record</span> <span class="title">Personal</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="built_in">string</span> FirstName &#123; <span class="keyword">get</span>; <span class="keyword">init</span>; &#125; = <span class="literal">null</span>!;</span><br><span class="line">  <span class="keyword">public</span> <span class="built_in">string</span> LastName &#123; <span class="keyword">get</span>; <span class="keyword">init</span>; &#125; = <span class="literal">null</span>!;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="读写记录"><a href="#读写记录" class="headerlink" title="读写记录"></a>读写记录</h4><p>也可以声明可读写记录</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">record</span> <span class="title">Personal</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="built_in">string</span> FirstName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125; = <span class="literal">null</span>!;</span><br><span class="line">  <span class="keyword">public</span> <span class="built_in">string</span> LastName &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125; = <span class="literal">null</span>!;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="值相等性"><a href="#值相等性" class="headerlink" title="值相等性"></a>值相等性</h4><p>同类 record 的两个实例对象，只要属性值都相同，<code>==</code> 运算符就为 <code>true</code></p>
+<p>运行时类型必须相等，派生类型也不行</p>
+<h4 id="非破坏性修改"><a href="#非破坏性修改" class="headerlink" title="非破坏性修改"></a>非破坏性修改</h4><p>用 <code>with</code> 基于已有记录，新建一条记录</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Personal person1 = <span class="keyword">new</span>(<span class="string">&quot;n1&quot;</span>, <span class="string">&quot;n2&quot;</span>);</span><br><span class="line">Personal person2 = person1 <span class="keyword">with</span> &#123; FirstName = <span class="string">&quot;John&quot;</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="ToString"><a href="#ToString" class="headerlink" title="ToString"></a>ToString</h4><p>.ToString 会格式化属性名和属性值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DailyTemperature &#123; HighTemp = 57, LowTemp = 30, Mean = 43.5 &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="仅限-init-的资源库"><a href="#仅限-init-的资源库" class="headerlink" title="仅限 init 的资源库"></a>仅限 init 的资源库</h3><p>用 init 替换 set 声明属性，只能在构造函数或初始化时设置属性值</p>
+<h3 id="顶级语句"><a href="#顶级语句" class="headerlink" title="顶级语句"></a>顶级语句</h3><p>不用 Main 方法和 namespace，直接写函数体代码</p>
+<h3 id="模式匹配增强功能"><a href="#模式匹配增强功能" class="headerlink" title="模式匹配增强功能"></a>模式匹配增强功能</h3><p>改进模式匹配</p>
+<ul>
+<li>类型模式匹配一个与特定类型匹配的对象</li>
+<li>带圆括号的模式强制或强调模式组合的优先级</li>
+<li>联合 <code>and</code> 模式要求两个模式都匹配</li>
+<li>析取 <code>or</code> 模式要求任一模式匹配</li>
+<li>否定 <code>not</code> 模式要求模式不匹配</li>
+<li>关系模式要求输入小于、大于、小于等于或大于等于给定常数。</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">IsLetter</span>(<span class="params"><span class="keyword">this</span> <span class="built_in">char</span> c</span>)</span> =&gt; c <span class="keyword">is</span> &gt;= <span class="string">&#x27;a&#x27;</span> <span class="keyword">and</span> &lt;= <span class="string">&#x27;z&#x27;</span> <span class="keyword">or</span> &gt;= <span class="string">&#x27;A&#x27;</span> <span class="keyword">and</span> &lt;= <span class="string">&#x27;Z&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="built_in">bool</span> <span class="title">IsLetterOrSeparator</span>(<span class="params"><span class="keyword">this</span> <span class="built_in">char</span> c</span>)</span> =&gt; <span class="function">c <span class="title">is</span> (<span class="params">&gt;= <span class="string">&#x27;a&#x27;</span> <span class="keyword">and</span> &lt;= <span class="string">&#x27;z&#x27;</span></span>) <span class="title">or</span> (<span class="params">&gt;= <span class="string">&#x27;A&#x27;</span> <span class="keyword">and</span> &lt;= <span class="string">&#x27;Z&#x27;</span></span>) <span class="keyword">or</span> &#x27;.&#x27; <span class="keyword">or</span> &#x27;,&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="可省略-new"><a href="#可省略-new" class="headerlink" title="可省略 new"></a>可省略 new</h3><p>已知类型 <code>new</code> 表达式中可以省略类型</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> List&lt;WeatherObservation&gt; _observations = <span class="keyword">new</span>();</span><br></pre></td></tr></table></figure>
+
+<h3 id="静态匿名函数"><a href="#静态匿名函数" class="headerlink" title="静态匿名函数"></a>静态匿名函数</h3><p>允许对 lambda 和匿名方法，使用 <code>static</code> 修饰符</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Action act = <span class="keyword">static</span> () =&gt; &#123;</span><br><span class="line"></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="扩展-GetEnumerator"><a href="#扩展-GetEnumerator" class="headerlink" title="扩展 GetEnumerator"></a>扩展 GetEnumerator</h3><p>允许 foreach 循环识别扩展方法 <code>GetEnumerator</code></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">PeopleExtensions</span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> People <span class="title">GetEnumerator</span>(<span class="params"><span class="keyword">this</span> People people</span>)</span> =&gt; people;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> people = <span class="keyword">new</span> People();</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span>(<span class="keyword">var</span> person <span class="keyword">in</span> people)&#123;</span><br><span class="line">  <span class="comment">//</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>类内部需要实现迭代器功能，即包含 <code>Current</code> 和 <code>MoveNext</code></p>
+<h3 id="lambda-弃元参数"><a href="#lambda-弃元参数" class="headerlink" title="lambda 弃元参数"></a>lambda 弃元参数</h3><p>可以用 <code>_</code> 作为 lambda 和匿名方法的参数</p>
+<ul>
+<li>lambda： <code>(_, _) =&gt; 0</code> ， <code>(int _, int _) =&gt; 0</code></li>
+<li>匿名方法： <code>delegate(int _, int _) &#123; return 0; &#125;</code></li>
+</ul>
+<h3 id="分部方法"><a href="#分部方法" class="headerlink" title="分部方法"></a>分部方法</h3><p>对于 <code>partial</code> 类，可以在一处声明，在另一处实现</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">D</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// Okay</span></span><br><span class="line">    <span class="function"><span class="keyword">internal</span> <span class="keyword">partial</span> <span class="built_in">bool</span> <span class="title">TryParse</span>(<span class="params"><span class="built_in">string</span> s, <span class="keyword">out</span> <span class="built_in">int</span> i</span>)</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">partial</span> <span class="keyword">class</span> <span class="title">D</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">internal</span> <span class="keyword">partial</span> <span class="built_in">bool</span> <span class="title">TryParse</span>(<span class="params"><span class="built_in">string</span> s, <span class="keyword">out</span> <span class="built_in">int</span> i</span>)</span> &#123; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="C-10"><a href="#C-10" class="headerlink" title="C# 10"></a>C# 10</h2><p>.NET 6 的默认语言版本为 C# 10</p>
+<h3 id="记录结构"><a href="#记录结构" class="headerlink" title="记录结构"></a>记录结构</h3><p>扩展之前的 record 记录</p>
+<ul>
+<li>用 <code>record struct</code> 声明值类型</li>
+<li>用 <code>record class</code> 声明引用类型</li>
+<li>用 <code>readonly record struct</code> 声明只读值类型</li>
+</ul>
+<h4 id="无参构造函数"><a href="#无参构造函数" class="headerlink" title="无参构造函数"></a>无参构造函数</h4><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">record</span> <span class="title">struct</span> <span class="title">Person</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="built_in">int</span> Id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125; = <span class="number">123</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125; = <span class="string">&quot;h&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="有参构造函数"><a href="#有参构造函数" class="headerlink" title="有参构造函数"></a>有参构造函数</h4><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">record</span> <span class="title">struct</span> <span class="title">Person</span>(<span class="title">string</span> <span class="title">name</span>)</span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">public</span> <span class="built_in">int</span> Id &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125; = <span class="number">123</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="built_in">string</span> Name &#123; <span class="keyword">get</span>; <span class="keyword">set</span>; &#125; = name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="全局-using"><a href="#全局-using" class="headerlink" title="全局 using"></a>全局 using</h3><p>一次引入，整个项目可用</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">global</span> <span class="keyword">using</span> System.Math;</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件范围命名空间"><a href="#文件范围命名空间" class="headerlink" title="文件范围命名空间"></a>文件范围命名空间</h3><p>用新方式声明 namespace 后，整个文件中的类都是属于这个命名空间</p>
+<p>可以减少一组大括号，增加易读性</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="title">CustomNamespace</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Class1</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Class2</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="扩展属性模式"><a href="#扩展属性模式" class="headerlink" title="扩展属性模式"></a>扩展属性模式</h3><p>模式匹配可以用嵌套的属性或字段</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">object</span> people = <span class="keyword">new</span> People</span><br><span class="line">&#123;</span><br><span class="line">  Name = <span class="string">&quot;H&quot;</span>,</span><br><span class="line">  Contact = <span class="keyword">new</span></span><br><span class="line">  &#123;</span><br><span class="line">    Email = <span class="string">&quot;hi@hal.wang&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (people <span class="keyword">is</span> People &#123; Contact.Email: <span class="string">&quot;hi@hal.wang&quot;</span> &#125;)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (people <span class="keyword">is</span> People &#123; Contact: &#123; Email: <span class="string">&quot;hi@hal.wang&quot;</span> &#125; &#125;)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="lambda-改进"><a href="#lambda-改进" class="headerlink" title="lambda 改进"></a>lambda 改进</h3><ul>
+<li>Lambda 表达式可以具有自然类型，这使编译器可从 Lambda 表达式或方法组推断委托类型。</li>
+<li>如果编译器无法推断返回类型，Lambda 表达式可以声明该类型。</li>
+<li>特性可应用于 Lambda 表达式。</li>
+<li>Lambda 支持关键字修饰，如 ref&#x2F;out 等</li>
+</ul>
+<h4 id="特性应用到函数"><a href="#特性应用到函数" class="headerlink" title="特性应用到函数"></a>特性应用到函数</h4><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fn1 = [CustomAttribute] () =&gt; &#123; &#125;;</span><br><span class="line"><span class="keyword">var</span> fn2 = [Custom] () =&gt; &#123; &#125;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="特性应用到参数"><a href="#特性应用到参数" class="headerlink" title="特性应用到参数"></a>特性应用到参数</h4><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> concat = ([DisallowNull] <span class="built_in">string</span> a, [DisallowNull] <span class="built_in">string</span> b) =&gt; a + b;</span><br></pre></td></tr></table></figure>
+
+<h4 id="特性应用到返回值"><a href="#特性应用到返回值" class="headerlink" title="特性应用到返回值"></a>特性应用到返回值</h4><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> inc = [<span class="keyword">return</span>: NotNullifNotNull(<span class="keyword">nameof</span>(s))] (<span class="built_in">int</span>? s) =&gt; s.HasValue ? s++ : <span class="literal">null</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="常量内插字符串"><a href="#常量内插字符串" class="headerlink" title="常量内插字符串"></a>常量内插字符串</h3><p>如果内插变量都是 const 修饰的，那么内插字符串也可以用 const 修饰</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">string</span> str1 = <span class="string">&quot;s1&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">string</span> str2 = <span class="string">&quot;s2&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">string</span> str = <span class="string">$&quot;abc<span class="subst">&#123;str1&#125;</span>def<span class="subst">&#123;str2&#125;</span>g&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="记录类型可密封-ToString"><a href="#记录类型可密封-ToString" class="headerlink" title="记录类型可密封 ToString"></a>记录类型可密封 ToString</h3><p>用 <code>sealed</code> 修饰 <code>ToString</code>，子类不能再覆写 <code>ToString</code></p>
+<h2 id="C-11"><a href="#C-11" class="headerlink" title="C# 11"></a>C# 11</h2><p>.NET 7 的默认语言版本为 C# 11</p>
+<h3 id="泛型特性"><a href="#泛型特性" class="headerlink" title="泛型特性"></a>泛型特性</h3><p>可创建泛型类并继承 <code>Attribute</code>，实现泛型特性</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">GenericAttribute</span>&lt;<span class="title">T</span>&gt; : <span class="title">Attribute</span> &#123; &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">GenericAttribute&lt;string&gt;()</span>]</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Method</span>()</span> =&gt; <span class="literal">default</span>;</span><br></pre></td></tr></table></figure>
+
+<p>泛型类型必须完全构造，不能有任何参数</p>
+<ul>
+<li>不能是 dynamic，可以是 object</li>
+<li>不能是 <code>string?</code>&#x2F;<code>int?</code> 等可空引用类型，应使用 string&#x2F;int 等</li>
+<li>不能用元组如 <code>(int X, int Y)</code>，可使用 <code>ValueTuple&lt;int, int&gt;</code></li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">GenericType</span>&lt;<span class="title">T</span>&gt;</span></span><br><span class="line">&#123;</span><br><span class="line">   [<span class="meta">GenericAttribute&lt;T&gt;()</span>] <span class="comment">// Not allowed! generic attributes must be fully constructed types.</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="built_in">string</span> <span class="title">Method</span>()</span> =&gt; <span class="literal">default</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字符串内插中允许换行"><a href="#字符串内插中允许换行" class="headerlink" title="字符串内插中允许换行"></a>字符串内插中允许换行</h3><p>在字符串内插中 <code>&#123; &#125;</code>, 允许换行</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> str = <span class="string">$&quot;abc<span class="subst">&#123;</span></span></span><br><span class="line"><span class="subst"><span class="string">    <span class="number">1</span>+<span class="number">2</span></span></span></span><br><span class="line"><span class="subst"><span class="string">    +<span class="number">3</span></span></span></span><br><span class="line"><span class="subst"><span class="string">    +<span class="number">4</span></span></span></span><br><span class="line"><span class="subst"><span class="string">&#125;</span>def&quot;</span>;</span><br><span class="line">Console.WriteLine(str); <span class="comment">// abc10def</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="列表的模式匹配"><a href="#列表的模式匹配" class="headerlink" title="列表的模式匹配"></a>列表的模式匹配</h3><p>可以将数组或列表与模式的序列进行匹配</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span>[] numbers = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;;</span><br><span class="line"></span><br><span class="line">Console.WriteLine(numbers <span class="keyword">is</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]);  <span class="comment">// True</span></span><br><span class="line">Console.WriteLine(numbers <span class="keyword">is</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>]);  <span class="comment">// False</span></span><br><span class="line">Console.WriteLine(numbers <span class="keyword">is</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]);  <span class="comment">// False</span></span><br><span class="line">Console.WriteLine(numbers <span class="keyword">is</span> [<span class="number">0</span> <span class="keyword">or</span> <span class="number">1</span>, &lt;= <span class="number">2</span>, &gt;= <span class="number">3</span>]);  <span class="comment">// True</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="弃元-1"><a href="#弃元-1" class="headerlink" title="弃元"></a>弃元</h4><p>弃元可以匹配任何值</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span>[] numbers = &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;;</span><br><span class="line"></span><br><span class="line">Console.WriteLine(numbers <span class="keyword">is</span> [<span class="number">1</span>, <span class="number">2</span>, _]);  <span class="comment">// True</span></span><br><span class="line">Console.WriteLine(numbers <span class="keyword">is</span> [<span class="number">1</span>, _, _]);  <span class="comment">// True</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="取值"><a href="#取值" class="headerlink" title="取值"></a>取值</h4><figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;<span class="built_in">int</span>&gt; numbers = <span class="keyword">new</span>() &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (numbers <span class="keyword">is</span> [<span class="keyword">var</span> first, _, _])</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(<span class="string">$&quot;The first element of a three-item list is <span class="subst">&#123;first&#125;</span>.&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h4><p>在模式匹配中可使用切片模式</p>
+<p>切片可匹配 0 个或多个元素，最多出现一个切片</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Console.WriteLine(<span class="keyword">new</span>[] &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span> &#125; <span class="keyword">is</span> [&gt; <span class="number">0</span>, &gt; <span class="number">0</span>, ..]);  <span class="comment">// True</span></span><br><span class="line">Console.WriteLine(<span class="keyword">new</span>[] &#123; <span class="number">1</span>, <span class="number">1</span> &#125; <span class="keyword">is</span> [_, _, ..]);  <span class="comment">// True</span></span><br><span class="line">Console.WriteLine(<span class="keyword">new</span>[] &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span> &#125; <span class="keyword">is</span> [&gt; <span class="number">0</span>, &gt; <span class="number">0</span>, ..]);  <span class="comment">// False</span></span><br><span class="line">Console.WriteLine(<span class="keyword">new</span>[] &#123; <span class="number">1</span> &#125; <span class="keyword">is</span> [<span class="number">1</span>, <span class="number">2</span>, ..]);  <span class="comment">// False</span></span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="keyword">new</span>[] &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span> &#125; <span class="keyword">is</span> [.., &gt; <span class="number">0</span>, &gt; <span class="number">0</span>]);  <span class="comment">// True</span></span><br><span class="line">Console.WriteLine(<span class="keyword">new</span>[] &#123; <span class="number">2</span>, <span class="number">4</span> &#125; <span class="keyword">is</span> [.., &gt; <span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>]);  <span class="comment">// False</span></span><br><span class="line">Console.WriteLine(<span class="keyword">new</span>[] &#123; <span class="number">2</span>, <span class="number">4</span> &#125; <span class="keyword">is</span> [.., <span class="number">2</span>, <span class="number">4</span>]);  <span class="comment">// True</span></span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="keyword">new</span>[] &#123; <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span> &#125; <span class="keyword">is</span> [&gt;= <span class="number">0</span>, .., <span class="number">2</span> <span class="keyword">or</span> <span class="number">4</span>]);  <span class="comment">// True</span></span><br><span class="line">Console.WriteLine(<span class="keyword">new</span>[] &#123; <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span> &#125; <span class="keyword">is</span> [<span class="number">1</span>, <span class="number">0</span>, .., <span class="number">0</span>, <span class="number">1</span>]);  <span class="comment">// True</span></span><br><span class="line">Console.WriteLine(<span class="keyword">new</span>[] &#123; <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span> &#125; <span class="keyword">is</span> [<span class="number">1</span>, <span class="number">0</span>, .., <span class="number">0</span>, <span class="number">1</span>]);  <span class="comment">// False</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="原始字符串文本"><a href="#原始字符串文本" class="headerlink" title="原始字符串文本"></a>原始字符串文本</h3><p>用 3 个双引号 <code>&quot;&quot;&quot;</code> 开头和结尾</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">string</span> longMessage = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    This is a long message.</span></span><br><span class="line"><span class="string">    It has several lines.</span></span><br><span class="line"><span class="string">        Some are indented</span></span><br><span class="line"><span class="string">                more than others.</span></span><br><span class="line"><span class="string">    Some should start at the first column.</span></span><br><span class="line"><span class="string">    Some have &quot;quoted text&quot; in them.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> location = $<span class="string">$&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">   You are at &#123;&#123;&#123;Longitude&#125;&#125;, &#123;&#123;Latitude&#125;&#125;&#125;</span></span><br><span class="line"><span class="string">   &quot;</span><span class="string">&quot;&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="UTF-8-字符串字面量"><a href="#UTF-8-字符串字面量" class="headerlink" title="UTF-8 字符串字面量"></a>UTF-8 字符串字面量</h3><p>用 <code>u8</code> 后缀修饰字符串字面量，可指定 UTF-8 编码</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ReadOnlySpan&lt;<span class="built_in">byte</span>&gt; AuthWithTrailingSpace = <span class="keyword">new</span> <span class="built_in">byte</span>[] &#123; <span class="number">0x41</span>, <span class="number">0x55</span>, <span class="number">0x54</span>, <span class="number">0x48</span>, <span class="number">0x20</span> &#125;;</span><br><span class="line">ReadOnlySpan&lt;<span class="built_in">byte</span>&gt; AuthStringLiteral = <span class="string">&quot;AUTH &quot;</span>u8;</span><br><span class="line"></span><br><span class="line"><span class="built_in">byte</span>[] AuthStringLiteral = <span class="string">&quot;AUTH &quot;</span>u8.ToArray();</span><br></pre></td></tr></table></figure>
+
+<h3 id="必须的成员"><a href="#必须的成员" class="headerlink" title="必须的成员"></a>必须的成员</h3><p>用 <code>required</code> 修饰属性，要求必须初始化该属性</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Person</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">required</span> <span class="built_in">string</span> FirstName &#123; <span class="keyword">get</span>; <span class="keyword">init</span>; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Person &#123; FirstName = <span class="string">&quot;John&quot;</span>&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>如果用构造函数初始化，需要用 <code>SetsRequiredMembers</code> 特性修饰构造函数</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Person</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Person</span>()</span> &#123; &#125;</span><br><span class="line"></span><br><span class="line">    [<span class="meta">SetsRequiredMembers</span>]</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Person</span>(<span class="params"><span class="built_in">string</span> firstName</span>)</span> =&gt; FirstName = firstName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">required</span> <span class="built_in">string</span> FirstName &#123; <span class="keyword">get</span>; <span class="keyword">init</span>; &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> person = <span class="keyword">new</span> Person(<span class="string">&quot;John&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件本地类型"><a href="#文件本地类型" class="headerlink" title="文件本地类型"></a>文件本地类型</h3><p>用 <code>file</code> 修饰类型，限制该类型的可见性为文件内</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">file</span> <span class="keyword">class</span> <span class="title">HiddenWidget</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// implementation</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在其他代码文件的任何命名空间中，即使在部分类中，都无法访问该类型</p>
+<h2 id="C-12"><a href="#C-12" class="headerlink" title="C# 12"></a>C# 12</h2><p>.NET 8 的默认语言版本为 C# 12</p>
+<h3 id="主构造函数"><a href="#主构造函数" class="headerlink" title="主构造函数"></a>主构造函数</h3><p>不再局限于 <code>record</code> 类型，也可以在 <code>class</code> 和 <code>struct</code> 中使用主构造函数</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ExampleController</span>(<span class="params">IService service</span>) : ControllerBase</span></span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="集合的展开运算符"><a href="#集合的展开运算符" class="headerlink" title="集合的展开运算符"></a>集合的展开运算符</h3><p>可以使用展开运算符 <code>..</code> 将集合中的元素与其他集合内敛</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">int</span>[] arr1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line"><span class="built_in">int</span>[] arr2 = [.. arr1, <span class="number">4</span>, <span class="number">5</span>];</span><br><span class="line"></span><br><span class="line">Console.WriteLine(<span class="built_in">string</span>.Join(<span class="string">&#x27;,&#x27;</span>, arr2));</span><br><span class="line"><span class="comment">// 1,2,3,4,5</span></span><br></pre></td></tr></table></figure>
+
+<p>类似 <code>js</code> 中对数组操作的展开运算符 <code>...</code></p>
+<h3 id="默认-Lambda-参数"><a href="#默认-Lambda-参数" class="headerlink" title="默认 Lambda 参数"></a>默认 Lambda 参数</h3><p>可以为 Lambda 表达式的参数定义默认值，与普通方法相同</p>
+<h3 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h3><p>可以用 <code>using</code> 指令为任意类型创建别名，类似 <code>ts</code> 中的 <code>type</code></p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> CustomType = (<span class="built_in">int</span> X, <span class="built_in">int</span> Y);</span><br><span class="line"><span class="keyword">var</span> val = <span class="keyword">new</span> CustomType(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">Console.WriteLine(val.X + val.Y); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> CustomList = System.Collections.Generic.List&lt;<span class="built_in">int</span>&gt;;</span><br><span class="line"><span class="keyword">var</span> val = <span class="keyword">new</span> CustomList() &#123; <span class="number">1</span>, <span class="number">2</span> &#125;;</span><br><span class="line">Console.WriteLine(val[<span class="number">0</span>] + val[<span class="number">1</span>]); <span class="comment">// 3</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="内联数组"><a href="#内联数组" class="headerlink" title="内联数组"></a>内联数组</h3><p>内联数组是包含多个元素的连续块的结构，适用于高性能场景</p>
+<ul>
+<li>内联数组是 struct</li>
+<li>struct 仅有 1 个字段</li>
+<li>struct 未指定显式布局</li>
+<li>使用 <code>System.Runtime.CompilerServices.InlineArrayAttribute</code> 特性修饰 struct</li>
+<li><code>System.Runtime.CompilerServices.InlineArrayAttribute</code> 参数必须大于 0</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="meta">System.Runtime.CompilerServices.InlineArray(10)</span>]</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">struct</span> Buffer</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="built_in">int</span> _element0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> buffer = <span class="keyword">new</span> Buffer();</span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">    buffer[i] = i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">foreach</span> (<span class="keyword">var</span> i <span class="keyword">in</span> buffer)</span><br><span class="line">&#123;</span><br><span class="line">    Console.WriteLine(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="reward-container">
+  <div>请我一杯咖啡吧！</div>
+  <button>
+    赞赏
+  </button>
+  <div class="post-reward">
+      <div>
+        <img src="/imgs/qr/wxpay_sm.jpg" alt="hal.wang 微信">
+        <span>微信</span>
+      </div>
+      <div>
+        <img src="/imgs/qr/alipay_sm.jpg" alt="hal.wang 支付宝">
+        <span>支付宝</span>
+      </div>
+
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"># C#</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/383ffbdc/" rel="prev" title="Three.js 创建地图飞线">
+                  <i class="fa fa-angle-left"></i> Three.js 创建地图飞线
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/fc63781e/" rel="next" title="《重构:改善既有代码的设计》读书笔记">
+                  《重构:改善既有代码的设计》读书笔记 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5taWl0Lmdvdi5jbg==">京ICP备19029465号-5 </span>
+      <img src="http://www.beian.gov.cn/img/new/gongan.png" alt=""><span class="exturl" data-url="aHR0cHM6Ly9iZWlhbi5tcHMuZ292LmNuLyMvcXVlcnkvd2ViU2VhcmNoP2NvZGU9MzQxMjI2MDIwMDAyOTk=">皖公网安备 34122602000299号 </span>
+  </div>
+  <div class="copyright">
+    &copy; 2019 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hal-wang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">192k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:54</span>
+  </span>
+</div>
+  <div class="powered-by">由 <span class="exturl" data-url="aHR0cHM6Ly9oZXhvLmlv">Hexo</span> & <span class="exturl" data-url="aHR0cHM6Ly90aGVtZS1uZXh0LmpzLm9yZw==">NexT.Gemini</span> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
