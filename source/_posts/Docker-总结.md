@@ -98,15 +98,11 @@ docker run --name mysql8 -v mysql8:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=<passwo
 ## MSSQL
 
 ```
-docker run --name=mssql2017 -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -e "MSSQL_COLLATION=Chinese_PRC_CI_AS" -p 14317:1433 -v mssql2017:/var/opt/mssql/data -v mssql2017backup:/DatabaseBackup -d mcr.microsoft.com/mssql/server:2017-latest
-```
-
-```
-docker run --name=mssql2019 -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -e "MSSQL_COLLATION=Chinese_PRC_CI_AS" -p 14319:1433 -v mssql2019:/var/opt/mssql/data -v mssql2019backup:/DatabaseBackup -d mcr.microsoft.com/mssql/server:2019-latest
-```
-
-```
 docker run --name=mssql2022 -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -e "MSSQL_COLLATION=Chinese_PRC_CI_AS" -p 14322:1433 -v mssql2022:/var/opt/mssql/data -v mssql2022backup:/DatabaseBackup -d mcr.microsoft.com/mssql/server:2022-latest
+```
+
+```
+docker run --name=mssql2025 -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=yourStrong(!)Password' -e "MSSQL_COLLATION=Chinese_PRC_CI_AS" -p 14325:1433 -v mssql2025:/var/opt/mssql/data -v mssql2025backup:/DatabaseBackup -d mcr.microsoft.com/mssql/server:2025-latest
 ```
 
 ### 连接数据库
