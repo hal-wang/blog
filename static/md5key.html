@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>签名计算工具</title>
+    <!-- CDN 依赖 -->
+    <script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.19.0/js/md5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-base64@3.7.2/base64.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      body {
+        max-width: 700px;
+        margin: 30px auto;
+        padding: 0 4px;
+        background: #f5f7fa;
+      }
+      .container {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      }
+      h2 {
+        text-align: center;
+        margin-bottom: 15px;
+        color: #333;
+        font-size: 20px;
+      }
+      .form-item {
+        margin: 10px 0;
+      }
+      label {
+        display: block;
+        margin-bottom: 4px;
+        font-weight: bold;
+        color: #555;
+        font-size: 14px;
+      }
+      input {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+      /* 紧凑自适应样式 */
+      .info-box {
+        padding: 8px 10px;
+        background: #f8f9fa;
+        border-radius: 5px;
+        margin: 8px 0;
+        word-wrap: break-word;
+        line-height: 1.3;
+        font-size: 14px;
+      }
+      .result-box {
+        padding: 10px;
+        background: #e3f2fd;
+        border-radius: 5px;
+        word-break: break-all;
+        margin: 12px 0;
+        line-height: 1.3;
+        font-size: 14px;
+      }
+      .btn {
+        padding: 8px 16px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-right: 8px;
+      }
+      .btn:hover {
+        background: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>签名计算工具</h2>
+
+      <div class="info-box">
+        <label>App（来自URL参数）：</label>
+        <div id="appText"></div>
+      </div>
+
+      <div class="form-item">
+        <label>开始日期 startDate：</label>
+        <input type="date" id="startDate" />
+      </div>
+
+      <div class="form-item">
+        <label>结束日期 endDate：</label>
+        <input type="date" id="endDate" />
+      </div>
+
+      <div class="form-item">
+        <label>Key：</label>
+        <input type="text" id="key" placeholder="请输入 Key" />
+      </div>
+
+      <button class="btn" onclick="calculate()">计算签名</button>
+      <button class="btn" onclick="copyResult()">复制结果</button>
+
+      <div class="result-box">
+        <strong>最终签名结果：</strong><br />
+        <span id="result"></span>
+      </div>
+    </div>
+
+    <script>
+      // 页面加载时自动初始化
+      window.onload = function () {
+        // 从 URL 获取 app
+        const params = new URLSearchParams(window.location.search);
+        const app = params.get("app") || "";
+        document.getElementById("appText").innerText = app;
+
+        // 默认日期：今天 / 明年今天
+        const today = new Date();
+        const todayStr = today.toISOString().split("T")[0];
+
+        const nextYear = new Date();
+        nextYear.setFullYear(today.getFullYear() + 1);
+        const nextYearStr = nextYear.toISOString().split("T")[0];
+
+        document.getElementById("startDate").value = todayStr;
+        document.getElementById("endDate").value = nextYearStr;
+      };
+
+      // 核心计算逻辑
+      function calculate() {
+        const app = document.getElementById("appText").innerText.trim();
+        const startDate = document.getElementById("startDate").value.trim();
+        const endDate = document.getElementById("endDate").value.trim();
+        const key = document.getElementById("key").value.trim();
+
+        if (!app) {
+          alert("请在 URL 传入 app：?app=xxx");
+          return false;
+        }
+        if (!startDate || !endDate || !key) {
+          alert("请填写完整信息");
+          return false;
+        }
+
+        // 算法实现
+        const payload = app + startDate + endDate + key;
+        const payloadMd5 = md5(payload);
+        const signStr = `${payloadMd5} ${startDate} ${endDate} ${key}`;
+        const result = Base64.encode(signStr);
+
+        document.getElementById("result").innerText = result;
+        return true;
+      }
+
+      // 复制结果：没计算则自动先计算
+      function copyResult() {
+        const success = calculate();
+        if (!success) return;
+
+        let res = document.getElementById("result").innerText;
+        navigator.clipboard
+          .writeText(res)
+          .then(() => {
+            alert("复制成功！");
+          })
+          .catch(() => {
+            alert("复制失败，请手动复制");
+          });
+      }
+    </script>
+  </body>
+</html>
