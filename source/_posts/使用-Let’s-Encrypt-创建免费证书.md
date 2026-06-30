@@ -81,18 +81,6 @@ These files will be updated when the certificate renews.
 /etc/letsencrypt/live/domain.com
 ```
 
-## 证书链不完整
-
-Let’s Encrypt 创建的证书可能会出现证书链不完整的错误
-
-需要修复一下证书链
-
-浏览器打开 `https://myssl.com/chain_download.html`
-
-选择 `上传证书`
-
-编辑证书文件，将文件内容拷出来，粘贴到网页，再点击 `获取证书链`，即得到修复后的证书内容
-
 ## 证书转换
 
 PEM -> PFX/PKCS12
