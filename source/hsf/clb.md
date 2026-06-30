@@ -1,6 +1,6 @@
 ---
 layout: "hsf"
-title: 播控指南
+title: 攀岩播控使用指南
 date: 2026-06-30 22:44:52
 toc: false
 abbrlink: clb
@@ -21,6 +21,14 @@ body main.main .main-inner .post-header .post-title .post-edit-link {
 </style>
 
 ![整体](clb/overview.png)
+
+## 注册
+
+电脑插上加密狗会自动注册，注册后程序右下角将不显示 `未注册` 标识。
+
+未注册的程序，仅可进行基础操作，不能对外发起控制。
+
+若使用过程拔掉加密狗，一般在 60s 内会自动改为 `未注册` 状态。
 
 ## 播出指令
 
