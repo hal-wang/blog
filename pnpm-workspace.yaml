@@ -1,0 +1,5 @@
+allowBuilds:
+  ejs: true
+  core-js: true
+  hexo-util: true
+  highlight.js: true
