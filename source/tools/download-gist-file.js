@@ -4,46 +4,53 @@ const fs = require("fs");
 const token = process.argv[2];
 const gistId = process.argv[3];
 const fileName = process.argv[4];
-if (!token || !gistId || !fileName) throw new Error("arguments error");
 
-async function readSteram(stream) {
-  const chunks = [];
-  await new Promise((resolve, reject) => {
-    stream.on("data", (chunk) => {
-      const encoding = stream.readableEncoding ?? undefined;
-      if (Buffer.isBuffer(chunk)) {
-        chunks.push(chunk);
-      } else {
-        chunks.push(Buffer.from(chunk, encoding));
-      }
-    });
-    stream.on("end", () => {
-      resolve();
-    });
-    stream.on("error", (err) => {
-      reject(err);
-    });
-  });
-  return Buffer.concat(chunks);
+if (!token || !gistId || !fileName) {
+  throw new Error("arguments error");
 }
 
-https.get(
-  `https://api.github.com/gists/${gistId}`,
-  {
-    headers: {
-      Accept: "application/vnd.github+jso",
-      Authorization: `Bearer ${token}`,
-      "X-GitHub-Api-Version": "2022-11-28",
-      "user-agent": "hal-wang/gist/public-gist/download-gist-file.js",
-    },
-  },
-  async (res) => {
-    const json = (await readSteram(res)).toString("utf-8");
-    const obj = JSON.parse(json);
-    const fileUrl = obj.files[fileName].raw_url;
-    https.get(fileUrl, async (res) => {
-      const buffer = await readSteram(res);
-      fs.writeFileSync(fileName, buffer);
+function request(url, headers) {
+  return new Promise((resolve, reject) => {
+    https.get(url, { headers }, (res) => {
+      const chunks = [];
+
+      if (res.statusCode !== 200) {
+        return reject(
+          new Error(`HTTP ${res.statusCode}: ${res.statusMessage}`),
+        );
+      }
+
+      res.on("data", (c) => chunks.push(c));
+      res.on("end", () => {
+        resolve(Buffer.concat(chunks));
+      });
+      res.on("error", reject);
     });
+  });
+}
+
+(async () => {
+  const apiHeaders = {
+    Authorization: `Bearer ${token}`,
+    Accept: "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": "hal-wang/gist/download-gist-file",
+  };
+
+  const apiRes = await request(
+    `https://api.github.com/gists/${gistId}`,
+    apiHeaders,
+  );
+
+  const gist = JSON.parse(apiRes.toString("utf-8"));
+  const file = gist.files[fileName];
+
+  if (!file) {
+    throw new Error(`file "${fileName}" not found in gist`);
   }
-);
+
+  const content = Buffer.from(file.content, "utf-8");
+  fs.writeFileSync(fileName, content);
+
+  console.log(`downloaded: ${fileName}`);
+})();
