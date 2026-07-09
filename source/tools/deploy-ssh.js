@@ -1,7 +1,7 @@
 const path = require("path");
 const { Client } = require("ssh2");
 
-const privateKey = "{{PRIVATE_KEY}}";
+const privateKey = `{{PRIVATE_KEY}}`;
 const serverIps = "{{SERVER_IPS}}".split(",");
 const remoteDir = "{{REMOTE_DIR}}";
 const serviceName = "{{SERVICE_NAME}}";
