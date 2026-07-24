@@ -5,6 +5,8 @@ const privateKey = `{{PRIVATE_KEY}}`;
 const serverIps = "{{SERVER_IPS}}".split(",");
 const remoteDir = "{{REMOTE_DIR}}";
 const serviceName = "{{SERVICE_NAME}}";
+const preScript = "{{PRE_SCRIPT}}";
+const postScript = `{{POST_SCRIPT}}`;
 
 let username = "{{USERNAME}}";
 if (username.startsWith("{{")) {
@@ -38,12 +40,18 @@ async function deploy(serverIp) {
           try {
             sftp.serverIp = serverIp;
             await copyFile(sftp, __dirname, remoteDir);
+            if (!preScript.startsWith("{{")) {
+              await exec(client, preScript);
+            }
             if (!serviceName.startsWith("{{")) {
               await exec(client, `systemctl stop ${serviceName}`);
             }
             await exec(client, `cd ${remoteDir} && tar -xzvf ${tarFile}`);
             if (!serviceName.startsWith("{{")) {
               await exec(client, `systemctl start ${serviceName}`);
+            }
+            if (!postScript.startsWith("{{")) {
+              await exec(client, postScript);
             }
             resolve();
             client.destroy();
