@@ -89,23 +89,23 @@
       <h2>签名计算工具</h2>
 
       <div class="info-box">
-        <label>App（来自URL参数）：</label>
-        <div id="appText"></div>
+        <label>密钥（来自 URL 参数 sk）：</label>
+        <div id="secretKey"></div>
       </div>
 
       <div class="form-item">
-        <label>开始日期 startDate：</label>
+        <label>开始日期：</label>
         <input type="date" id="startDate" />
       </div>
 
       <div class="form-item">
-        <label>结束日期 endDate：</label>
+        <label>结束日期：</label>
         <input type="date" id="endDate" />
       </div>
 
       <div class="form-item">
-        <label>Key：</label>
-        <input type="text" id="key" placeholder="请输入 Key" />
+        <label>设备码：</label>
+        <input type="text" id="deviceId" placeholder="请输入设备码" />
       </div>
 
       <button class="btn" onclick="calculate()">计算签名</button>
@@ -120,10 +120,10 @@
     <script>
       // 页面加载时自动初始化
       window.onload = function () {
-        // 从 URL 获取 app
+        // 从 URL 获取密钥
         const params = new URLSearchParams(window.location.search);
-        const app = params.get("app") || "";
-        document.getElementById("appText").innerText = app;
+        const secretKey = params.get("sk") || "";
+        document.getElementById("secretKey").innerText = secretKey;
 
         const startTime = new Date();
         const endTime = new Date();
@@ -152,9 +152,9 @@
         buffer[offset + 2] = (value >> 16) & 0xff;
       }
 
-      function packBinary(startDays, days, app, deviceHash) {
+      function packBinary(startDays, days, secretKey, deviceHash) {
         const payload = startDays + "|" + days + "|" + deviceHash;
-        const hmac = CryptoJS.HmacMD5(payload, app);
+        const hmac = CryptoJS.HmacMD5(payload, secretKey);
         const hmacBytes = CryptoJS.enc.Hex.parse(hmac.toString()).words.flatMap(
           (w) => [
             (w >>> 24) & 0xff,
@@ -173,12 +173,12 @@
       }
 
       function calculate() {
-        const secretKey = document.getElementById("appText").innerText.trim();
+        const secretKey = document.getElementById("secretKey").innerText.trim();
         const startDate = document.getElementById("startDate").value.trim();
         const endDate = document.getElementById("endDate").value.trim();
-        const deviceHash = document.getElementById("key").value.trim();
+        const deviceId = document.getElementById("deviceId").value.trim();
 
-        if (!secretKey || !startDate || !endDate || !deviceHash) {
+        if (!secretKey || !startDate || !endDate || !deviceId) {
           alert("请填写完整信息");
           return false;
         }
@@ -186,7 +186,7 @@
         const startDays = dateToDays(startDate);
         const days = dateToDays(endDate) - startDays;
 
-        const binary = packBinary(startDays, days, secretKey, deviceHash);
+        const binary = packBinary(startDays, days, secretKey, deviceId);
         const result = uint8ArrayToBase58(binary);
 
         document.getElementById("result").innerText = result;
