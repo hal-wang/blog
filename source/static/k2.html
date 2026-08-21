@@ -154,15 +154,15 @@
 
       function packBinary(startDays, days, secretKey, deviceHash) {
         const payload = startDays + "|" + days + "|" + deviceHash;
-        const hmac = CryptoJS.HmacMD5(payload, secretKey);
-        const hmacBytes = CryptoJS.enc.Hex.parse(hmac.toString()).words.flatMap(
-          (w) => [
+        const hmac = CryptoJS.HmacSHA256(payload, secretKey);
+        const hmacBytes = CryptoJS.enc.Hex.parse(hmac.toString())
+          .words.flatMap((w) => [
             (w >>> 24) & 0xff,
             (w >>> 16) & 0xff,
             (w >>> 8) & 0xff,
             w & 0xff,
-          ],
-        );
+          ])
+          .slice(0, 16);
 
         const buffer = new Uint8Array(22);
         buffer.set(hmacBytes, 0);
